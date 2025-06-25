@@ -1,182 +1,107 @@
-// Initialize Firebase
 firebase.initializeApp({
-  apiKey: "AIzaSyD3rAMBuEihI-NhaiWoP6HN3iPumHOO148",
-  authDomain: "etsy-templates-pro.firebaseapp.com",
-  projectId: "etsy-templates-pro"
+  apiKey: "FIREBASE_API_KEY",
+  authDomain: "FIREBASE_AUTH_DOMAIN",
+  projectId: "FIREBASE_PROJECT_ID"
 });
 
-const auth = firebase.auth(),
-      db = firebase.firestore(),
-      stripe = Stripe("YOUR_STRIPE_PUBLISHABLE_KEY");
+const auth = firebase.auth(), db = firebase.firestore(), stripe = Stripe("YOUR_STRIPE_PUBLISHABLE_KEY");
 
-let cart = [], user = null, freeUsed = false;
-
-// UI Elements
-const authBtn = document.getElementById('auth-btn'),
-      authModal = document.getElementById('auth-modal'),
-      authClose = document.getElementById('auth-close'),
-      authSubmit = document.getElementById('auth-submit'),
-      authEmail = document.getElementById('auth-email'),
-      authPass = document.getElementById('auth-password'),
-      switchAuth = document.getElementById('switch-auth'),
-      resetLink = document.getElementById('reset-link'),
-      resetMsg = document.getElementById('reset-msg'),
-      navAuth = document.getElementById('nav-auth'),
-      aiBtn = document.getElementById('ai-btn'),
-      aiRes = document.getElementById('ai-result'),
-      cartList = document.getElementById('cart-list'),
-      downloadsList = document.getElementById('downloads-list'),
-      dashboard = document.getElementById('dashboard');
-
-function toggleModal(show){
-  authModal.classList.toggle('hidden', !show);
-}
-
-authBtn.onclick = () => toggleModal(true);
-authClose.onclick = () => toggleModal(false);
-
-// Auth mode switch
-let loginMode = true;
-switchAuth.onclick = e => {
-  e.preventDefault();
-  loginMode = !loginMode;
-  document.getElementById('auth-title').innerText = loginMode ? 'Log In' : 'Register';
-  authSubmit.innerText = loginMode ? 'Submit' : 'Sign Up';
-  switchAuth.innerHTML = loginMode
-    ? 'No account? <a href="#">Register</a>'
-    : 'Have account? <a href="#">Log In</a>';
-};
-
-// Auth actions
-authSubmit.onclick = () => {
-  const email = authEmail.value, pw = authPass.value;
-  const action = loginMode
-    ? auth.signInWithEmailAndPassword
-    : auth.createUserWithEmailAndPassword;
-
-  action.call(auth, email, pw)
-    .then(() => {
-      toggleModal(false);
-      showToast('Welcome!');
-    })
-    .catch(e => showToast(e.message));
-};
-
-resetLink.onclick = e => {
-  e.preventDefault();
-  auth.sendPasswordResetEmail(authEmail.value)
-    .then(() => {
-      resetMsg.classList.remove('hidden');
-      showToast('Reset email sent!');
-    })
-    .catch(e => showToast(e.message));
-};
-
-// User login state
-auth.onAuthStateChanged(u => {
-  user = u;
-  if(u){
-    navAuth.innerHTML = `Hi, ${u.email.split('@')[0]} <button onclick="logout()">Log Out</button>`;
-    document.getElementById('ai-section')?.classList.remove('hidden');
-    dashboard?.classList.remove('hidden');
-    toggleModal(false);
-    fetchDownloads();
+auth.onAuthStateChanged(async u => {
+  const nav = document.getElementById('auth-state');
+  if (u) {
+    nav.innerHTML = `Hello ${u.email} <button onclick="logout()">Log Out</button> <button onclick="location='dashboard.html'">Dashboard</button>`;
+    toggleSections(true);
+    await loadCredits(u.uid);
   } else {
-    navAuth.innerHTML = `<button id="auth-btn">Log In / Register</button>`;
-    toggleModal(false);
-    document.getElementById('auth-btn').onclick = () => toggleModal(true); // re-attach listener
+    nav.innerHTML = `<button onclick="login()">Log In / Register</button>`;
+    toggleSections(false);
   }
 });
 
-function logout(){
-  auth.signOut();
-  cart = [];
-  updateCartUI();
-  dashboard?.classList.add('hidden');
-}
-
-// Cart
-function addToCart(id, price){
-  if(!user){ showToast('Please log in'); return; }
-  cart.push({ id, price });
-  updateCartUI();
-}
-
-function updateCartUI(){
-  cartList.innerHTML = cart.map((i, idx) =>
-    `<li>${i.id} - $${i.price.toFixed(2)} <button onclick="removeFromCart(${idx})">×</button></li>`).join('');
-}
-
-function removeFromCart(i){
-  cart.splice(i, 1);
-  updateCartUI();
-}
-
-function checkoutCart(){
-  if(cart.length === 0){ showToast('Cart is empty'); return; }
-  showToast('Files will be sent via email manually for now.');
-  cart.forEach(item => {
-    downloadsList.innerHTML += `<li>${item.id} (download link will be emailed)</li>`;
+function login() {
+  const e = prompt("Email"), p = prompt("Password");
+  auth.signInWithEmailAndPassword(e, p).catch(() => {
+    auth.createUserWithEmailAndPassword(e, p).catch(err => alert(err.message));
   });
-  cart = [];
-  updateCartUI();
+}
+function logout() { auth.signOut(); }
+function resetPassword() {
+  const e = prompt("Enter your email:");
+  auth.sendPasswordResetEmail(e).then(() => alert("Reset link sent")).catch(err => alert(err.message));
 }
 
-// AI Tool preview (1 free)
-aiBtn.onclick = () => {
-  if(!user){ showToast('Log in to use AI'); return; }
-  if(freeUsed){ showToast('Free preview already used'); return; }
-
-  aiRes.innerText = '';
-  showToast('Generating AI preview…');
-
-  axios.post('https://api.openai.com/v1/completions',{
-    model: "text-davinci-003",
-    prompt: "Create an Etsy listing title and bullets:",
-    max_tokens: 80
-  },{
-    headers:{ Authorization:`Bearer sk-your-openai-key` }
-  }).then(r => {
-    aiRes.innerText = r.data.choices[0].text;
-    freeUsed = true;
-    showToast('Here’s your preview!');
-  }).catch(err => showToast('Error: ' + err.message));
+let guestUsed = false;
+document.getElementById('use-ai-guest').onclick = () => {
+  if (!guestUsed) { demoAI(); guestUsed = true; }
+  else showToast("Please log in or buy credits.");
 };
 
-// Downloads from Firebase
-function fetchDownloads(){
-  db.collection('users').doc(user.uid).get().then(doc => {
-    const arr = doc.data()?.purchased || [];
-    downloadsList.innerHTML = arr.map(f =>
-      `<li><a href="downloads/${f}.zip" download>${f}</a></li>`).join('');
+function toggleSections(show) {
+  document.getElementById('preview').style.display = show ? 'none' : 'block';
+  document.getElementById('members-only').style.display = show ? 'block' : 'none';
+}
+
+let userCredits = 0;
+async function loadCredits(uid) {
+  const doc = await db.collection('users').doc(uid).get();
+  const data = doc.exists ? doc.data() : { credits: 0 };
+  userCredits = data.credits;
+  document.getElementById('credits-left').innerText = `Credits: ${userCredits}`;
+}
+
+function demoAI() {
+  const el = document.getElementById('ai-output');
+  const text = "Example AI-generated Etsy listing description...";
+  el.innerText = '';
+  let i = 0;
+  const typer = setInterval(() => {
+    el.innerText += text[i++];
+    if (i >= text.length) clearInterval(typer);
+  }, 30);
+}
+
+document.getElementById('buy-credits').onclick = async () => {
+  const res = await fetch('/.netlify/functions/create-checkout', {
+    headers: { Authorization: auth.currentUser.uid },
+    method: 'POST'
   });
+  const { sessionId } = await res.json();
+  stripe.redirectToCheckout({ sessionId });
+};
+
+document.getElementById('generate-ai').onclick = async () => {
+  if (!auth.currentUser || userCredits < 1) return showToast("Login and buy credits.");
+  const prompt = document.getElementById('user-input').value;
+  const r = await fetch('/.netlify/functions/generate-ai', {
+    method: 'POST',
+    headers: { Authorization: auth.currentUser.uid },
+    body: JSON.stringify({ prompt })
+  });
+  const { result } = await r.json();
+  const el = document.getElementById('ai-output');
+  el.innerText = '';
+  let i = 0;
+  const typer = setInterval(() => {
+    el.innerText += result[i++];
+    if (i >= result.length) clearInterval(typer);
+  }, 30);
+  userCredits--;
+  await db.collection('users').doc(auth.currentUser.uid).set({ credits: userCredits }, { merge: true });
+  document.getElementById('credits-left').innerText = `Credits: ${userCredits}`;
+};
+
+function showToast(message) {
+  const toast = document.getElementById('toast');
+  toast.innerText = message;
+  toast.className = 'show';
+  setTimeout(() => { toast.className = ''; }, 3000);
 }
 
-// Toast alert
-function showToast(message){
-  let t = document.getElementById('toast');
-  if(!t){
-    t = document.createElement('div');
-    t.id = 'toast';
-    t.style = `
-      position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
-      background: #222; color: #fff; padding: 12px 20px;
-      border-radius: 8px; transition: all 0.4s ease; opacity: 0;
-      z-index: 9999; font-size: 14px;
-    `;
-    document.body.appendChild(t);
-  }
-  t.textContent = message;
-  t.style.opacity = '1';
-  t.style.transform = 'translate(-50%, 0)';
-  setTimeout(() => {
-    t.style.opacity = '0';
-    t.style.transform = 'translate(-50%, 20px)';
-  }, 3000);
-}
-
-// Smooth scroll with toast
-function scrollToSection(se){
-  document.querySelector(se).scrollIntoView({ behavior:'smooth' });
-  showToast('Scrolling...');
-          }
+// Fade-in animation
+const fadeEls = document.querySelectorAll('.fade-in');
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) entry.target.classList.add('visible');
+  });
+}, { threshold: 0.2 });
+fadeEls.forEach(el => observer.observe(el));
