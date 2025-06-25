@@ -14,22 +14,36 @@
   <header>
     <h1>Etsy Pro Templates Generator</h1>
     <nav>
-      <div id="auth-state"></div>
-      <select id="theme-select">
-        <option value="light">🌞 Light</option>
-        <option value="dark">🌙 Dark</option>
-        <option value="forest">🌲 Forest</option>
-        <option value="rose">🌹 Rose</option>
-      </select>
+      <button class="btn login-btn" onclick="toggleAuthModal(true)">
+        <svg class="icon" viewBox="0 0 24 24" fill="currentColor"><path d="M10 12a2 2 0 104 0 2 2 0 00-4 0zm11-1v2h-6v3l-4-4 4-4v3h6zM4 6h16a2 2 0 012 2v2h-2V8H4v8h14v-2h2v2a2 2 0 01-2 2H4a2 2 0 01-2-2V8a2 2 0 012-2z"/></svg>
+        Log In / Register
+      </button>
+
+      <div class="theme-wrapper" id="theme-toggle-container">
+        <div class="theme-icon-toggle" id="theme-icon-toggle" title="Switch theme">🌞</div>
+        <div class="theme-dropdown-wrapper">
+          <select id="theme-select" class="theme-select">
+            <option value="light">Light</option>
+            <option value="dark">Dark</option>
+            <option value="forest">Forest</option>
+            <option value="rose">Rose</option>
+          </select>
+          <div class="theme-preview" id="theme-preview">
+            <span class="preview-swatch light" data-theme="light" title="Light Theme"></span>
+            <span class="preview-swatch dark" data-theme="dark" title="Dark Theme"></span>
+            <span class="preview-swatch forest" data-theme="forest" title="Forest Theme"></span>
+            <span class="preview-swatch rose" data-theme="rose" title="Rose Theme"></span>
+            <div class="preview-label" id="theme-label"></div>
+          </div>
+        </div>
+      </div>
     </nav>
   </header>
 
-  <section id="hero">
-    <div class="container">
-      <h2>All‑in‑one AI Toolkit for Etsy Sellers</h2>
-      <p>Generate SEO‑optimized listings, tags, mock‑ups and more—in seconds.</p>
-      <button class="btn-primary" id="use-ai-guest">Try AI Tool (1 free)</button>
-    </div>
+  <section id="hero" class="container">
+    <h2>All‑in‑one AI Toolkit for Etsy Sellers</h2>
+    <p>Generate SEO‑optimized listings, tags, mock‑ups and more—in seconds.</p>
+    <button class="btn-primary" id="use-ai-guest">Try AI Tool (1 free)</button>
   </section>
 
   <section id="members-only" class="container" style="display:none;">
@@ -83,6 +97,15 @@
     </div>
   </section>
 
+  <section class="container custom-theme-panel">
+    <h3>🎛 Customize Theme</h3>
+    <label>Primary Color: <input type="color" id="color-primary" /></label>
+    <label>Background: <input type="color" id="color-bg" /></label>
+    <label>Text Color: <input type="color" id="color-text" /></label>
+    <button class="btn" onclick="applyCustomTheme()">Apply</button>
+    <button class="btn-secondary" onclick="resetTheme()">Reset</button>
+  </section>
+
   <section id="contact" class="container">
     <p>📧 <a href="mailto:you@example.com">you@example.com</a></p>
     <p>📍 Morocco – Worldwide Delivery</p>
@@ -91,6 +114,7 @@
   <footer>&copy; 2025 Etsy Pro Templates Generator</footer>
 
   <div id="toast"></div>
+  <div id="theme-fade" class="theme-fade"></div>
 
   <!-- Login Modal -->
   <div id="auth-modal" class="modal-backdrop" style="display:none;">
