@@ -1,30 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width,initial-scale=1.0">
   <title>Dashboard – Etsy Templates Pro</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <header>
     <h1>Dashboard</h1>
-    <button class="btn" onclick="logout()">Log Out</button>
+    <div id="nav-user"></div>
   </header>
-
-  <section class="container">
-    <h2>Welcome!</h2>
-    <p>Here you can access your generated AI templates, purchases, and credits.</p>
-    <div id="credits">Loading credits...</div>
-    <button id="buy-credits" class="btn">Buy More Credits</button>
-  </section>
-
-  <section class="container">
-    <h2>My Templates</h2>
-    <ul id="user-templates"></ul>
-  </section>
-
-  <script src="app.js"></script>
+  <main class="container">
+    <h2>Welcome, <span id="user-email"></span></h2>
+    <p>Credits: <span id="dashboard-credits">0</span></p>
+    <button id="dash-buy-credits" class="btn">Buy More Credits</button>
+    <section id="downloads" style="margin-top:2rem;"></section>
+  </main>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+  <script src="https://js.stripe.com/v3/"></script>
   <script src="dashboard.js"></script>
 </body>
 </html>
