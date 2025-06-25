@@ -1,47 +1,32 @@
 const stripe = require("stripe")(process.env.STRIPE_SECRET);
 const admin = require("firebase-admin");
 
-if (!admin.apps.length) {
-  admin.initializeApp({
-    credential: admin.credential.applicationDefault()
-  });
-}
+admin.initializeApp();
 
-exports.handler = async function (event) {
+exports.handler = async (event) => {
   const sig = event.headers["stripe-signature"];
+  const ev = stripe.webhooks.constructEvent(
+    event.body,
+    sig,
+    process.env.STRIPE_WEBHOOK_SECRET
+  );
 
-  let session;
-  try {
-    const stripeEvent = stripe.webhooks.constructEvent(
-      event.body,
-      sig,
-      process.env.STRIPE_WEBHOOK_SECRET
-    );
+  if (ev.type === "checkout.session.completed") {
+    const session = ev.data.object;
 
-    if (stripeEvent.type === "checkout.session.completed") {
-      session = stripeEvent.data.object;
+    await admin.firestore().collection('users').doc(session.metadata.uid).set({
+      credits: admin.firestore.FieldValue.increment(10),
+      purchasedProducts: admin.firestore.FieldValue.arrayUnion('ai-tool')
+    }, { merge: true });
 
-      const uid = session.metadata.uid;
-
-      // 1. Update Firestore credits
-      await admin.firestore().collection('users').doc(uid).set({
-        credits: admin.firestore.FieldValue.increment(10),
-        purchasedProducts: admin.firestore.FieldValue.arrayUnion("ai-tool")
-      }, { merge: true });
-
-      // 2. Send confirmation email
-      await admin.firestore().collection('mail').add({
-        to: [session.customer_details.email],
-        message: {
-          subject: "Thanks for your purchase!",
-          html: "<p>You now have 10 credits available. Happy listing!</p>"
-        }
-      });
-    }
-
-    return { statusCode: 200 };
-  } catch (err) {
-    console.error("Webhook error:", err.message);
-    return { statusCode: 400, body: `Webhook Error: ${err.message}` };
+    await admin.firestore().collection('mail').add({
+      to: [session.customer_details.email],
+      message: {
+        subject: "Thanks for your purchase!",
+        html: "You now have 10 credits. Enjoy the AI Generator!"
+      }
+    });
   }
+
+  return { statusCode: 200 };
 };
