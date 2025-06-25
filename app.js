@@ -1,4 +1,4 @@
-// Firebase
+// Initialize Firebase
 firebase.initializeApp({
   apiKey: "AIzaSyAft96BSElFYyLkIVDxaiS2k8us9h1EPPw",
   authDomain: "etsy-templates.firebaseapp.com",
@@ -8,13 +8,15 @@ firebase.initializeApp({
   appId: "1:71763904255:web:324b5d74e6cbcf2e112eca",
   measurementId: "G-LFBT35J0PV"
 });
+
 const auth = firebase.auth();
 const db = firebase.firestore();
+const stripe = Stripe("YOUR_STRIPE_PUBLISHABLE_KEY");
 
-// Auth
-auth.onAuthStateChanged(user => {
+// Auth & UI
+auth.onAuthStateChanged(u => {
   const nav = document.getElementById('auth-state');
-  if (user) {
+  if (u) {
     nav.innerHTML = `<button class="btn" onclick="logout()">Log Out</button>`;
     document.getElementById('members-only').style.display = 'block';
   } else {
@@ -22,37 +24,53 @@ auth.onAuthStateChanged(user => {
     document.getElementById('members-only').style.display = 'none';
   }
 });
-function handleAuth() {
-  const email = document.getElementById('auth-email').value;
-  const pass = document.getElementById('auth-pass').value;
-  auth.signInWithEmailAndPassword(email, pass).catch(() => {
-    auth.createUserWithEmailAndPassword(email, pass)
-      .catch(err => alert(err.message));
-  });
+function handleAuth(){
+  const e = document.getElementById('auth-email').value;
+  const p = document.getElementById('auth-pass').value;
+  auth.signInWithEmailAndPassword(e,p)
+    .catch(()=>auth.createUserWithEmailAndPassword(e,p)
+      .catch(err=>alert(err.message)));
 }
-function logout() {
-  auth.signOut();
-}
-function resetPassword() {
-  const email = prompt("Email:");
-  auth.sendPasswordResetEmail(email).then(() => alert("Reset sent"));
-}
-function toggleAuthModal(show) {
-  document.getElementById('auth-modal').style.display = show ? 'flex' : 'none';
+function logout(){ auth.signOut(); }
+function resetPassword(){
+  const e=prompt("Email:");
+  auth.sendPasswordResetEmail(e).then(()=>alert("Reset sent"));
+ }
+function toggleAuthModal(s){ 
+  document.getElementById('auth-modal').style.display = s?'flex':'none';
 }
 
 // AI demo
+let guestUsed=false;
 document.getElementById('use-ai-guest').onclick = () => {
-  document.getElementById('ai-output').innerText = "[Demo AI Output Here]";
+  if(!guestUsed){ document.getElementById('ai-output').innerText="[Demo AI]"; guestUsed=true;}
+  else alert("Please log in or buy credits.");
+};
+document.getElementById('generate-ai').onclick = async ()=>{
+  if(!auth.currentUser) return alert("Login first");
+  const uid = auth.currentUser.uid;
+  const doc = await db.collection('users').doc(uid).get();
+  let credits = doc.exists?doc.data().credits:0;
+  if(credits<1) return alert("No credits left!");
+  const prompt = document.getElementById('user-input').value;
+  const res = await fetch('/.netlify/functions/generate-ai',{method:'POST',headers:{Authorization:uid},body:JSON.stringify({prompt})});
+  const {result}=await res.json();
+  document.getElementById('ai-output').innerText = result;
+  await db.collection('users').doc(uid).update({credits: firebase.firestore.FieldValue.increment(-1)});
+  document.getElementById('credits-left').innerText = `Credits: ${credits-1}`;
+};
+document.getElementById('buy-credits').onclick = async ()=>{
+  const res = await fetch('/.netlify/functions/create-checkout',{method:'POST',headers:{Authorization:auth.currentUser.uid}});
+  const {sessionId} = await res.json();
+  stripe.redirectToCheckout({sessionId});
 };
 
-// Theme switching
+// Theme
 const themeSelect = document.getElementById('theme-select');
-themeSelect.onchange = e => setTheme(e.target.value);
-document.querySelectorAll('.preview-bubble').forEach(b => {
-  b.onclick = () => setTheme(b.dataset.theme);
-});
-function setTheme(theme) {
-  document.body.className = `theme-${theme}`;
-  themeSelect.value = theme;
+const bubbles = document.querySelectorAll('.preview-bubble');
+function setTheme(t){
+  document.body.className = `theme-${t}`;
+  themeSelect.value = t;
 }
+themeSelect.onchange = ()=>setTheme(themeSelect.value);
+bubbles.forEach(b=>b.onclick=()=>setTheme(b.dataset.theme));
