@@ -1,94 +1,53 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Etsy Templates Pro</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="style.css">
+  <!-- Firebase -->
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
   <script src="https://js.stripe.com/v3/"></script>
-  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 </head>
 <body>
 
-<header>
-  <div class="container nav">
+  <header>
     <h1>Etsy Templates Pro</h1>
-    <div id="nav-auth">
-      <button id="auth-btn">Log In / Register</button>
-    </div>
-  </div>
-</header>
+    <nav><div id="auth-state"></div></nav>
+  </header>
 
-<main class="container">
-
-  <!-- Hero -->
-  <section class="hero">
-    <h2>Easily Sell Stunning Etsy Templates</h2>
-    <p>Generate listings and graphics instantly with AI or buy ready-made designs.</p>
-    <button onclick="scrollToSection('products')">Browse Products</button>
+  <section id="preview" class="fade-in">
+    <h2>Free AI Preview</h2>
+    <button id="use-ai-guest">Try AI Tool (1 free)</button>
   </section>
 
-  <!-- AI Preview Tool -->
-  <section id="ai-section" class="card-section">
-    <h3>Free AI Preview</h3>
-    <button id="ai-btn">Try Now (1 free)</button>
-    <div id="ai-result"></div>
+  <section id="members-only" style="display:none;" class="fade-in">
+    <h2>Your AI Generator</h2>
+    <textarea id="user-input" placeholder="Describe your template idea..."></textarea>
+    <button id="generate-ai">Generate</button>
+    <pre id="ai-output"></pre>
+    <p id="credits-left"></p>
+    <button id="buy-credits">Buy Credits</button>
+    <button onclick="resetPassword()">Forgot Password?</button>
   </section>
 
-  <!-- Products -->
-  <section id="products" class="cards-grid">
-    <!-- Paste all 9 product blocks here (sample below) -->
-    <div class="card">
-      <img src="images/starter-kit.jpg" alt="Mega Starter Kit">
-      <h4>Mega Etsy Starter Kit</h4>
-      <p>$29.99 • Complete bundle</p>
-      <div class="actions">
-        <button onclick="addToCart('starter-kit',29.99)">Add to Cart</button>
-        <a href="https://wa.me/212653449141?text=I%20want%20the%20Mega%20Etsy%20Starter%20Kit" class="whatsapp">WhatsApp</a>
-        <button class="download-btn hidden" data-file="starter-kit.zip">Download</button>
-      </div>
-    </div>
-    <!-- …repeat for 8 more -->
+  <section id="products" class="fade-in">
+    <h2>Digital Products</h2>
+    <div class="product"><img src="images/starter-kit.jpg"><h3>Mega Etsy Starter Kit</h3><p>$29.99 • All‑in‑one bundle</p><a class="btn" href="#">Buy Now</a><a class="btn" href="#">WhatsApp</a></div>
+    <div class="product"><img src="images/boho-listings.jpg"><h3>Boho Listing Templates</h3><p>$25 • Chic listing layouts</p><a class="btn" href="#">Buy Now</a><a class="btn" href="#">WhatsApp</a></div>
+    <div class="product"><img src="images/descriptions.jpg"><h3>Digital Description Pack</h3><p>$19 • SEO copy blocks</p><a class="btn" href="#">Buy Now</a><a class="btn" href="#">WhatsApp</a></div>
+    <!-- Add more products if needed -->
   </section>
 
-  <!-- Cart & Dashboard -->
-  <section id="dashboard" class="card-section hidden">
-    <h3>Welcome, <span id="user-email"></span></h3>
-    <button onclick="logout()">Log Out</button>
-    <h4>Your Cart</h4>
-    <ul id="cart-list"></ul>
-    <button onclick="checkoutCart()">Checkout Now</button>
-
-    <h4>Your Downloads</h4>
-    <ul id="downloads-list"></ul>
+  <section id="contact" class="fade-in">
+    <p>📧 <a href="mailto:you@example.com">you@example.com</a></p>
+    <p>📍 Morocco – Worldwide Delivery</p>
   </section>
 
-</main>
+  <footer>&copy; 2025 Etsy Templates Pro</footer>
 
-<footer>
-  <div class="container">
-    <p>© 2025 Etsy Templates Pro. Contact: <a href="mailto:you@example.com">you@example.com</a></p>
-  </div>
-</footer>
-
-<!-- Auth Modal -->
-<div id="auth-modal" class="modal hidden">
-  <div class="modal-content">
-    <span class="close" id="auth-close">&times;</span>
-    <h2 id="auth-title">Log In</h2>
-    <input type="email" id="auth-email" placeholder="Email" />
-    <input type="password" id="auth-password" placeholder="Password" />
-    <button id="auth-submit">Submit</button>
-    <p><a href="#" id="reset-link">Forgot Password?</a></p>
-    <p id="switch-auth">No account? <a href="#">Register</a></p>
-    <p id="reset-msg" class="hidden">Reset email sent!</p>
-  </div>
-</div>
-
-<script src="app.js"></script>
+  <div id="toast"></div>
+  <script src="app.js"></script>
 </body>
-</html>
+  </html>
