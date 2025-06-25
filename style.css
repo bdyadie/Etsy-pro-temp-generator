@@ -1,9 +1,95 @@
-body{font-family:sans-serif;margin:0;padding:0}
-header{background:#f7941d;color:#fff;padding:1rem;display:flex;justify-content:space-between}
-nav button{background:#fff;color:#f7941d;padding:.5rem 1rem;border:none}
-section{padding:1.5rem}
-.product{border:1px solid #ccc;padding:1rem;margin-bottom:1rem}
-.product img{max-width:100%;height:auto}
-textarea{width:100%;height:80px}
-button,.btn{background:#f7941d;color:#fff;padding:.5rem 1rem;border:none;cursor:pointer;margin-top:.5rem;text-decoration:none}
-#ai-output{background:#eee;padding:1rem;white-space:pre-wrap;margin-top:1rem}
+/* Base & Layout */
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Inter', sans-serif; background:#f7f7f7; color:#333; overflow-x:hidden; }
+.container { max-width:900px; margin:0 auto; padding:20px; }
+
+/* Header */
+header, footer { background:#fff; box-shadow:0 2px 4px rgba(0,0,0,0.05); }
+.nav { display:flex; justify-content:space-between; align-items:center; padding:10px; }
+header h1 { font-size:1.5rem; transform: translateY(-5px); animation:fadeIn 0.5s ease forwards; }
+
+/* Hero Section */
+.hero {
+  text-align:center; padding:60px 20px; background:#ffeccf; border-radius:8px; margin:40px 0;
+  animation:fadeIn 0.8s ease forwards;
+}
+.hero button {
+  margin-top:16px; padding:12px 24px; background:#f7941d; color:#fff;
+  border:none; border-radius:6px; cursor:pointer; font-weight:600;
+  transition:background 0.3s, transform 0.2s;
+}
+.hero button:hover { background:#d77a14; transform:scale(1.05); }
+
+/* Cards Grid */
+.cards-grid {
+  display:grid; grid-template-columns:repeat(auto-fit, minmax(220px,1fr));
+  gap:24px; margin-bottom:40px;
+}
+.card {
+  background:#fff; padding:16px; border-radius:8px;
+  box-shadow:0 2px 6px rgba(0,0,0,0.08);
+  transition:transform 0.3s, box-shadow 0.3s;
+  opacity:0; animation:fadeInUp 0.6s ease forwards;
+}
+.card:hover {
+  transform: translateY(-5px) scale(1.02);
+  box-shadow:0 4px 12px rgba(0,0,0,0.15);
+}
+.card img {
+  width:100%; height:auto; border-radius:4px; margin-bottom:12px;
+  transition:opacity 0.3s;
+}
+.card img:hover { opacity:0.9; }
+
+/* Buttons */
+button, .whatsapp, .download-btn {
+  display:inline-block;
+  padding:8px 14px;
+  border:none;
+  border-radius:4px;
+  font-weight:500;
+  text-decoration:none;
+  transition:background 0.3s, transform 0.2s;
+}
+button:hover, .download-btn:hover { background:#1e4db7; transform:scale(1.05); }
+.whatsapp { background:#25D366; color:#fff; }
+.whatsapp:hover { background:#1ca751; }
+
+/* Alert Toasts */
+#toast {
+  position:fixed; bottom:20px; right:20px;
+  background:#333; color:#fff; padding:12px 20px;
+  border-radius:6px; opacity:0; transform: translateY(20px);
+  transition:opacity 0.4s ease, transform 0.4s ease;
+  pointer-events:none; z-index:1000;
+}
+
+/* AI & Dashboard Sections */
+#ai-section, #dashboard { opacity:0; animation:fadeIn 0.5s ease forwards; }
+
+/* Modal */
+.modal { position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5);
+  display:flex; justify-content:center; align-items:center; opacity:0;
+  animation:fadeIn 0.3s ease forwards;
+}
+.modal-content {
+  background:#fff; padding:20px; border-radius:6px;
+  box-shadow:0 4px 12px rgba(0,0,0,0.15);
+  transform:scale(0.9); transition:transform 0.3s ease;
+}
+.modal-content input, .modal-content button {
+  width:100%; margin:8px 0; padding:10px; border:1px solid #ddd; border-radius:4px;
+}
+
+/* Footer */
+footer { padding:20px 0; text-align:center; font-size:0.9rem; background:#fff; }
+
+/* Animations */
+@keyframes fadeIn {
+  0% { opacity:0; }
+  100% { opacity:1; }
+}
+@keyframes fadeInUp {
+  0% { opacity:0; transform:translateY(20px);}
+  100% { opacity:1; transform:translateY(0);}
+        }
