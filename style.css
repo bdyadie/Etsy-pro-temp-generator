@@ -1,21 +1,238 @@
-* { margin:0; padding:0; box-sizing:border-box; }
-body { font-family:sans-serif; background:#f4f6f8; color:#333; }
-header { display:flex; justify-content:space-between; padding:1em; background:#fff; position:sticky; top:0; box-shadow:0 1px 5px rgba(0,0,0,0.1); }
-header nav a { margin:0 1em; color:#0077cc; text-decoration:none; }
-.logo { font-weight:bold; font-size:1.2em; color:#222; }
-.hero { text-align:center; padding:4em 1em; background:#fff; }
-.products { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:1em; padding:2em; }
-.product-card { background:#fff; padding:1em; border-radius:8px; box-shadow:0 2px 8px rgba(0,0,0,0.05); text-align:center; transition:transform .2s; }
-.product-card:hover { transform:scale(1.02); }
-.product-card img { max-width:100%; border-radius:4px; }
-.btn-primary, .btn-secondary { cursor:pointer; border:none; padding:0.8em 1.2em; border-radius:5px; }
-.btn-primary { background:#0077cc; color:#fff; }
-.btn-secondary { background:#555; color:#fff; }
-a.btn-primary, a.btn-secondary { text-decoration:none; display:inline-block; }
-.contact, .dashboard, .ai-tool { padding:2em 1em; background:#fff; margin-top:1em; }
-footer { text-align:center; padding:1em; background:#fff; margin-top:2em; font-size:0.9em; color:#666; }
-.modal { position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.4); display:flex; align-items:center; justify-content:center; }
-.modal.hidden { display:none; }
-.modal-content { background:#fff; padding:2em; border-radius:8px; width:90%; max-width:400px; position:relative; }
-.modal-close { position:absolute; right:1em; top:1em; cursor:pointer; font-size:1.2em; }
-.hidden { display:none !important; }
+/* Reset & Base */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+body {
+  font-family: 'Inter', sans-serif;
+  background: #f9f9f9;
+  color: #333;
+  line-height: 1.6;
+}
+a {
+  color: #00875a;
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
+
+/* Header */
+header {
+  background: #fff;
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #e0e0e0;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+header h1 {
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+header nav a {
+  margin: 0 1rem;
+  font-weight: 500;
+  font-size: 0.95rem;
+}
+#auth-state button {
+  background: #00875a;
+  color: #fff;
+  border: none;
+  padding: 0.5rem 1.2rem;
+  font-weight: 600;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+#auth-state button:hover {
+  background: #006f47;
+}
+
+/* Hero Section */
+#hero {
+  background: #fff;
+  padding: 4rem 2rem;
+  text-align: center;
+}
+#hero h2 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+#hero p {
+  font-size: 1.1rem;
+  color: #555;
+  margin-bottom: 2rem;
+}
+#hero .btn-primary {
+  background: #00875a;
+  color: #fff;
+  padding: 0.75rem 1.5rem;
+  font-size: 1.05rem;
+  font-weight: 600;
+  border-radius: 6px;
+  transition: background 0.2s, transform 0.1s;
+}
+#hero .btn-primary:hover {
+  background: #006f47;
+  transform: translateY(-2px);
+}
+
+/* Products Section */
+#products {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+  padding: 2rem;
+}
+.product {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.05);
+  overflow: hidden;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.product:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 24px rgba(0,0,0,0.08);
+}
+.product img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+.product-content {
+  padding: 1.5rem;
+}
+.product-content h3 {
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+}
+.product-content p {
+  font-size: 0.95rem;
+  margin-bottom: 1rem;
+  color: #666;
+}
+.product-content .price {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+.product-content .btn {
+  display: inline-block;
+  margin: 0.2rem;
+  padding: 0.5rem 1rem;
+  background: #00875a;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.product-content .btn:hover {
+  background: #006f47;
+}
+
+/* AI Tool / Members Section */
+#ai-section {
+  background: #fff;
+  padding: 2rem;
+  margin: 2rem auto;
+  max-width: 800px;
+  border-radius: 8px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.05);
+}
+#ai-section h2 {
+  margin-bottom: 1rem;
+}
+#ai-section textarea {
+  width: 100%;
+  min-height: 120px;
+  padding: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  margin-bottom: 1rem;
+}
+#ai-section button {
+  background: #00875a;
+}
+#ai-section pre {
+  background: #f1f1f1;
+  padding: 1rem;
+  border-radius: 6px;
+  margin-top: 1rem;
+}
+
+/* Modal (Login/Register) */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 200;
+}
+.modal {
+  background: #fff;
+  padding: 2rem;
+  width: 90%;
+  max-width: 400px;
+  border-radius: 8px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+  position: relative;
+}
+.modal .close-btn {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: transparent;
+  border: none;
+  font-size: 1.25rem;
+  cursor: pointer;
+}
+.modal h2 {
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+}
+.modal input {
+  width: 100%;
+  padding: 0.75rem;
+  margin-bottom: 0.75rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+.modal button {
+  width: 100%;
+  font-size: 1rem;
+}
+
+/* Contact / Footer */
+footer {
+  background: #fff;
+  text-align: center;
+  padding: 1.5rem 0;
+  border-top: 1px solid #e0e0e0;
+  font-size: 0.9rem;
+  color: #777;
+}
+
+/* Toast notifications */
+#toast {
+  position: fixed;
+  left: 50%;
+  bottom: 1.5rem;
+  transform: translateX(-50%) translateY(20px);
+  background: rgba(0,0,0,0.85);
+  color: #fff;
+  padding: 0.75rem 1.5rem;
+  border-radius: 6px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s, transform 0.3s;
+  z-index: 999;
+}
