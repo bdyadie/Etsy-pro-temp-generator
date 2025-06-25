@@ -1,139 +1,102 @@
-// -- Firebase Setup
+// ✅ Firebase Config (your real keys)
 firebase.initializeApp({
-  apiKey:"AIzaSyD3rAMBuEihI-NhaiWoP6HN3iPumHOO148",
-  authDomain:"etsy-templates-pro-generator.firebaseapp.com",
-  projectId:"etsy-templates-pro-generator"
+  apiKey: "AIzaSyAft96BSElFYyLkIVDxaiS2k8us9h1EPPw",
+  authDomain: "etsy-templates.firebaseapp.com",
+  projectId: "etsy-templates",
+  storageBucket: "etsy-templates.firebasestorage.app",
+  messagingSenderId: "71763904255",
+  appId: "1:71763904255:web:324b5d74e6cbcf2e112eca",
+  measurementId: "G-LFBT35J0PV"
 });
-const auth = firebase.auth(), db = firebase.firestore();
-let cart = [], user = null, freeUsed = false;
 
-// -- Elements
-const authBtn=document.getElementById('auth-btn'), authModal=document.getElementById('auth-modal'),
-      authClose=document.getElementById('auth-close'), authSubmit=document.getElementById('auth-submit'),
-      authEmail=document.getElementById('auth-email'), authPass=document.getElementById('auth-password'),
-      switchAuth=document.getElementById('switch-auth'), resetLink=document.getElementById('reset-link'),
-      resetMsg=document.getElementById('reset-msg'), navAuth=document.getElementById('nav-auth'),
-      aiBtn=document.getElementById('ai-btn'), aiRes=document.getElementById('ai-result'),
-      cartList=document.getElementById('cart-list'), downloadsList=document.getElementById('downloads-list'),
-      dashboard=document.getElementById('dashboard');
+const auth = firebase.auth();
+const db = firebase.firestore();
+const stripe = Stripe("YOUR_STRIPE_PUBLISHABLE_KEY"); // optional
 
-// -- Modal toggle
-function toggleModal(show) { authModal.classList.toggle('hidden', !show); }
-authBtn.onclick = ()=>toggleModal(true);
-authClose.onclick = ()=>toggleModal(false);
-
-// -- Switch login/register
-let loginMode=true;
-switchAuth.onclick = e => {
-  e.preventDefault();
-  loginMode = !loginMode;
-  document.getElementById('auth-title').innerText = loginMode?'Log In':'Register';
-  authSubmit.innerText = loginMode?'Submit':'Sign Up';
-  switchAuth.innerHTML = loginMode?'No account? <a href="#">Register</a>':'Have account? <a href="#">Log In</a>';
-};
-
-// -- Submit login or register
-authSubmit.onclick = () => {
-  const email = authEmail.value, pw = authPass.value;
-  const action = loginMode ? auth.signInWithEmailAndPassword : auth.createUserWithEmailAndPassword;
-  action.call(auth, email, pw)
-    .then(()=>toggleModal(false))
-    .catch(e=>showToast(e.message));
-};
-
-// -- Password reset
-resetLink.onclick = e => {
-  e.preventDefault();
-  auth.sendPasswordResetEmail(authEmail.value)
-    .then(()=>resetMsg.classList.remove('hidden'))
-    .catch(e=>showToast(e.message));
-};
-
-// -- Auth listener
-auth.onAuthStateChanged(u => {
-  user = u;
-  if(u){
-    navAuth.innerHTML = `Hi, ${u.email.split('@')[0]} <button onclick="logout()">Log Out</button>`;
-    document.getElementById('ai-section').classList.remove('hidden');
-    dashboard.classList.remove('hidden');
-    fetchDownloads();
+// -- Auth state listener
+auth.onAuthStateChanged(async u => {
+  const nav = document.getElementById('auth-state');
+  if (u) {
+    nav.innerHTML = `Hello ${u.email} <button onclick="logout()">Log Out</button> <button onclick="location='dashboard.html'">Dashboard</button>`;
+    toggleSections(true);
+    await loadCredits(u.uid);
   } else {
-    navAuth.innerHTML = '<button id="auth-btn">Log In / Register</button>';
-    document.getElementById('ai-section').classList.add('hidden');
-    dashboard.classList.add('hidden');
+    nav.innerHTML = `<button onclick="login()">Log In / Register</button>`;
+    toggleSections(false);
   }
 });
+
+// -- Login or register
+function login() {
+  const e = prompt("Email"), p = prompt("Password");
+  auth.signInWithEmailAndPassword(e, p)
+    .catch(() => auth.createUserWithEmailAndPassword(e, p)
+      .catch(err => alert(err.message)));
+}
 
 // -- Logout
-function logout(){ auth.signOut(); cart=[]; updateCartUI(); }
-
-// -- Add to cart
-function addToCart(id, price){
-  if(!user){ showToast('Please log in first'); return; }
-  cart.push({ id, price });
-  updateCartUI();
+function logout() {
+  auth.signOut();
 }
 
-// -- Cart UI update
-function updateCartUI(){
-  cartList.innerHTML = cart.map((i, idx)=>`<li>${i.id} - $${i.price.toFixed(2)} <button onclick="removeFromCart(${idx})">×</button></li>`).join('');
+// -- Forgot password
+function resetPassword() {
+  const e = prompt("Email:");
+  auth.sendPasswordResetEmail(e).then(() => alert("Reset sent")).catch(err => alert(err.message));
 }
 
-// -- Remove item
-function removeFromCart(i){ cart.splice(i,1); updateCartUI(); }
-
-// -- Checkout (manual email delivery placeholder)
-function checkoutCart(){
-  if(cart.length===0){ showToast('Cart is empty'); return; }
-  cart.forEach(item => downloadsList.innerHTML += `<li>${item.id} — your file will be emailed</li>`);
-  showToast('Checkout complete! Check your downloads section.');
-  cart = []; updateCartUI();
+// -- Toggle site access
+function toggleSections(ok) {
+  document.getElementById('preview').style.display = ok ? 'none' : 'block';
+  document.getElementById('members-only').style.display = ok ? 'block' : 'none';
 }
 
-// -- AI Preview
-aiBtn.onclick = () => {
-  if(!user){ showToast('Log in to use the AI tool'); return; }
-  if(freeUsed){ showToast('Free preview already used'); return; }
-  aiRes.textContent = 'Generating…';
-  showToast('Generating preview…');
-  axios.post('https://api.openai.com/v1/completions', {
-    model: "text-davinci-003",
-    prompt: `Create an Etsy listing title and bullets about: ${document.getElementById('ai-input').value}`,
-    max_tokens: 80
-  }, { headers: { Authorization: `Bearer sk-your-key-here` } })
-    .then(r => {
-      aiRes.textContent = r.data.choices[0].text.trim();
-      freeUsed = true;
-      showToast('Preview ready!');
-    })
-    .catch(e => showToast('Error: ' + e.message));
+// -- AI demo preview
+let guestUsed = false;
+document.getElementById('use-ai-guest').onclick = () => {
+  if (!guestUsed) {
+    demoAI();
+    guestUsed = true;
+  } else alert("Please log in or buy credits.");
 };
 
-// -- Firestore downloads listener
-function fetchDownloads(){
-  db.collection('users').doc(user.uid).get().then(doc => {
-    const data = doc.data()?.purchased || [];
-    downloadsList.innerHTML = data.map(f=>`<li>${f}</li>`).join('');
+function demoAI() {
+  document.getElementById('ai-output').innerText = "[Demo AI output]";
+}
+
+// -- AI generate logic (for paid users)
+document.getElementById('generate-ai').onclick = async () => {
+  if (!auth.currentUser || userCredits < 1) return alert("Login and buy credits.");
+  const prompt = document.getElementById('user-input').value;
+  const r = await fetch('/.netlify/functions/generate-ai', {
+    method: 'POST',
+    headers: { Authorization: auth.currentUser.uid },
+    body: JSON.stringify({ prompt })
   });
+  const { result } = await r.json();
+  document.getElementById('ai-output').innerText = result;
+  userCredits--;
+  await db.collection('users').doc(auth.currentUser.uid).set({
+    credits: userCredits
+  }, { merge: true });
+  document.getElementById('credits-left').innerText = `Credits: ${userCredits}`;
+};
+
+// -- Load Firestore credits
+let userCredits = 0;
+async function loadCredits(uid) {
+  const doc = await db.collection('users').doc(uid).get();
+  const data = doc.exists ? doc.data() : { credits: 0 };
+  userCredits = data.credits;
+  document.getElementById('credits-left').innerText = `Credits: ${userCredits}`;
 }
 
-// -- Toast notifications
-function showToast(msg){
-  let t = document.getElementById('toast');
-  if(!t){
-    t = document.createElement('div');
-    t.id = 'toast';
-    t.style.cssText = 'position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(20px);background:#000;color:#fff;padding:1em;border-radius:5px;transition:0.3s;';
-    document.body.appendChild(t);
-  }
-  t.textContent = msg;
-  t.style.opacity = '1';
-  t.style.transform = 'translateX(-50%) translateY(0)';
-  setTimeout(()=>{ t.style.opacity='0'; t.style.transform='translateX(-50%) translateY(20px)';}, 3000);
-}
-
-// -- Smooth scroll
-function scrollToSection(sel){
-  document.querySelector(sel).scrollIntoView({ behavior:'smooth' });
-  showToast('Scrolling…');
-}
+// -- Buy credits button
+document.getElementById('buy-credits').onclick = async () => {
+  const res = await fetch('/.netlify/functions/create-checkout', {
+    headers: { Authorization: auth.currentUser.uid },
+    method: 'POST'
+  });
+  const { sessionId } = await res.json();
+  stripe.redirectToCheckout({ sessionId });
+};
