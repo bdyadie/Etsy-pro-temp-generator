@@ -46,18 +46,15 @@ body {
   transition: background-color 0.35s ease, color 0.35s ease;
 }
 
-header, footer, .container, .product, .modal, .theme-select,
-.preview-label, .theme-icon-toggle, .login-btn, .theme-wrapper,
-.theme-preview, textarea, select, button {
-  transition: background-color 0.35s ease, color 0.35s ease, border-color 0.35s ease, transform 0.2s ease;
+.container {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
 }
 
 a, .link-btn {
   color: var(--primary);
   text-decoration: none;
-}
-a:hover, .link-btn:hover {
-  text-decoration: underline;
 }
 .link-btn {
   background: none;
@@ -65,7 +62,43 @@ a:hover, .link-btn:hover {
   font-size: 0.9rem;
   cursor: pointer;
 }
+.link-btn:hover, a:hover {
+  text-decoration: underline;
+}
 
+header, footer {
+  background: var(--card-bg);
+  color: var(--text);
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+header h1 {
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+footer {
+  text-align: center;
+  font-size: 0.9rem;
+  border-top: 1px solid #e0e0e0;
+}
+
+#hero {
+  text-align: center;
+  background: var(--card-bg);
+  padding: 4rem 2rem;
+}
+#hero h2 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+#hero p {
+  font-size: 1.1rem;
+  margin-bottom: 2rem;
+}
+
+/* Buttons */
 .btn, .btn-primary {
   background: var(--primary);
   color: var(--secondary);
@@ -99,42 +132,50 @@ a:hover, .link-btn:hover {
   border-radius: 6px;
 }
 
-.container {
-  max-width: 960px;
-  margin: 0 auto;
-  padding: 2rem 1rem;
-}
-header, footer {
+.login-btn-square {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
   background: var(--card-bg);
   color: var(--text);
-  padding: 1rem 2rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-header h1 {
-  font-size: 1.5rem;
+  border: 2px solid var(--text);
+  padding: 0.5rem 1rem;
   font-weight: 600;
+  border-radius: 12px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  box-shadow: 0 4px 0 rgba(0,0,0,0.2);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.3s ease, color 0.3s ease;
 }
-#hero {
-  text-align: center;
-  background: var(--card-bg);
-  padding: 4rem 2rem;
+.login-btn-square:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+  background: var(--primary);
+  color: var(--secondary);
+  border-color: var(--primary);
 }
-#hero h2 {
-  font-size: 2rem;
-  margin-bottom: 1rem;
+.login-btn-square:active {
+  transform: translateY(1px);
+  box-shadow: inset 0 2px 4px rgba(0,0,0,0.3);
 }
-#hero p {
-  font-size: 1.1rem;
-  margin-bottom: 2rem;
+.login-icon {
+  width: 20px;
+  height: 20px;
+  fill: currentColor;
+  flex-shrink: 0;
+  transition: transform 0.3s ease;
 }
-#members-only textarea {
+.login-btn-square:hover .login-icon {
+  transform: translateX(4px);
+}
+
+/* AI, Products, Testimonials, FAQ */
+textarea {
   width: 100%;
   min-height: 120px;
   padding: 1rem;
-  border-radius: 6px;
   border: 1px solid #ccc;
+  border-radius: 6px;
   margin-bottom: 1rem;
 }
 #products .product {
@@ -152,15 +193,10 @@ header h1 {
 }
 .product-content h3 {
   font-size: 1.2rem;
-  margin-bottom: 0.5rem;
 }
 .product-content .price {
   font-size: 1.1rem;
   font-weight: 600;
-  margin-bottom: 1rem;
-}
-#testimonials, #faq {
-  margin-bottom: 3rem;
 }
 .testimonial, .faq-item {
   background: var(--card-bg);
@@ -174,67 +210,8 @@ header h1 {
   margin-top: 0.5rem;
   font-style: italic;
 }
-#contact {
-  text-align: center;
-  margin-bottom: 2rem;
-}
-footer {
-  text-align: center;
-  font-size: 0.9rem;
-  border-top: 1px solid #e0e0e0;
-}
-#toast {
-  position: fixed;
-  left: 50%;
-  bottom: 1.5rem;
-  transform: translateX(-50%) translateY(20px);
-  background: var(--card-bg);
-  color: var(--text);
-  padding: 0.75rem 1.5rem;
-  border-radius: 6px;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.3s, transform 0.3s;
-  z-index: 999;
-}
-.modal-backdrop {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.6);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
-}
-.modal {
-  background: var(--card-bg);
-  padding: 2rem;
-  width: 90%;
-  max-width: 400px;
-  border-radius: 8px;
-  box-shadow: 0 8px 32px var(--card-shadow);
-}
-.modal .close-btn {
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
-  background: transparent;
-  border: none;
-  font-size: 1.25rem;
-  cursor: pointer;
-}
-.modal input {
-  width: 100%;
-  padding: 0.75rem;
-  margin-bottom: 0.75rem;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-}
-.modal button {
-  width: 100%;
-  font-size: 1rem;
-}
 
+/* Theme selector */
 .theme-wrapper {
   display: inline-flex;
   align-items: center;
@@ -243,9 +220,6 @@ footer {
 .theme-icon-toggle {
   font-size: 1.5rem;
   cursor: pointer;
-}
-.theme-dropdown-wrapper {
-  position: relative;
 }
 .theme-select {
   appearance: none;
@@ -261,7 +235,6 @@ footer {
   display: flex;
   gap: 0.5rem;
   margin-top: 0.5rem;
-  justify-content: flex-end;
 }
 .preview-bubble {
   width: 24px;
@@ -269,7 +242,7 @@ footer {
   border-radius: 50%;
   border: 2px solid transparent;
   cursor: pointer;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 1px 4px rgba(0,0,0,0.1);
   transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
 }
 .preview-bubble:hover {
@@ -291,30 +264,14 @@ footer {
 .preview-bubble.clicked {
   animation: clickPulse 0.3s ease;
 }
-.preview-label {
-  position: absolute;
-  bottom: -1.8rem;
-  background: var(--card-bg);
-  color: var(--text);
-  font-size: 0.75rem;
-  padding: 0.2rem 0.6rem;
-  border-radius: 4px;
-  opacity: 0;
-  transition: opacity 0.25s;
-}
-.theme-preview:hover #theme-label {
-  opacity: 1;
-}
 
+/* Custom theme */
 .custom-theme-panel {
   margin-top: 2rem;
   padding: 1.5rem;
   background: var(--card-bg);
-  color: var(--text);
   border: 1px solid var(--primary);
   border-radius: 8px;
-  max-width: 400px;
-  font-size: 0.9rem;
 }
 .custom-theme-panel label {
   display: block;
@@ -322,17 +279,62 @@ footer {
 }
 .custom-theme-panel input[type="color"] {
   margin-left: 1rem;
-  border: none;
-  background: none;
   width: 40px;
   height: 24px;
   cursor: pointer;
 }
-.custom-theme-panel .btn {
-  margin-right: 0.5rem;
-  margin-top: 0.5rem;
-}
 
+/* Modals and toast */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+.modal {
+  background: var(--card-bg);
+  padding: 2rem;
+  max-width: 400px;
+  width: 90%;
+  border-radius: 8px;
+}
+.modal input {
+  width: 100%;
+  padding: 0.75rem;
+  margin-bottom: 0.75rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+.modal button {
+  width: 100%;
+  font-size: 1rem;
+}
+.close-btn {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: transparent;
+  border: none;
+  font-size: 1.25rem;
+  cursor: pointer;
+}
+#toast {
+  position: fixed;
+  left: 50%;
+  bottom: 1.5rem;
+  transform: translateX(-50%) translateY(20px);
+  background: var(--card-bg);
+  color: var(--text);
+  padding: 0.75rem 1.5rem;
+  border-radius: 6px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s, transform 0.3s;
+  z-index: 999;
+}
 .theme-fade {
   position: fixed;
   inset: 0;
