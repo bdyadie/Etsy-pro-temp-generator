@@ -7,68 +7,37 @@ body {
 
 header {
   background: #f7941d;
-  color: #fff;
+  color: white;
   padding: 1rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-nav button {
-  background: #fff;
-  color: #f7941d;
-  padding: .5rem 1rem;
-  border: none;
-  cursor: pointer;
-}
-
-section {
-  padding: 1.5rem;
-}
-
 .product {
-  border: 1px solid #ccc;
-  padding: 1rem;
-  margin-bottom: 1rem;
   background: #fff;
-  border-radius: 8px;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+  margin: 1rem;
+  padding: 1rem;
+  border-radius: 5px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
 }
 
 .product img {
   max-width: 100%;
-  height: auto;
   border-radius: 4px;
 }
 
-textarea {
-  width: 100%;
-  height: 80px;
-  padding: .5rem;
-  margin-bottom: .5rem;
-}
-
-button, .btn {
+.btn {
   background: #f7941d;
-  color: #fff;
-  padding: .5rem 1rem;
-  border: none;
-  cursor: pointer;
-  margin-top: .5rem;
+  color: white;
+  padding: 0.5rem 1rem;
+  display: inline-block;
+  margin-top: 0.5rem;
   text-decoration: none;
-  border-radius: 4px;
 }
 
-button:hover, .btn:hover {
-  background: #e07c00;
-}
-
-#ai-output {
-  background: #eee;
-  padding: 1rem;
-  white-space: pre-wrap;
-  margin-top: 1rem;
-  border-radius: 4px;
+.hidden {
+  display: none;
 }
 
 .modal {
@@ -85,23 +54,15 @@ button:hover, .btn:hover {
   background: #fff;
   padding: 2rem;
   border-radius: 8px;
-  position: relative;
   width: 90%;
   max-width: 400px;
+  position: relative;
 }
 
 .close {
   position: absolute;
-  top: .5rem;
-  right: .75rem;
+  top: 1rem;
+  right: 1rem;
   cursor: pointer;
-  font-size: 1.25rem;
-}
-
-footer {
-  background: #f7941d;
-  color: #fff;
-  text-align: center;
-  padding: 1rem;
-  margin-top: 2rem;
+  font-size: 1.5rem;
 }
