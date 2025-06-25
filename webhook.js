@@ -1,32 +1,16 @@
 const stripe = require("stripe")(process.env.STRIPE_SECRET);
 const admin = require("firebase-admin");
-
 admin.initializeApp();
 
 exports.handler = async (event) => {
   const sig = event.headers["stripe-signature"];
-  const ev = stripe.webhooks.constructEvent(
-    event.body,
-    sig,
-    process.env.STRIPE_WEBHOOK_SECRET
-  );
-
+  const ev = stripe.webhooks.constructEvent(event.body, sig, process.env.STRIPE_WEBHOOK_SECRET);
   if (ev.type === "checkout.session.completed") {
     const session = ev.data.object;
-
     await admin.firestore().collection('users').doc(session.metadata.uid).set({
       credits: admin.firestore.FieldValue.increment(10),
       purchasedProducts: admin.firestore.FieldValue.arrayUnion('ai-tool')
     }, { merge: true });
-
-    await admin.firestore().collection('mail').add({
-      to: [session.customer_details.email],
-      message: {
-        subject: "Thanks for your purchase!",
-        html: "You now have 10 credits. Enjoy the AI Generator!"
-      }
-    });
   }
-
-  return { statusCode: 200 };
+  return { statusCode:200 };
 };
