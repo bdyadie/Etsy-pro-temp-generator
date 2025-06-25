@@ -17,18 +17,20 @@ auth.onAuthStateChanged(async user => {
   const doc = await db.collection('users').doc(user.uid).get();
   const data = doc.exists ? doc.data() : { credits: 0, purchasedProducts: [] };
 
-  document.getElementById('dashboard-credits').innerText = data.credits || 0;
+  document.getElementById('dashboard-credits').innerText = data.credits;
 
-  document.getElementById('downloads').innerHTML = (data.purchasedProducts || []).map(
-    id => `<div><a href="downloads/${id}.zip" download>${id}</a></div>`
-  ).join('');
+  const products = data.purchasedProducts || [];
+  const container = document.getElementById('downloads');
+  container.innerHTML = products.length === 0
+    ? '<p>No products yet.</p>'
+    : products.map(p => `<div><a href="downloads/${p}.zip" download>${p}</a></div>`).join('');
 
   document.getElementById('dash-buy-credits').onclick = () => {
     fetch('/.netlify/functions/create-checkout', {
       method: 'POST',
       headers: { Authorization: user.uid }
     })
-    .then(r => r.json())
+    .then(res => res.json())
     .then(d => stripe.redirectToCheckout({ sessionId: d.sessionId }));
   };
 });
