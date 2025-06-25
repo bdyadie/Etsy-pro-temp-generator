@@ -2,9 +2,9 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
   <title>Dashboard</title>
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="style.css">
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
@@ -15,21 +15,15 @@
     <h1>My Account</h1>
     <nav>
       <div id="nav-user"></div>
-      <select id="theme-select">
-        <option value="light">🌞 Light</option>
-        <option value="dark">🌙 Dark</option>
-        <option value="forest">🌲 Forest</option>
-        <option value="rose">🌹 Rose</option>
-      </select>
     </nav>
   </header>
 
-  <section id="dashboard" class="container" style="display:none;">
+  <section id="dashboard" style="display:none;">
     <h2>Welcome <span id="user-email"></span></h2>
     <p>Your credits: <span id="dashboard-credits">0</span></p>
     <h3>Your Downloads</h3>
     <div id="downloads"></div>
-    <button id="dash-buy-credits" class="btn-primary">Buy Credits</button>
+    <button id="dash-buy-credits">Buy Credits</button>
   </section>
 
   <footer>
