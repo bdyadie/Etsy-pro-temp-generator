@@ -13,6 +13,7 @@ exports.handler = async (event) => {
 
   if (ev.type === "checkout.session.completed") {
     const session = ev.data.object;
+
     await admin.firestore().collection('users').doc(session.metadata.uid).set({
       credits: admin.firestore.FieldValue.increment(10),
       purchasedProducts: admin.firestore.FieldValue.arrayUnion('ai-tool')
