@@ -1,16 +1,12 @@
 firebase.initializeApp({
   apiKey: "AIzaSyAft96BSElFYyLkIVDxaiS2k8us9h1EPPw",
   authDomain: "etsy-templates.firebaseapp.com",
-  projectId: "etsy-templates",
-  storageBucket: "etsy-templates.firebasestorage.app",
-  messagingSenderId: "71763904255",
-  appId: "1:71763904255:web:324b5d74e6cbcf2e112eca",
-  measurementId: "G-LFBT35J0PV"
+  projectId: "etsy-templates"
 });
 
 const auth = firebase.auth();
 const db = firebase.firestore();
-const stripe = Stripe("YOUR_STRIPE_PUBLISHABLE_KEY"); // Replace with your real publishable key
+const stripe = Stripe("YOUR_STRIPE_PUBLISHABLE_KEY"); // replace this
 
 auth.onAuthStateChanged(async user => {
   if (!user) return location = 'index.html';
@@ -35,21 +31,4 @@ auth.onAuthStateChanged(async user => {
     .then(r => r.json())
     .then(d => stripe.redirectToCheckout({ sessionId: d.sessionId }));
   };
-
-  // Load theme
-  const savedTheme = localStorage.getItem("theme") || "light";
-  applyTheme(savedTheme);
-  document.getElementById('theme-select').value = savedTheme;
 });
-
-document.getElementById('theme-select').addEventListener('change', e => {
-  const theme = e.target.value;
-  localStorage.setItem('theme', theme);
-  applyTheme(theme);
-});
-
-function applyTheme(theme) {
-  document.body.className = '';
-  document.body.classList.add(`theme-${theme}`);
-  if (theme === 'dark') document.body.classList.add('dark');
-}
