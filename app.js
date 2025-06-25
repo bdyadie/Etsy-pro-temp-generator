@@ -8,28 +8,25 @@ firebase.initializeApp({
   appId: "1:71763904255:web:324b5d74e6cbcf2e112eca",
   measurementId: "G-LFBT35J0PV"
 });
-
 const auth = firebase.auth();
 const db = firebase.firestore();
 const stripe = Stripe("YOUR_STRIPE_PUBLISHABLE_KEY");
 
-// Theme selection
-const themeSelect = document.getElementById("theme-select");
+// THEME HANDLER
+const themeSelect = document.getElementById('theme-select');
 themeSelect.onchange = () => {
   document.body.className = themeSelect.value;
-  localStorage.setItem("theme", themeSelect.value);
+  localStorage.setItem('theme', themeSelect.value);
 };
-
-// Restore theme
-document.addEventListener("DOMContentLoaded", () => {
-  const saved = localStorage.getItem("theme") || "light";
+document.addEventListener('DOMContentLoaded', () => {
+  const saved = localStorage.getItem('theme') || 'light';
   themeSelect.value = saved;
   document.body.className = saved;
 });
 
-// Authentication handling
+// AUTH UI
 auth.onAuthStateChanged(user => {
-  const nav = document.getElementById("auth-state");
+  const nav = document.getElementById('auth-state');
   if (user) {
     nav.innerHTML = `<button class="btn" onclick="logout()">Log Out</button>`;
   } else {
@@ -38,13 +35,11 @@ auth.onAuthStateChanged(user => {
 });
 
 function handleAuth() {
-  const email = document.getElementById("auth-email").value;
-  const pass = document.getElementById("auth-pass").value;
-  auth
-    .signInWithEmailAndPassword(email, pass)
-    .catch(() =>
-      auth.createUserWithEmailAndPassword(email, pass).catch(err => alert(err.message))
-    );
+  const e = document.getElementById('auth-email').value;
+  const p = document.getElementById('auth-pass').value;
+  auth.signInWithEmailAndPassword(e, p)
+    .catch(() => auth.createUserWithEmailAndPassword(e, p)
+    .catch(err => alert(err.message)));
 }
 
 function logout() {
@@ -52,18 +47,16 @@ function logout() {
 }
 
 function toggleAuthModal(open) {
-  document.getElementById("auth-modal").style.display = open ? "flex" : "none";
+  document.getElementById('auth-modal').style.display = open ? 'flex' : 'none';
 }
 
-// Demo AI functionality for guests
+// DEMO AI
 let guestUsed = false;
-document.getElementById("use-ai-guest").onclick = () => {
+document.getElementById('use-ai-guest').onclick = () => {
   if (!guestUsed) {
-    alert("Demo AI output (replace with real output)");
+    alert("Demo AI: This is sample output");
     guestUsed = true;
   } else {
     alert("Please log in or buy credits.");
   }
 };
-
-// Placeholder: Your full AI generate and Stripe purchase logic goes here...
