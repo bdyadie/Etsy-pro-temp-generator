@@ -1,4 +1,3 @@
-/* CSS Variables: Light theme defaults */
 :root {
   --bg: #f9f9f9;
   --text: #333;
@@ -9,7 +8,6 @@
   --card-shadow: rgba(0, 0, 0, 0.05);
 }
 
-/* Dark Mode Theme */
 body.dark {
   --bg: #121212;
   --text: #e0e0e0;
@@ -20,7 +18,6 @@ body.dark {
   --card-shadow: rgba(0, 0, 0, 0.2);
 }
 
-/* Forest Theme */
 body.theme-forest {
   --bg: #0d1b12;
   --text: #d3f9d8;
@@ -31,7 +28,6 @@ body.theme-forest {
   --card-shadow: rgba(0, 255, 200, 0.1);
 }
 
-/* Rose Theme */
 body.theme-rose {
   --bg: #fff1f2;
   --text: #333;
@@ -42,16 +38,20 @@ body.theme-rose {
   --card-shadow: rgba(255, 0, 102, 0.05);
 }
 
-/* Apply theme */
 body {
   background: var(--bg);
   color: var(--text);
   font-family: 'Inter', sans-serif;
-  transition: background 0.3s, color 0.3s;
   line-height: 1.6;
+  transition: background-color 0.35s ease, color 0.35s ease;
 }
 
-/* Typography & Links */
+header, footer, .container, .product, .modal, .theme-select,
+.preview-label, .theme-icon-toggle, .login-btn, .theme-wrapper,
+.theme-preview, textarea, select, button {
+  transition: background-color 0.35s ease, color 0.35s ease, border-color 0.35s ease, transform 0.2s ease;
+}
+
 a, .link-btn {
   color: var(--primary);
   text-decoration: none;
@@ -66,7 +66,6 @@ a:hover, .link-btn:hover {
   cursor: pointer;
 }
 
-/* Buttons */
 .btn, .btn-primary {
   background: var(--primary);
   color: var(--secondary);
@@ -75,22 +74,24 @@ a:hover, .link-btn:hover {
   border: none;
   border-radius: 6px;
   cursor: pointer;
-  transition: background 0.2s;
+  font-size: 0.95rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
 }
 .btn:hover, .btn-primary:hover {
   background: var(--accent);
+  transform: translateY(-1px);
 }
 .btn-secondary {
   background: var(--secondary);
   color: var(--primary);
   border: 2px solid var(--primary);
-  padding: 0.5rem 1rem;
   border-radius: 6px;
+  padding: 0.5rem 1rem;
 }
 .btn-secondary:hover {
-  background: #2a2a2a;
-  color: var(--text);
+  background: #f0f0f0;
 }
+
 .btn-whatsapp {
   background: #25D366;
   color: white;
@@ -99,12 +100,12 @@ a:hover, .link-btn:hover {
   border-radius: 6px;
 }
 
-/* Layout Containers */
 .container {
   max-width: 960px;
   margin: 0 auto;
   padding: 2rem 1rem;
 }
+
 header, footer {
   background: var(--card-bg);
   color: var(--text);
@@ -112,14 +113,13 @@ header, footer {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 1px solid #e0e0e0;
 }
+
 header h1 {
   font-size: 1.5rem;
   font-weight: 600;
 }
 
-/* Hero Section */
 #hero {
   text-align: center;
   background: var(--card-bg);
@@ -131,26 +131,18 @@ header h1 {
 }
 #hero p {
   font-size: 1.1rem;
-  color: var(--text);
   margin-bottom: 2rem;
 }
 
-/* AI Tool Section */
-#members-only {
-  background: var(--card-bg);
-  border-radius: 8px;
-  box-shadow: 0 4px 16px var(--card-shadow);
-}
 #members-only textarea {
   width: 100%;
   min-height: 120px;
   padding: 1rem;
-  margin-bottom: 1rem;
   border-radius: 6px;
   border: 1px solid #ccc;
+  margin-bottom: 1rem;
 }
 
-/* Products Section */
 #products .product {
   background: var(--card-bg);
   border-radius: 8px;
@@ -160,7 +152,6 @@ header h1 {
 }
 .product img {
   width: 100%;
-  height: auto;
 }
 .product-content {
   padding: 1.5rem;
@@ -175,7 +166,6 @@ header h1 {
   margin-bottom: 1rem;
 }
 
-/* Testimonials & FAQ */
 #testimonials, #faq {
   margin-bottom: 3rem;
 }
@@ -190,10 +180,8 @@ header h1 {
   display: block;
   margin-top: 0.5rem;
   font-style: italic;
-  color: var(--text);
 }
 
-/* Contact & Footer */
 #contact {
   text-align: center;
   margin-bottom: 2rem;
@@ -201,11 +189,9 @@ header h1 {
 footer {
   text-align: center;
   font-size: 0.9rem;
-  color: var(--text);
   border-top: 1px solid #e0e0e0;
 }
 
-/* Toast */
 #toast {
   position: fixed;
   left: 50%;
@@ -221,7 +207,6 @@ footer {
   z-index: 999;
 }
 
-/* Modal */
 .modal-backdrop {
   position: fixed;
   inset: 0;
@@ -238,7 +223,6 @@ footer {
   max-width: 400px;
   border-radius: 8px;
   box-shadow: 0 8px 32px var(--card-shadow);
-  position: relative;
 }
 .modal .close-btn {
   position: absolute;
@@ -248,10 +232,6 @@ footer {
   border: none;
   font-size: 1.25rem;
   cursor: pointer;
-}
-.modal h2 {
-  margin-bottom: 1rem;
-  font-size: 1.5rem;
 }
 .modal input {
   width: 100%;
@@ -263,48 +243,98 @@ footer {
 .modal button {
   width: 100%;
   font-size: 1rem;
-  background: var(--primary);
-  color: var(--secondary);
-  padding: 0.75rem;
-  border: none;
-  border-radius: 5px;
 }
 
-/* Toggle Switch */
-.switch {
-  position: relative;
-  display: inline-block;
-  width: 48px;
-  height: 26px;
-  margin-left: 1rem;
+.theme-wrapper {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
 }
-.switch input {
-  opacity: 0;
-  width: 0;
-  height: 0;
-}
-.slider {
-  position: absolute;
+.theme-icon-toggle {
+  font-size: 1.5rem;
   cursor: pointer;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background-color: #ccc;
-  transition: .4s;
-  border-radius: 34px;
 }
-.slider::before {
-  position: absolute;
-  content: "";
-  height: 18px;
-  width: 18px;
-  left: 4px;
-  bottom: 4px;
-  background-color: white;
-  transition: .4s;
+.theme-dropdown-wrapper {
+  position: relative;
+}
+.theme-select {
+  appearance: none;
+  padding: 0.4rem 0.8rem;
+  border-radius: 6px;
+  border: 1px solid var(--primary);
+  background: var(--card-bg);
+  color: var(--text);
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+.theme-preview {
+  display: flex;
+  gap: 0.3rem;
+  margin-top: 0.5rem;
+}
+.preview-swatch {
+  width: 20px;
+  height: 20px;
   border-radius: 50%;
+  border: 2px solid white;
+  box-shadow: 0 0 0 2px rgba(0,0,0,0.1);
+  transition: transform 0.2s ease;
 }
-input:checked + .slider {
-  background-color: var(--primary);
+.preview-swatch:hover {
+  transform: scale(1.15);
+  cursor: pointer;
 }
-input:checked + .slider::before {
-  transform: translateX(22px);
-  }
+.preview-label {
+  position: absolute;
+  bottom: -1.8rem;
+  background: var(--card-bg);
+  color: var(--text);
+  font-size: 0.75rem;
+  padding: 0.2rem 0.6rem;
+  border-radius: 4px;
+  opacity: 0;
+  transition: opacity 0.25s;
+}
+.theme-preview:hover #theme-label {
+  opacity: 1;
+}
+
+.custom-theme-panel {
+  margin-top: 2rem;
+  padding: 1.5rem;
+  background: var(--card-bg);
+  color: var(--text);
+  border: 1px solid var(--primary);
+  border-radius: 8px;
+  max-width: 400px;
+  font-size: 0.9rem;
+}
+.custom-theme-panel label {
+  display: block;
+  margin-bottom: 1rem;
+}
+.custom-theme-panel input[type="color"] {
+  margin-left: 1rem;
+  border: none;
+  background: none;
+  width: 40px;
+  height: 24px;
+  cursor: pointer;
+}
+.custom-theme-panel .btn {
+  margin-right: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.theme-fade {
+  position: fixed;
+  inset: 0;
+  background: var(--bg);
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+.theme-fade.active {
+  opacity: 1;
+}
