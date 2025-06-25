@@ -13,33 +13,30 @@
 <body>
   <header>
     <h1>Etsy Pro Templates Generator</h1>
-    <nav>
-      <button class="btn login-btn" onclick="toggleAuthModal(true)">
-        <svg class="icon login-icon" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M10 12a2 2 0 104 0 2 2 0 00-4 0zm9-1v2h-5v3l-4-4 4-4v3h5zm-9 8a8 8 0 118-8 8 8 0 01-8 8z"/>
+    <nav id="auth-state">
+      <button class="login-btn-square" onclick="toggleAuthModal(true)">
+        <svg class="login-icon" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M10 17v-3H3v-4h7V7l5 5-5 5zM20 3H10v2h10v14H10v2h10a2 2 0 002-2V5a2 2 0 00-2-2z"/>
         </svg>
-        Log In / Register
+        <span>Log In</span>
       </button>
-
-      <div class="theme-wrapper" id="theme-toggle-container">
-        <div class="theme-icon-toggle" id="theme-icon-toggle" title="Switch theme">🌞</div>
-        <div class="theme-dropdown-wrapper">
-          <select id="theme-select" class="theme-select">
-            <option value="light">Light</option>
-            <option value="dark">Dark</option>
-            <option value="forest">Forest</option>
-            <option value="rose">Rose</option>
-          </select>
-          <div class="theme-preview" id="theme-preview">
-            <div class="preview-bubble" data-theme="light" title="Light Theme"></div>
-            <div class="preview-bubble" data-theme="dark" title="Dark Theme"></div>
-            <div class="preview-bubble" data-theme="forest" title="Forest Theme"></div>
-            <div class="preview-bubble" data-theme="rose" title="Rose Theme"></div>
-            <div class="preview-label" id="theme-label"></div>
-          </div>
-        </div>
-      </div>
     </nav>
+    <div class="theme-wrapper">
+      <div class="theme-icon-toggle" id="theme-icon-toggle">🌞</div>
+      <select id="theme-select" class="theme-select">
+        <option value="light">Light</option>
+        <option value="dark">Dark</option>
+        <option value="forest">Forest</option>
+        <option value="rose">Rose</option>
+      </select>
+      <div class="theme-preview" id="theme-preview">
+        <div class="preview-bubble" data-theme="light" title="Light Theme"></div>
+        <div class="preview-bubble" data-theme="dark" title="Dark Theme"></div>
+        <div class="preview-bubble" data-theme="forest" title="Forest Theme"></div>
+        <div class="preview-bubble" data-theme="rose" title="Rose Theme"></div>
+        <div class="preview-label" id="theme-label"></div>
+      </div>
+    </div>
   </header>
 
   <section id="hero" class="container">
@@ -109,8 +106,8 @@
   </section>
 
   <section id="contact" class="container">
-    <p>📧 <a href="mailto:bdyadiie@gmail.com">bdyadiie@gmail.com</a></p>
-    <p>📍 Morocco ,Meknès – Worldwide Delivery</p>
+    <p>📧 <a href="mailto:you@example.com">you@example.com</a></p>
+    <p>📍 Morocco – Worldwide Delivery</p>
   </section>
 
   <footer>&copy; 2025 Etsy Pro Templates Generator</footer>
@@ -118,7 +115,6 @@
   <div id="toast"></div>
   <div id="theme-fade" class="theme-fade"></div>
 
-  <!-- Login Modal -->
   <div id="auth-modal" class="modal-backdrop" style="display:none;">
     <div class="modal">
       <button class="close-btn" onclick="toggleAuthModal()">×</button>
@@ -131,4 +127,4 @@
 
   <script src="app.js"></script>
 </body>
-  </html>
+      </html>
