@@ -1,4 +1,4 @@
-// ✅ Firebase Initialization
+// ✅ Initialize Firebase
 firebase.initializeApp({
   apiKey: "AIzaSyAft96BSElFYyLkIVDxaiS2k8us9h1EPPw",
   authDomain: "etsy-templates.firebaseapp.com",
@@ -11,18 +11,20 @@ firebase.initializeApp({
 
 const auth = firebase.auth();
 const db = firebase.firestore();
-const stripe = Stripe("YOUR_STRIPE_PUBLISHABLE_KEY"); // replace with real key
+const stripe = Stripe("YOUR_STRIPE_PUBLISHABLE_KEY"); // Replace this
 
-// ✅ Auth Listener
+// 🔐 Auth handling
 auth.onAuthStateChanged(async user => {
-  const nav = document.getElementById("auth-state");
   if (user) {
-    nav.innerHTML = `Hello ${user.email} <button onclick="logout()">Log Out</button> <button onclick="location='dashboard.html'">Dashboard</button>`;
-    toggleSections(true);
-    await loadCredits(user.uid);
+    document.getElementById("hero").style.display = "none";
+    document.getElementById("members-only").style.display = "block";
+    document.getElementById("auth-modal").style.display = "none";
+    const doc = await db.collection("users").doc(user.uid).get();
+    userCredits = doc.exists ? doc.data().credits || 0 : 0;
+    document.getElementById("credits-left").innerText = `Credits: ${userCredits}`;
   } else {
-    nav.innerHTML = `<button class="btn login-btn" onclick="toggleAuthModal(true)">Log In / Register</button>`;
-    toggleSections(false);
+    document.getElementById("hero").style.display = "block";
+    document.getElementById("members-only").style.display = "none";
   }
 });
 
@@ -44,28 +46,22 @@ function resetPassword() {
   auth.sendPasswordResetEmail(email).then(() => toast("Password reset sent.")).catch(err => toast(err.message));
 }
 
-function toggleSections(ok) {
-  document.getElementById("hero").style.display = ok ? "none" : "block";
-  document.getElementById("members-only").style.display = ok ? "block" : "none";
-}
-
 function toggleAuthModal(show = null) {
   const modal = document.getElementById("auth-modal");
   modal.style.display = show !== null ? (show ? "flex" : "none") : (modal.style.display === "flex" ? "none" : "flex");
 }
 
-// ✅ AI Guest Mode
+// 🧠 Guest AI
 let guestUsed = false;
 document.getElementById("use-ai-guest").onclick = () => {
   if (!guestUsed) {
-    document.getElementById("ai-output").innerText = "🎨 Example: Elegant Handmade Gold Bracelet with Natural Stones";
+    document.getElementById("ai-output").innerText = "[Demo output: Your AI listing here]";
     guestUsed = true;
-  } else {
-    toast("Please log in or buy credits.");
-  }
+  } else toast("Please log in or buy credits.");
 };
 
-// ✅ Generate AI
+// 🧠 Generate AI
+let userCredits = 0;
 document.getElementById("generate-ai").onclick = async () => {
   if (!auth.currentUser || userCredits < 1) return toast("Login and buy credits first.");
 
@@ -75,7 +71,6 @@ document.getElementById("generate-ai").onclick = async () => {
     headers: { Authorization: auth.currentUser.uid },
     body: JSON.stringify({ prompt })
   });
-
   const { result } = await res.json();
   document.getElementById("ai-output").innerText = result;
   userCredits--;
@@ -84,16 +79,7 @@ document.getElementById("generate-ai").onclick = async () => {
   document.getElementById("credits-left").innerText = `Credits: ${userCredits}`;
 };
 
-// ✅ Load Credits
-let userCredits = 0;
-async function loadCredits(uid) {
-  const doc = await db.collection("users").doc(uid).get();
-  const data = doc.exists ? doc.data() : { credits: 0 };
-  userCredits = data.credits;
-  document.getElementById("credits-left").innerText = `Credits: ${userCredits}`;
-}
-
-// ✅ Stripe Checkout
+// 💳 Stripe
 document.getElementById("buy-credits").onclick = async () => {
   const res = await fetch('/.netlify/functions/create-checkout', {
     method: 'POST',
@@ -103,7 +89,7 @@ document.getElementById("buy-credits").onclick = async () => {
   stripe.redirectToCheckout({ sessionId });
 };
 
-// ✅ Toast System
+// 🔔 Toast
 function toast(msg) {
   const el = document.getElementById("toast");
   el.innerText = msg;
@@ -115,7 +101,7 @@ function toast(msg) {
   }, 3000);
 }
 
-// ✅ Theme Logic
+// 🎨 Theme
 function applyTheme(theme) {
   const fade = document.getElementById("theme-fade");
   fade.classList.add("active");
@@ -126,6 +112,7 @@ function applyTheme(theme) {
     if (theme === 'dark') document.body.classList.add('dark');
     localStorage.setItem("theme", theme);
     updateThemeIcon(theme);
+    highlightThemeBubble(theme);
     setTimeout(() => fade.classList.remove("active"), 300);
   }, 150);
 }
@@ -140,6 +127,7 @@ function updateThemeIcon(theme) {
   document.getElementById("theme-icon-toggle").textContent = icon[theme] || "🎨";
 }
 
+// Load theme + bubbles
 window.addEventListener("load", () => {
   const theme = localStorage.getItem("theme") || "light";
   applyTheme(theme);
@@ -154,7 +142,7 @@ window.addEventListener("load", () => {
   }
 });
 
-// Toggle icon click = cycle themes
+// Icon click = cycle themes
 document.getElementById("theme-icon-toggle").onclick = () => {
   const options = ["light", "dark", "forest", "rose"];
   const current = localStorage.getItem("theme") || "light";
@@ -163,37 +151,39 @@ document.getElementById("theme-icon-toggle").onclick = () => {
   document.getElementById("theme-select").value = next;
 };
 
-// Theme dropdown
-document.getElementById("theme-select").onchange = (e) => {
+// Select dropdown change
+document.getElementById("theme-select").onchange = e => {
   const theme = e.target.value;
   applyTheme(theme);
 };
 
-// Theme preview label
-const label = document.getElementById("theme-label");
-document.querySelectorAll(".preview-swatch").forEach(swatch => {
-  swatch.addEventListener("mouseover", () => {
-    const theme = swatch.dataset.theme;
-    label.textContent = `${theme.charAt(0).toUpperCase() + theme.slice(1)} Theme`;
-    label.style.left = swatch.offsetLeft + "px";
-  });
-  swatch.addEventListener("mouseleave", () => label.textContent = "");
-  swatch.onclick = () => {
-    const theme = swatch.dataset.theme;
-    document.getElementById("theme-select").value = theme;
+// Bubble preview handling
+function highlightThemeBubble(theme) {
+  const bubbles = document.querySelectorAll(".preview-bubble");
+  bubbles.forEach(b => b.classList.remove("active"));
+  const activeBubble = document.querySelector(`.preview-bubble[data-theme="${theme}"]`);
+  if (activeBubble) activeBubble.classList.add("active");
+}
+
+document.querySelectorAll(".preview-bubble").forEach(bubble => {
+  bubble.onclick = () => {
+    const theme = bubble.dataset.theme;
     applyTheme(theme);
+    document.getElementById("theme-select").value = theme;
+    bubble.classList.add("clicked");
+    setTimeout(() => bubble.classList.remove("clicked"), 300);
   };
 });
 
-// ✅ Custom User Theme Colors
+// 🎛️ Custom Theme Panel
 function applyCustomTheme() {
   const custom = {
     '--primary': document.getElementById('color-primary').value,
     '--bg': document.getElementById('color-bg').value,
     '--text': document.getElementById('color-text').value
   };
-  Object.keys(custom).forEach(k => {
-    document.documentElement.style.setProperty(k, custom[k]);
+  Object.entries(custom).forEach(([k, v]) => {
+    document.documentElement.style.setProperty(k, v);
   });
   localStorage.setItem('custom-theme', JSON.stringify(custom));
 }
@@ -201,4 +191,4 @@ function applyCustomTheme() {
 function resetTheme() {
   localStorage.removeItem('custom-theme');
   location.reload();
-}
+    }
