@@ -1,4 +1,3 @@
-// Initialize Firebase
 firebase.initializeApp({
   apiKey: "AIzaSyAft96BSElFYyLkIVDxaiS2k8us9h1EPPw",
   authDomain: "etsy-templates.firebaseapp.com",
@@ -13,7 +12,6 @@ const auth = firebase.auth();
 const db = firebase.firestore();
 const stripe = Stripe("YOUR_STRIPE_PUBLISHABLE_KEY");
 
-// Auth & UI
 auth.onAuthStateChanged(u => {
   const nav = document.getElementById('auth-state');
   if (u) {
@@ -34,43 +32,59 @@ function handleAuth(){
 function logout(){ auth.signOut(); }
 function resetPassword(){
   const e=prompt("Email:");
-  auth.sendPasswordResetEmail(e).then(()=>alert("Reset sent"));
- }
-function toggleAuthModal(s){ 
-  document.getElementById('auth-modal').style.display = s?'flex':'none';
+  auth.sendPasswordResetEmail(e).then(()=>alert("Reset sent")).catch(err=>alert(err.message));
+}
+function toggleAuthModal(s){
+  document.getElementById('auth-modal').style.display = s ? 'flex' : 'none';
 }
 
-// AI demo
 let guestUsed=false;
-document.getElementById('use-ai-guest').onclick = () => {
-  if(!guestUsed){ document.getElementById('ai-output').innerText="[Demo AI]"; guestUsed=true;}
-  else alert("Please log in or buy credits.");
+document.getElementById('use-ai-guest').onclick = ()=> {
+  if(!guestUsed){
+    document.getElementById('ai-output').innerText = "[Demo AI output]";
+    guestUsed=true;
+  } else {
+    alert("Please log in or buy credits.");
+  }
 };
-document.getElementById('generate-ai').onclick = async ()=>{
-  if(!auth.currentUser) return alert("Login first");
+
+document.getElementById('generate-ai').onclick = async () => {
+  if(!auth.currentUser){ alert("Login first"); return; }
   const uid = auth.currentUser.uid;
-  const doc = await db.collection('users').doc(uid).get();
-  let credits = doc.exists?doc.data().credits:0;
-  if(credits<1) return alert("No credits left!");
+  const userDoc = await db.collection('users').doc(uid).get();
+  const credits = userDoc.exists ? userDoc.data().credits : 0;
+  if(credits < 1){ alert("No credits left!"); return; }
   const prompt = document.getElementById('user-input').value;
-  const res = await fetch('/.netlify/functions/generate-ai',{method:'POST',headers:{Authorization:uid},body:JSON.stringify({prompt})});
-  const {result}=await res.json();
+  const res = await fetch('/.netlify/functions/generate-ai', {
+    method:'POST',
+    headers:{Authorization:uid},
+    body: JSON.stringify({prompt})
+  });
+  const { result } = await res.json();
   document.getElementById('ai-output').innerText = result;
-  await db.collection('users').doc(uid).update({credits: firebase.firestore.FieldValue.increment(-1)});
-  document.getElementById('credits-left').innerText = `Credits: ${credits-1}`;
+  await db.collection('users').doc(uid).update({
+    credits: firebase.firestore.FieldValue.increment(-1)
+  });
+  document.getElementById('credits-left').innerText = `Credits: ${credits - 1}`;
 };
-document.getElementById('buy-credits').onclick = async ()=>{
-  const res = await fetch('/.netlify/functions/create-checkout',{method:'POST',headers:{Authorization:auth.currentUser.uid}});
-  const {sessionId} = await res.json();
+
+document.getElementById('buy-credits').onclick = async () => {
+  if(!auth.currentUser){ alert("Login first"); return; }
+  const res = await fetch('/.netlify/functions/create-checkout', {
+    method:'POST',
+    headers:{Authorization:auth.currentUser.uid}
+  });
+  const { sessionId } = await res.json();
   stripe.redirectToCheckout({sessionId});
 };
 
-// Theme
+// Theme switching
 const themeSelect = document.getElementById('theme-select');
 const bubbles = document.querySelectorAll('.preview-bubble');
 function setTheme(t){
-  document.body.className = `theme-${t}`;
+  document.body.className = t === 'light' ? '' : `theme-${t}`;
   themeSelect.value = t;
 }
-themeSelect.onchange = ()=>setTheme(themeSelect.value);
-bubbles.forEach(b=>b.onclick=()=>setTheme(b.dataset.theme));
+themeSelect.onchange = () => setTheme(themeSelect.value);
+bubbles.forEach(b => b.onclick = () => setTheme(b.dataset.theme));
+setTheme('light');
