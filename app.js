@@ -1,4 +1,4 @@
-// ✅ Firebase Config
+// Initialize Firebase
 firebase.initializeApp({
   apiKey: "AIzaSyD3rAMBuEihI-NhaiWoP6HN3iPumHOO148",
   authDomain: "etsy-templates-pro.firebaseapp.com",
@@ -9,10 +9,9 @@ const auth = firebase.auth(),
       db = firebase.firestore(),
       stripe = Stripe("YOUR_STRIPE_PUBLISHABLE_KEY");
 
-// ✅ App State
 let cart = [], user = null, freeUsed = false;
 
-// ✅ UI Elements
+// UI Elements
 const authBtn = document.getElementById('auth-btn'),
       authModal = document.getElementById('auth-modal'),
       authClose = document.getElementById('auth-close'),
@@ -29,14 +28,14 @@ const authBtn = document.getElementById('auth-btn'),
       downloadsList = document.getElementById('downloads-list'),
       dashboard = document.getElementById('dashboard');
 
-// ✅ Modal Logic
-function toggleModal(show) {
+function toggleModal(show){
   authModal.classList.toggle('hidden', !show);
 }
+
 authBtn.onclick = () => toggleModal(true);
 authClose.onclick = () => toggleModal(false);
 
-// ✅ Login/Register Switch
+// Auth mode switch
 let loginMode = true;
 switchAuth.onclick = e => {
   e.preventDefault();
@@ -48,7 +47,7 @@ switchAuth.onclick = e => {
     : 'Have account? <a href="#">Log In</a>';
 };
 
-// ✅ Auth Submit
+// Auth actions
 authSubmit.onclick = () => {
   const email = authEmail.value, pw = authPass.value;
   const action = loginMode
@@ -58,129 +57,126 @@ authSubmit.onclick = () => {
   action.call(auth, email, pw)
     .then(() => {
       toggleModal(false);
-      showToast("Welcome back!");
+      showToast('Welcome!');
     })
     .catch(e => showToast(e.message));
 };
 
-// ✅ Reset Password
 resetLink.onclick = e => {
   e.preventDefault();
   auth.sendPasswordResetEmail(authEmail.value)
-    .then(() => resetMsg.classList.remove('hidden'))
+    .then(() => {
+      resetMsg.classList.remove('hidden');
+      showToast('Reset email sent!');
+    })
     .catch(e => showToast(e.message));
 };
 
-// ✅ Auth State
+// User login state
 auth.onAuthStateChanged(u => {
   user = u;
-  if (u) {
+  if(u){
     navAuth.innerHTML = `Hi, ${u.email.split('@')[0]} <button onclick="logout()">Log Out</button>`;
-    document.getElementById('ai-section').classList.remove('hidden');
-    dashboard.classList.remove('hidden');
+    document.getElementById('ai-section')?.classList.remove('hidden');
+    dashboard?.classList.remove('hidden');
+    toggleModal(false);
     fetchDownloads();
   } else {
     navAuth.innerHTML = `<button id="auth-btn">Log In / Register</button>`;
     toggleModal(false);
+    document.getElementById('auth-btn').onclick = () => toggleModal(true); // re-attach listener
   }
 });
 
-// ✅ Logout
-function logout() {
+function logout(){
   auth.signOut();
   cart = [];
   updateCartUI();
-  dashboard.classList.add('hidden');
+  dashboard?.classList.add('hidden');
 }
 
-// ✅ Cart Functions
-function addToCart(id, price) {
-  if (!user) return showToast('Please log in');
+// Cart
+function addToCart(id, price){
+  if(!user){ showToast('Please log in'); return; }
   cart.push({ id, price });
   updateCartUI();
 }
 
-function updateCartUI() {
-  cartList.innerHTML = cart.map((item, i) =>
-    `<li>${item.id} - $${item.price.toFixed(2)} <button onclick="removeFromCart(${i})">×</button></li>`
-  ).join('');
+function updateCartUI(){
+  cartList.innerHTML = cart.map((i, idx) =>
+    `<li>${i.id} - $${i.price.toFixed(2)} <button onclick="removeFromCart(${idx})">×</button></li>`).join('');
 }
 
-function removeFromCart(i) {
+function removeFromCart(i){
   cart.splice(i, 1);
   updateCartUI();
 }
 
-function checkoutCart() {
-  if (cart.length === 0) return showToast('Cart is empty');
+function checkoutCart(){
+  if(cart.length === 0){ showToast('Cart is empty'); return; }
+  showToast('Files will be sent via email manually for now.');
   cart.forEach(item => {
-    downloadsList.innerHTML += `<li>${item.id} (Download via email)</li>`;
+    downloadsList.innerHTML += `<li>${item.id} (download link will be emailed)</li>`;
   });
   cart = [];
   updateCartUI();
-  showToast("Thank you! Files will be sent to your email.");
 }
 
-// ✅ AI Tool
+// AI Tool preview (1 free)
 aiBtn.onclick = () => {
-  if (!user) return showToast('Please log in first');
-  if (freeUsed) return showToast('You’ve already used your free AI preview');
+  if(!user){ showToast('Log in to use AI'); return; }
+  if(freeUsed){ showToast('Free preview already used'); return; }
 
-  aiRes.innerText = 'Generating...';
-  showToast('Generating AI preview...');
+  aiRes.innerText = '';
+  showToast('Generating AI preview…');
 
-  axios.post('https://api.openai.com/v1/completions', {
+  axios.post('https://api.openai.com/v1/completions',{
     model: "text-davinci-003",
-    prompt: "Generate an Etsy product title and bullet points for a handmade item.",
+    prompt: "Create an Etsy listing title and bullets:",
     max_tokens: 80
-  }, {
-    headers: {
-      Authorization: `Bearer sk-your-openai-key`
-    }
-  }).then(res => {
-    aiRes.innerText = res.data.choices[0].text;
+  },{
+    headers:{ Authorization:`Bearer sk-your-openai-key` }
+  }).then(r => {
+    aiRes.innerText = r.data.choices[0].text;
     freeUsed = true;
-    showToast("Here's your preview!");
+    showToast('Here’s your preview!');
   }).catch(err => showToast('Error: ' + err.message));
 };
 
-// ✅ Fetch Purchases
-function fetchDownloads() {
+// Downloads from Firebase
+function fetchDownloads(){
   db.collection('users').doc(user.uid).get().then(doc => {
     const arr = doc.data()?.purchased || [];
     downloadsList.innerHTML = arr.map(f =>
-      `<li><a href="downloads/${f}.zip" download>${f}</a></li>`
-    ).join('');
+      `<li><a href="downloads/${f}.zip" download>${f}</a></li>`).join('');
   });
 }
 
-// ✅ Toast Notifications
-function showToast(message) {
+// Toast alert
+function showToast(message){
   let t = document.getElementById('toast');
-  if (!t) {
+  if(!t){
     t = document.createElement('div');
     t.id = 'toast';
-    t.style.cssText = `
-      position:fixed; bottom:20px; right:20px; background:#333; color:#fff;
-      padding:12px 20px; border-radius:6px; opacity:0; transform:translateY(20px);
-      transition:opacity 0.4s ease, transform 0.4s ease; z-index:9999;
+    t.style = `
+      position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
+      background: #222; color: #fff; padding: 12px 20px;
+      border-radius: 8px; transition: all 0.4s ease; opacity: 0;
+      z-index: 9999; font-size: 14px;
     `;
     document.body.appendChild(t);
   }
   t.textContent = message;
   t.style.opacity = '1';
-  t.style.transform = 'translateY(0)';
+  t.style.transform = 'translate(-50%, 0)';
   setTimeout(() => {
     t.style.opacity = '0';
-    t.style.transform = 'translateY(20px)';
+    t.style.transform = 'translate(-50%, 20px)';
   }, 3000);
 }
 
-// ✅ Smooth Scroll
-function scrollToSection(sel) {
-  const target = typeof sel === 'string' ? document.querySelector(sel) : sel;
-  if (target) {
-    target.scrollIntoView({ behavior: 'smooth' });
-    showToast('Scrolling...');
-  }
-  }
+// Smooth scroll with toast
+function scrollToSection(se){
+  document.querySelector(se).scrollIntoView({ behavior:'smooth' });
+  showToast('Scrolling...');
+          }
