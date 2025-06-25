@@ -6,19 +6,17 @@ firebase.initializeApp({
 
 const auth = firebase.auth();
 const db = firebase.firestore();
-const stripe = Stripe("YOUR_STRIPE_PUBLISHABLE_KEY"); // replace this
+const stripe = Stripe("YOUR_STRIPE_PUBLISHABLE_KEY"); // Replace this
 
-auth.onAuthStateChanged(async user => {
-  if (!user) return location = 'index.html';
-
-  document.getElementById('user-email').innerText = user.email;
+auth.onAuthStateChanged(async u => {
+  if (!u) return location = 'index.html';
+  document.getElementById('user-email').innerText = u.email;
   document.getElementById('nav-user').innerHTML = `<button onclick="auth.signOut()">Logout</button>`;
-  document.getElementById('dashboard').style.display = 'block';
 
-  const doc = await db.collection('users').doc(user.uid).get();
+  const doc = await db.collection('users').doc(u.uid).get();
   const data = doc.exists ? doc.data() : { credits: 0, purchasedProducts: [] };
-
   document.getElementById('dashboard-credits').innerText = data.credits;
+
   document.getElementById('downloads').innerHTML = data.purchasedProducts.map(
     id => `<div><a href="downloads/${id}.zip" download>${id}</a></div>`
   ).join('');
@@ -26,7 +24,7 @@ auth.onAuthStateChanged(async user => {
   document.getElementById('dash-buy-credits').onclick = () => {
     fetch('/.netlify/functions/create-checkout', {
       method: 'POST',
-      headers: { Authorization: user.uid }
+      headers: { Authorization: u.uid }
     })
     .then(r => r.json())
     .then(d => stripe.redirectToCheckout({ sessionId: d.sessionId }));
