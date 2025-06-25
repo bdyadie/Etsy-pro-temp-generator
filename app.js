@@ -1,4 +1,4 @@
-// ✅ Firebase Config (your real keys)
+// ✅ Firebase Initialization
 firebase.initializeApp({
   apiKey: "AIzaSyAft96BSElFYyLkIVDxaiS2k8us9h1EPPw",
   authDomain: "etsy-templates.firebaseapp.com",
@@ -11,92 +11,141 @@ firebase.initializeApp({
 
 const auth = firebase.auth();
 const db = firebase.firestore();
-const stripe = Stripe("YOUR_STRIPE_PUBLISHABLE_KEY"); // optional
+const stripe = Stripe("YOUR_STRIPE_PUBLISHABLE_KEY"); // ← Replace with your real key
 
-// -- Auth state listener
-auth.onAuthStateChanged(async u => {
+// ✅ Auth State Listener
+auth.onAuthStateChanged(async user => {
   const nav = document.getElementById('auth-state');
-  if (u) {
-    nav.innerHTML = `Hello ${u.email} <button onclick="logout()">Log Out</button> <button onclick="location='dashboard.html'">Dashboard</button>`;
+  if (user) {
+    nav.innerHTML = `Hello ${user.email} <button onclick="logout()">Log Out</button> <button onclick="location='dashboard.html'">Dashboard</button>`;
     toggleSections(true);
-    await loadCredits(u.uid);
+    await loadCredits(user.uid);
   } else {
-    nav.innerHTML = `<button onclick="login()">Log In / Register</button>`;
+    nav.innerHTML = `<button onclick="toggleAuthModal(true)">Log In / Register</button>`;
     toggleSections(false);
   }
 });
 
-// -- Login or register
+// ✅ Auth Handlers
 function login() {
-  const e = prompt("Email"), p = prompt("Password");
-  auth.signInWithEmailAndPassword(e, p)
-    .catch(() => auth.createUserWithEmailAndPassword(e, p)
-      .catch(err => alert(err.message)));
+  toggleAuthModal(true);
 }
 
-// -- Logout
+function handleAuth() {
+  const email = document.getElementById('auth-email').value;
+  const pass = document.getElementById('auth-pass').value;
+  auth.signInWithEmailAndPassword(email, pass)
+    .catch(() => auth.createUserWithEmailAndPassword(email, pass)
+      .catch(err => toast(err.message)))
+    .then(() => toggleAuthModal(false));
+}
+
 function logout() {
   auth.signOut();
 }
 
-// -- Forgot password
 function resetPassword() {
-  const e = prompt("Email:");
-  auth.sendPasswordResetEmail(e).then(() => alert("Reset sent")).catch(err => alert(err.message));
+  const email = prompt("Enter your email:");
+  auth.sendPasswordResetEmail(email)
+    .then(() => toast("Password reset email sent."))
+    .catch(err => toast(err.message));
 }
 
-// -- Toggle site access
-function toggleSections(ok) {
-  document.getElementById('preview').style.display = ok ? 'none' : 'block';
-  document.getElementById('members-only').style.display = ok ? 'block' : 'none';
+function toggleSections(loggedIn) {
+  document.getElementById('hero').style.display = loggedIn ? 'none' : 'block';
+  document.getElementById('members-only').style.display = loggedIn ? 'block' : 'none';
 }
 
-// -- AI demo preview
+// ✅ AI Guest Access (1 free demo)
 let guestUsed = false;
 document.getElementById('use-ai-guest').onclick = () => {
   if (!guestUsed) {
     demoAI();
     guestUsed = true;
-  } else alert("Please log in or buy credits.");
+  } else {
+    toast("Please log in or buy credits.");
+  }
 };
 
 function demoAI() {
-  document.getElementById('ai-output').innerText = "[Demo AI output]";
+  document.getElementById('ai-output').innerText = "🎨 Example: 'Elegant Handmade Gold Bracelet with Natural Stones'";
 }
 
-// -- AI generate logic (for paid users)
+// ✅ Generate AI Content (for logged-in users)
 document.getElementById('generate-ai').onclick = async () => {
-  if (!auth.currentUser || userCredits < 1) return alert("Login and buy credits.");
+  if (!auth.currentUser || userCredits < 1) {
+    toast("Login and buy credits first.");
+    return;
+  }
+
   const prompt = document.getElementById('user-input').value;
-  const r = await fetch('/.netlify/functions/generate-ai', {
+  const res = await fetch('/.netlify/functions/generate-ai', {
     method: 'POST',
     headers: { Authorization: auth.currentUser.uid },
     body: JSON.stringify({ prompt })
   });
-  const { result } = await r.json();
+
+  const { result } = await res.json();
   document.getElementById('ai-output').innerText = result;
   userCredits--;
-  await db.collection('users').doc(auth.currentUser.uid).set({
-    credits: userCredits
-  }, { merge: true });
+
+  await db.collection('users').doc(auth.currentUser.uid).set({ credits: userCredits }, { merge: true });
   document.getElementById('credits-left').innerText = `Credits: ${userCredits}`;
 };
 
-// -- Load Firestore credits
+// ✅ Load Credits
 let userCredits = 0;
 async function loadCredits(uid) {
   const doc = await db.collection('users').doc(uid).get();
-  const data = doc.exists ? doc.data() : { credits: 0 };
-  userCredits = data.credits;
+  userCredits = doc.exists ? doc.data().credits : 0;
   document.getElementById('credits-left').innerText = `Credits: ${userCredits}`;
 }
 
-// -- Buy credits button
+// ✅ Stripe Checkout
 document.getElementById('buy-credits').onclick = async () => {
   const res = await fetch('/.netlify/functions/create-checkout', {
-    headers: { Authorization: auth.currentUser.uid },
-    method: 'POST'
+    method: 'POST',
+    headers: { Authorization: auth.currentUser.uid }
   });
   const { sessionId } = await res.json();
   stripe.redirectToCheckout({ sessionId });
 };
+
+// ✅ Theme Selector + Dark Mode
+const themeSelect = document.getElementById('theme-select');
+themeSelect.addEventListener('change', () => {
+  const theme = themeSelect.value;
+  applyTheme(theme);
+  localStorage.setItem('theme', theme);
+});
+
+function applyTheme(theme) {
+  document.body.className = '';
+  document.body.classList.add(`theme-${theme}`);
+  if (theme === 'dark') document.body.classList.add('dark');
+}
+
+window.addEventListener('load', () => {
+  const saved = localStorage.getItem('theme') || 'light';
+  applyTheme(saved);
+  themeSelect.value = saved;
+});
+
+// ✅ Toast Function
+function toast(message) {
+  const el = document.getElementById('toast');
+  el.textContent = message;
+  el.style.opacity = 1;
+  el.style.transform = "translateX(-50%) translateY(0)";
+  setTimeout(() => {
+    el.style.opacity = 0;
+    el.style.transform = "translateX(-50%) translateY(20px)";
+  }, 3000);
+}
+
+// ✅ Modal Logic
+function toggleAuthModal(show = null) {
+  const modal = document.getElementById('auth-modal');
+  const isVisible = modal.style.display === 'flex';
+  modal.style.display = show !== null ? (show ? 'flex' : 'none') : (isVisible ? 'none' : 'flex');
+}
