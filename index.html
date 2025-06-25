@@ -11,15 +11,19 @@
   <script src="https://js.stripe.com/v3/"></script>
 </head>
 <body>
+  <div id="theme-fade" class="theme-fade"></div>
+
   <header>
     <h1>Etsy Pro Templates Generator</h1>
     <nav class="nav-bar">
-      <button class="login-btn-square" onclick="toggleAuthModal(true)">
-        <svg class="login-icon" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M10 17v-3H3v-4h7V7l5 5-5 5zM20 3H10v2h10v14H10v2h10a2 2 0 002-2V5a2 2 0 00-2-2z"/>
-        </svg>
-        <span>Log In</span>
-      </button>
+      <div id="auth-state">
+        <button class="login-btn-square" onclick="toggleAuthModal(true)">
+          <svg class="login-icon" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M10 17v-3H3v-4h7V7l5 5-5 5zM20 3H10v2h10v14H10v2h10a2 2 0 002-2V5a2 2 0 00-2-2z"/>
+          </svg>
+          <span>Log In</span>
+        </button>
+      </div>
 
       <div class="theme-controls">
         <select id="theme-select" class="theme-select">
@@ -29,17 +33,77 @@
           <option value="rose">Rose</option>
         </select>
         <div class="theme-preview" id="theme-preview">
-          <div class="preview-bubble" data-theme="light" title="Light Theme"></div>
-          <div class="preview-bubble" data-theme="dark" title="Dark Theme"></div>
-          <div class="preview-bubble" data-theme="forest" title="Forest Theme"></div>
-          <div class="preview-bubble" data-theme="rose" title="Rose Theme"></div>
+          <div class="preview-bubble" data-theme="light"></div>
+          <div class="preview-bubble" data-theme="dark"></div>
+          <div class="preview-bubble" data-theme="forest"></div>
+          <div class="preview-bubble" data-theme="rose"></div>
         </div>
       </div>
     </nav>
   </header>
 
-  <!-- Continue your main content (hero, sections, etc.) -->
+  <section id="hero">
+    <h2>All-in-one AI Toolkit for Etsy Sellers</h2>
+    <p>Generate SEO-optimized listings, tags, mock-ups and more—in seconds.</p>
+    <button class="btn-primary" id="use-ai-guest">Try AI Tool (1 free)</button>
+  </section>
+
+  <section id="members-only" style="display:none;" class="container">
+    <h2>Your AI Generator</h2>
+    <textarea id="user-input" placeholder="Describe your template idea..."></textarea>
+    <button id="generate-ai" class="btn">Generate</button>
+    <pre id="ai-output"></pre>
+    <p id="credits-left"></p>
+    <button id="buy-credits">Buy Credits</button>
+    <button onclick="resetPassword()" class="btn-secondary">Forgot Password?</button>
+  </section>
+
+  <section id="products" class="container">
+    <h2>Templates & Tools</h2>
+    <div class="product">
+      <img src="images/starter-kit.jpg" alt="Mega Starter Kit">
+      <div class="product-content">
+        <h3>Mega Etsy Starter Kit</h3>
+        <p class="price">$29.99 • All‑in‑one bundle</p>
+        <a class="btn" href="#">Buy Now</a>
+        <a class="btn-whatsapp" href="#">WhatsApp</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="testimonials" class="container">
+    <h2>Testimonials</h2>
+    <div class="testimonial">"This AI saved me hours. Game changer for my shop!" <span>– Alicia, Etsy Seller</span></div>
+    <div class="testimonial">"The product visuals were on point. 10/10 would recommend." <span>– Carlos</span></div>
+  </section>
+
+  <section id="faq" class="container">
+    <h2>FAQs</h2>
+    <div class="faq-item"><strong>How many times can I use the AI?</strong><p>One free preview. Unlimited use with credits.</p></div>
+    <div class="faq-item"><strong>Do I need design skills?</strong><p>No! Templates are editable in-browser with live preview.</p></div>
+  </section>
+
+  <section id="contact" class="container">
+    <p>📧 <a href="mailto:you@example.com">you@example.com</a></p>
+    <p>📍 Morocco – Worldwide Delivery</p>
+  </section>
+
+  <footer>&copy; 2025 Etsy Templates Pro</footer>
+
+  <!-- Auth Modal -->
+  <div id="auth-modal" class="modal-backdrop" style="display:none;">
+    <div class="modal">
+      <button class="close-btn" onclick="toggleAuthModal(false)">✖</button>
+      <h2>Log In or Register</h2>
+      <input id="auth-email" type="email" placeholder="Email" />
+      <input id="auth-pass" type="password" placeholder="Password" />
+      <button onclick="handleAuth()" class="btn">Continue</button>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div id="toast">Saved!</div>
 
   <script src="app.js"></script>
 </body>
-</html>
+                                                                              </html>
