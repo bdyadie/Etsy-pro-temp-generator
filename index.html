@@ -2,69 +2,72 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Etsy Templates Pro</title>
   <link rel="stylesheet" href="style.css" />
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
-  <script src="https://js.stripe.com/v3/"></script>
 </head>
 <body>
   <header>
-    <h1>Etsy Templates Pro</h1>
-    <nav><div id="auth-state"><button id="auth-btn">Log In / Register</button></div></nav>
+    <div class="logo">Etsy Templates Pro</div>
+    <nav>
+      <a href="#products">Products</a>
+      <a href="#ai-section">AI Tool</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <div id="nav-auth"><button id="auth-btn">Log In / Register</button></div>
   </header>
 
-  <section id="preview">
+  <section class="hero">
+    <h1>Easily Sell Stunning Etsy Templates</h1>
+    <p>Generate listings and graphics instantly with AI or buy ready-made designs.</p>
+    <button onclick="scrollToSection('#products')" class="btn-primary">Browse Products</button>
+  </section>
+
+  <section id="products" class="products">
+    <!-- 9 product example blocks -->
+    <div class="product-card"><img src="images/starter-kit.jpg"><h3>Mega Starter Kit</h3><p>All‑in‑one bundle</p><div class="price">$29.99</div><button onclick="addToCart('Starter Kit', 29.99)">Buy Now</button><a href="https://wa.me/212653449141?text=Hi%20I%20want%20the%20Mega%20Starter%20Kit">WhatsApp</a></div>
+    <!-- Repeat for other 8 products (boho-listings, descriptions, ai-tool, holiday-kit, social-posts, branding, seo-sheet, checklist) -->
+  </section>
+
+  <section id="ai-section" class="ai-tool hidden">
     <h2>Free AI Preview</h2>
-    <button id="use-ai-guest">Try AI Tool (1 free)</button>
+    <textarea id="ai-input" rows="4" placeholder="Enter listing topic..."></textarea>
+    <button id="ai-btn" class="btn-primary">Try AI Tool (1 free)</button>
+    <pre id="ai-result"></pre>
   </section>
 
-  <section id="members-only" style="display:none;">
-    <h2>Your AI Generator</h2>
-    <textarea id="user-input" placeholder="Describe your template idea..."></textarea>
-    <button id="generate-ai">Generate</button>
-    <pre id="ai-output"></pre>
-    <p id="credits-left"></p>
-    <button id="buy-credits">Buy Credits</button>
-    <button onclick="resetPassword()">Forgot Password?</button>
+  <section id="dashboard" class="dashboard hidden">
+    <h2>Your Cart</h2><ul id="cart-list"></ul><button onclick="checkoutCart()" class="btn-secondary">Checkout Now</button>
+    <h2>Your Downloads</h2><ul id="downloads-list"></ul>
   </section>
 
-  <section id="products">
-    <h2>Digital Products</h2>
-    <div class="product"><img src="images/starter-kit.jpg"><h3>Mega Etsy Starter Kit</h3><p>$29.99 • All‑in‑one bundle</p><a class="btn" href="#">Buy Now</a><a class="btn" href="#">WhatsApp</a></div>
-    <div class="product"><img src="images/boho-listings.jpg"><h3>Boho Listing Templates</h3><p>$25 • Chic listing layouts</p><a class="btn" href="#">Buy Now</a><a class="btn" href="#">WhatsApp</a></div>
-    <div class="product"><img src="images/descriptions.jpg"><h3>Digital Description Pack</h3><p>$19 • SEO copy blocks</p><a class="btn" href="#">Buy Now</a><a class="btn" href="#">WhatsApp</a></div>
-    <div class="product"><img src="images/ai-tool.jpg"><h3>AI Etsy Wizard Tool</h3><p>$30 • Auto‑generate listings</p><a class="btn" href="#">Buy Now</a><a class="btn" href="#">WhatsApp</a></div>
-    <div class="product"><img src="images/holiday-kit.jpg"><h3>Holiday Promo Graphics Kit</h3><p>$35 • Seasonal assets</p><a class="btn" href="#">Buy Now</a><a class="btn" href="#">WhatsApp</a></div>
-    <div class="product"><img src="images/social-posts.jpg"><h3>Social Media Post Pack</h3><p>$20 • Canva promos</p><a class="btn" href="#">Buy Now</a><a class="btn" href="#">WhatsApp</a></div>
-    <div class="product"><img src="images/branding.jpg"><h3>Brand Identity Blueprint</h3><p>$45 • Logos & moodboards</p><a class="btn" href="#">Buy Now</a><a class="btn" href="#">WhatsApp</a></div>
-    <div class="product"><img src="images/seo-sheet.jpg"><h3>SEO Generator Sheet</h3><p>$15 • Etsy keyword planner</p><a class="btn" href="#">Buy Now</a><a class="btn" href="#">WhatsApp</a></div>
-    <div class="product"><img src="images/checklist.jpg"><h3>Etsy Launch Checklist</h3><p>$12 • Shop setup guide</p><a class="btn" href="#">Buy Now</a><a class="btn" href="#">WhatsApp</a></div>
+  <section id="contact" class="contact">
+    <h2>Contact</h2>
+    <p>Email: <a href="mailto:you@example.com">you@example.com</a></p>
   </section>
 
-  <section id="contact">
-    <p>📧 <a href="mailto:you@example.com">you@example.com</a></p>
-    <p>📍 Morocco – Worldwide Delivery</p>
-  </section>
+  <footer>
+    &copy; 2025 Etsy Templates Pro
+  </footer>
 
-  <footer>&copy; 2025 Etsy Templates Pro</footer>
-
-  <!-- Hidden login modal -->
+  <!-- Auth Modal -->
   <div id="auth-modal" class="modal hidden">
     <div class="modal-content">
-      <span id="auth-close" class="close">&times;</span>
+      <span id="auth-close" class="modal-close">×</span>
       <h2 id="auth-title">Log In</h2>
-      <input id="auth-email" type="email" placeholder="Email" />
-      <input id="auth-password" type="password" placeholder="Password" />
-      <button id="auth-submit">Submit</button>
-      <a href="#" id="reset-link">Forgot Password?</a>
+      <input id="auth-email" type="email" placeholder="Email">
+      <input id="auth-password" type="password" placeholder="Password">
+      <button id="auth-submit" class="btn-primary">Submit</button>
+      <p><a href="#" id="reset-link">Forgot Password?</a></p>
       <p id="reset-msg" class="hidden">Reset email sent!</p>
       <p><a href="#" id="switch-auth">No account? Register</a></p>
     </div>
   </div>
 
+  <script src="https://www.gstatic.com/firebasejs/9.21.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.21.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.21.0/firebase-firestore-compat.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   <script src="app.js"></script>
 </body>
 </html>
