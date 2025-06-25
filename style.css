@@ -1,13 +1,14 @@
-/* Root Themes */
 :root {
-  --bg: #f9f9f9;
+  --bg: #fff;
   --text: #222;
-  --primary: #00875a;
+  --primary: #e11d48;
   --secondary: #fff;
   --accent: #25D366;
-  --card-bg: #fff;
+  --card-bg: #ffe4e6;
   --card-shadow: rgba(0,0,0,0.05);
 }
+
+/* Themes */
 body.theme-dark {
   --bg: #121212;
   --text: #f0f0f0;
@@ -36,31 +37,24 @@ body.theme-rose {
   --card-shadow: rgba(255,0,102,0.05);
 }
 
-/* Base */
+* { margin: 0; padding: 0; box-sizing: border-box; }
 body {
+  font-family: 'Inter', sans-serif;
   background: var(--bg);
   color: var(--text);
-  font-family: 'Inter', sans-serif;
-  margin: 0;
   line-height: 1.6;
   transition: background 0.4s ease, color 0.4s ease;
 }
 .container {
-  max-width: 900px;
+  max-width: 960px;
   margin: auto;
   padding: 2rem 1rem;
 }
 h1, h2 {
   margin-bottom: 1rem;
 }
-a {
-  color: var(--primary);
-}
-a:hover {
-  text-decoration: underline;
-}
+a { color: var(--primary); }
 
-/* Header */
 header {
   background: var(--card-bg);
   padding: 1.5rem 2rem;
@@ -75,85 +69,14 @@ header {
   align-items: center;
   flex-wrap: wrap;
 }
-.login-btn-square {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.5rem 1rem;
-  border: 2px solid var(--text);
-  border-radius: 10px;
-  background: var(--card-bg);
-  color: var(--text);
-  font-weight: 600;
-  box-shadow: 0 4px 0 rgba(0,0,0,0.15);
-  transition: all 0.2s ease;
-}
-.login-btn-square:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 12px rgba(0,0,0,0.15);
-  background: var(--primary);
-  color: var(--secondary);
-  border-color: var(--primary);
-}
-.login-icon {
-  width: 20px;
-  height: 20px;
-  transition: transform 0.2s ease;
-}
-.login-btn-square:hover .login-icon {
-  transform: translateX(4px);
-}
 
-/* Hero */
-#hero {
-  text-align: center;
-  padding: 4rem 1rem;
-  background: var(--card-bg);
-}
-#hero h2 {
-  font-size: 2rem;
-}
-#hero p {
-  font-size: 1.1rem;
-  margin-bottom: 1.5rem;
-}
-
-/* Buttons */
-.btn, .btn-primary {
-  background: var(--primary);
-  color: var(--secondary);
-  padding: 0.6rem 1.2rem;
-  font-size: 1rem;
-  font-weight: 600;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-}
-.btn:hover {
-  background: var(--accent);
-}
-.btn-secondary {
-  background: var(--secondary);
-  color: var(--primary);
-  border: 2px solid var(--primary);
-  padding: 0.5rem 1rem;
-  border-radius: 6px;
-}
-.btn-whatsapp {
-  background: #25D366;
-  color: white;
-  margin-left: 0.5rem;
-}
-
-/* Theme Preview */
+/* Theme Bubbles */
 .theme-controls {
   display: flex;
   align-items: center;
   gap: 0.5rem;
 }
 .theme-select {
-  border: 1px solid var(--primary);
-  background: var(--card-bg);
   padding: 0.4rem 0.8rem;
   border-radius: 6px;
 }
@@ -169,50 +92,83 @@ header {
   cursor: pointer;
   transition: transform 0.2s ease;
 }
-.preview-bubble:hover {
-  transform: scale(1.2);
-}
+.preview-bubble:hover { transform: scale(1.2); }
 .preview-bubble.active {
   border: 3px solid var(--primary);
-  box-shadow: 0 0 0 2px var(--accent);
 }
 .preview-bubble[data-theme="light"] { background: #fff; }
 .preview-bubble[data-theme="dark"] { background: #121212; }
 .preview-bubble[data-theme="forest"] { background: #0d1b12; }
 .preview-bubble[data-theme="rose"] { background: #ffe4e6; }
-.preview-bubble.clicked {
-  animation: clickPulse 0.4s ease;
-}
-@keyframes clickPulse {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.2); }
-  100% { transform: scale(1); }
-}
 
-/* Product & Cards */
+#hero {
+  text-align: center;
+  padding: 4rem 1rem;
+  background: var(--card-bg);
+}
+#hero h2 { font-size: 2rem; }
+#hero p { font-size: 1.1rem; margin-bottom: 1.5rem; }
+
+.btn, .btn-primary {
+  background: var(--primary);
+  color: var(--secondary);
+  padding: 0.6rem 1.2rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background 0.2s ease;
+}
+.btn:hover { background: var(--accent); }
+
+.btn-secondary {
+  background: var(--secondary);
+  color: var(--primary);
+  border: 2px solid var(--primary);
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+}
+.btn-whatsapp {
+  background: #25D366;
+  color: white;
+  padding: 0.6rem 1.2rem;
+  border-radius: 8px;
+  display: inline-block;
+  transition: background 0.2s ease;
+  text-decoration: none;
+}
+.btn-whatsapp:hover { background: #1ebe5b; }
+
 .product {
   background: var(--card-bg);
-  border-radius: 10px;
-  box-shadow: 0 4px 16px var(--card-shadow);
+  border-radius: 12px;
+  box-shadow: 0 4px 12px var(--card-shadow);
   overflow: hidden;
   margin-bottom: 2rem;
 }
 .product img {
   width: 100%;
+  display: block;
 }
 .product-content {
   padding: 1.5rem;
 }
 .product-content h3 {
-  margin-top: 0;
+  font-size: 1.25rem;
+  margin-bottom: 0.5rem;
 }
-.price {
-  font-weight: bold;
+.product-content .price {
+  font-weight: 600;
   color: var(--primary);
   margin-bottom: 1rem;
 }
+.product-buttons {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
 
-/* Testimonials & FAQ */
 .testimonial, .faq-item {
   background: var(--card-bg);
   padding: 1.2rem;
@@ -226,7 +182,7 @@ header {
   margin-top: 0.5rem;
 }
 
-/* Modal */
+/* Modal & Toast */
 .modal-backdrop {
   position: fixed;
   inset: 0;
@@ -240,16 +196,15 @@ header {
   background: var(--card-bg);
   padding: 2rem;
   border-radius: 8px;
-  width: 90%;
   max-width: 400px;
-  box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+  width: 90%;
 }
 .modal input {
   width: 100%;
   padding: 0.75rem;
   margin-bottom: 0.75rem;
-  border: 1px solid #ccc;
   border-radius: 5px;
+  border: 1px solid #ccc;
 }
 .close-btn {
   background: none;
@@ -260,8 +215,6 @@ header {
   font-size: 1.2rem;
   cursor: pointer;
 }
-
-/* Toast */
 #toast {
   position: fixed;
   bottom: 1.5rem;
@@ -276,32 +229,12 @@ header {
   transition: opacity 0.4s ease;
   box-shadow: 0 4px 12px rgba(0,0,0,0.2);
 }
-#toast.show {
-  opacity: 1;
-}
+#toast.show { opacity: 1; }
 
-/* Theme fade animation */
-.theme-fade {
-  position: fixed;
-  inset: 0;
-  background: var(--bg);
-  pointer-events: none;
-  opacity: 0;
-  z-index: 999;
-  transition: opacity 0.5s ease;
-}
-.theme-fade.active {
-  opacity: 1;
-}
-
-/* Responsive */
-@media (max-width: 600px) {
-  header {
-    flex-direction: column;
-    align-items: flex-start;
+/* Footer */
+footer {
+  text-align: center;
+  padding: 2rem 1rem;
+  font-size: 0.9rem;
+  background: #f9f9f9;
   }
-  .theme-controls {
-    flex-wrap: wrap;
-    margin-top: 1rem;
-  }
-}
