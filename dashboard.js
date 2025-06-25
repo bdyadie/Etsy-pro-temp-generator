@@ -6,7 +6,7 @@ firebase.initializeApp({
 
 const auth = firebase.auth();
 const db = firebase.firestore();
-const stripe = Stripe("YOUR_STRIPE_PUBLISHABLE_KEY");
+const stripe = Stripe("YOUR_STRIPE_PUBLISHABLE_KEY"); // Replace this!
 
 auth.onAuthStateChanged(async user => {
   if (!user) return location = 'index.html';
@@ -28,7 +28,7 @@ auth.onAuthStateChanged(async user => {
       method: 'POST',
       headers: { Authorization: user.uid }
     })
-      .then(r => r.json())
-      .then(d => stripe.redirectToCheckout({ sessionId: d.sessionId }));
+    .then(r => r.json())
+    .then(d => stripe.redirectToCheckout({ sessionId: d.sessionId }));
   };
 });
