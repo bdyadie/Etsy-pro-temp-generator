@@ -2,51 +2,107 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1.0">
-  <title>Etsy Templates Pro</title>
-  <link rel="stylesheet" href="style.css">
-
-  <!-- ✅ Firebase for static site -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Etsy Pro Templates Generator</title>
+  <link rel="stylesheet" href="style.css" />
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
-
-  <!-- ✅ Stripe if needed -->
   <script src="https://js.stripe.com/v3/"></script>
 </head>
 <body>
   <header>
-    <h1>Etsy Templates Pro</h1>
-    <nav><div id="auth-state"></div></nav>
+    <h1>Etsy Pro Templates Generator</h1>
+    <nav>
+      <div id="auth-state"></div>
+      <select id="theme-select">
+        <option value="light">🌞 Light</option>
+        <option value="dark">🌙 Dark</option>
+        <option value="forest">🌲 Forest</option>
+        <option value="rose">🌹 Rose</option>
+      </select>
+    </nav>
   </header>
 
-  <section id="preview">
-    <h2>Free AI Preview</h2>
-    <button id="use-ai-guest">Try AI Tool (1 free)</button>
+  <section id="hero">
+    <div class="container">
+      <h2>All‑in‑one AI Toolkit for Etsy Sellers</h2>
+      <p>Generate SEO‑optimized listings, tags, mock‑ups and more—in seconds.</p>
+      <button class="btn-primary" id="use-ai-guest">Try AI Tool (1 free)</button>
+    </div>
   </section>
 
-  <section id="members-only" style="display:none;">
-    <h2>Your AI Generator</h2>
-    <textarea id="user-input" placeholder="Describe your template idea..."></textarea>
-    <button id="generate-ai">Generate</button>
+  <section id="members-only" class="container" style="display:none;">
+    <h2>Your AI Listing Builder</h2>
+    <textarea id="user-input" placeholder="Describe your product..."></textarea>
+    <button id="generate-ai" class="btn-primary">Generate Listing</button>
     <pre id="ai-output"></pre>
     <p id="credits-left"></p>
-    <button id="buy-credits">Buy Credits</button>
-    <button onclick="resetPassword()">Forgot Password?</button>
+    <button id="buy-credits" class="btn-secondary">Buy Credits</button>
+    <button class="link-btn" onclick="resetPassword()">Forgot Password?</button>
   </section>
 
-  <section id="products">
-    <h2>Digital Products</h2>
-    <div class="product"><img src="images/starter-kit.jpg"><h3>Mega Etsy Starter Kit</h3><p>$29.99 • All‑in‑one bundle</p><a class="btn" href="#">Buy Now</a><a class="btn" href="#">WhatsApp</a></div>
-    <!-- Add other product blocks here the same way -->
+  <section id="products" class="container">
+    <h2>Templates & Tools</h2>
+    <div class="product">
+      <img src="images/starter-kit.jpg" alt="Mega Starter Kit">
+      <div class="product-content">
+        <h3>Mega Etsy Starter Kit</h3>
+        <p class="price">$29.99 • All‑in‑one bundle</p>
+        <a class="btn" href="#">Buy Now</a>
+        <a class="btn-whatsapp" href="#">WhatsApp</a>
+      </div>
+    </div>
   </section>
 
-  <section id="contact">
+  <section id="testimonials" class="container">
+    <h2>What Sellers Are Saying</h2>
+    <div class="testimonial">
+      <p>“This tool helped me rewrite 50+ listings in a weekend. Sales are up 40%!”</p>
+      <span>– Luna V., Handmade Jewelry</span>
+    </div>
+    <div class="testimonial">
+      <p>“I’m not great with writing or SEO. This saved me hours and gave me confidence.”</p>
+      <span>– Marcus T., Digital Prints</span>
+    </div>
+  </section>
+
+  <section id="faq" class="container">
+    <h2>Frequently Asked Questions</h2>
+    <div class="faq-item">
+      <h4>How does the AI tool work?</h4>
+      <p>It uses advanced AI models to generate optimized Etsy listings based on your input.</p>
+    </div>
+    <div class="faq-item">
+      <h4>Can I customize the output?</h4>
+      <p>Yes! After generation, you can tweak the results to match your branding.</p>
+    </div>
+    <div class="faq-item">
+      <h4>How do I get more credits?</h4>
+      <p>Click “Buy Credits” in your dashboard to securely purchase additional usage packs.</p>
+    </div>
+  </section>
+
+  <section id="contact" class="container">
     <p>📧 <a href="mailto:you@example.com">you@example.com</a></p>
     <p>📍 Morocco – Worldwide Delivery</p>
   </section>
 
-  <footer>&copy; 2025 Etsy Templates Pro</footer>
+  <footer>&copy; 2025 Etsy Pro Templates Generator</footer>
+
+  <div id="toast"></div>
+
+  <!-- Login Modal -->
+  <div id="auth-modal" class="modal-backdrop" style="display:none;">
+    <div class="modal">
+      <button class="close-btn" onclick="toggleAuthModal()">×</button>
+      <h2>Log In / Register</h2>
+      <input type="email" id="auth-email" placeholder="Email" />
+      <input type="password" id="auth-pass" placeholder="Password" />
+      <button onclick="handleAuth()">Continue</button>
+    </div>
+  </div>
+
   <script src="app.js"></script>
 </body>
 </html>
