@@ -6,27 +6,24 @@ firebase.initializeApp({
 
 const auth = firebase.auth();
 const db = firebase.firestore();
-const stripe = Stripe("YOUR_STRIPE_PUBLISHABLE_KEY"); // Replace this
 
-auth.onAuthStateChanged(async u => {
-  if (!u) return location = 'index.html';
-  document.getElementById('user-email').innerText = u.email;
-  document.getElementById('nav-user').innerHTML = `<button onclick="auth.signOut()">Logout</button>`;
+auth.onAuthStateChanged(async (user) => {
+  if (!user) return location = 'index.html';
 
-  const doc = await db.collection('users').doc(u.uid).get();
+  document.getElementById("user-email").innerText = user.email;
+  document.getElementById("nav-user").innerHTML = `<button onclick="auth.signOut()">Logout</button>`;
+
+  const doc = await db.collection("users").doc(user.uid).get();
   const data = doc.exists ? doc.data() : { credits: 0, purchasedProducts: [] };
-  document.getElementById('dashboard-credits').innerText = data.credits;
 
-  document.getElementById('downloads').innerHTML = data.purchasedProducts.map(
+  document.getElementById("dashboard-credits").innerText = data.credits || 0;
+
+  const downloads = (data.purchasedProducts || []).map(
     id => `<div><a href="downloads/${id}.zip" download>${id}</a></div>`
   ).join('');
+  document.getElementById("downloads").innerHTML = downloads;
 
-  document.getElementById('dash-buy-credits').onclick = () => {
-    fetch('/.netlify/functions/create-checkout', {
-      method: 'POST',
-      headers: { Authorization: u.uid }
-    })
-    .then(r => r.json())
-    .then(d => stripe.redirectToCheckout({ sessionId: d.sessionId }));
+  document.getElementById("dash-buy-credits").onclick = () => {
+    alert("Credit purchasing requires backend functionality. Please visit your dashboard on Netlify-hosted version.");
   };
 });
