@@ -29,7 +29,3 @@ auth.onAuthStateChanged(async user => {
     .then(d => stripe.redirectToCheckout({ sessionId: d.sessionId }));
   };
 });
-
-function logout() {
-  auth.signOut();
-}
