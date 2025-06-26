@@ -1,72 +1,82 @@
-// Firebase Init
+// Initialize Firebase
 firebase.initializeApp({
   apiKey: "YOUR_API_KEY",
   authDomain: "etsy-templates.firebaseapp.com",
   projectId: "etsy-templates"
 });
+
 const auth = firebase.auth();
 const db = firebase.firestore();
 
-// Theme logic
+// Theme font mappings
 const themeFonts = {
-  forest: 'Lora, serif',
-  rose: 'DM Serif Display, serif',
-  dark: 'Roboto Mono, monospace',
-  light: 'Playfair Display, serif'
+  light: "Playfair Display, serif",
+  rose: "DM Serif Display, serif",
+  forest: "Lora, serif",
+  dark: "Roboto Mono, monospace"
 };
 
+// Apply theme function
 function applyTheme(theme) {
   document.body.className = `theme-${theme}`;
   document.body.style.fontFamily = themeFonts[theme];
-  localStorage.setItem('theme', theme);
+  localStorage.setItem("theme", theme);
 }
 
-const savedTheme = localStorage.getItem('theme') || 'light';
+// Load saved theme
+const savedTheme = localStorage.getItem("theme") || "light";
 applyTheme(savedTheme);
 
-document.querySelectorAll('.theme-bubbles span').forEach(bubble => {
-  bubble.addEventListener('click', () => {
+// Theme bubble click handlers
+document.querySelectorAll(".theme-bubbles span").forEach(bubble => {
+  bubble.addEventListener("click", () => {
     applyTheme(bubble.dataset.theme);
   });
 });
 
-// Smooth scroll
+// Smooth scroll for nav links
 document.querySelectorAll('nav a[href^="#"]').forEach(link => {
-  link.addEventListener('click', e => {
+  link.addEventListener("click", e => {
     e.preventDefault();
-    const target = document.querySelector(link.getAttribute('href'));
-    if (target) target.scrollIntoView({ behavior: 'smooth' });
+    const target = document.querySelector(link.getAttribute("href"));
+    if (target) {
+      target.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
   });
 });
 
-// Modal logic
+// Modal open/close
 function toggleModal() {
   const modal = document.getElementById("auth-modal");
   modal.classList.toggle("hidden");
-  document.body.style.overflow = modal.classList.contains("hidden") ? '' : 'hidden';
+  document.body.style.overflow = modal.classList.contains("hidden") ? "" : "hidden";
 }
 document.getElementById("login-btn").addEventListener("click", toggleModal);
+
+// AI button click
 document.getElementById("use-free-ai").addEventListener("click", () => {
   const user = auth.currentUser;
   if (user) {
     alert("🎉 AI Tool activated!");
+    // Trigger your AI logic here if needed
   } else {
     toggleModal();
   }
 });
 
-// Login/Register logic
+// Handle Login/Register
 async function handleAuth() {
   const email = document.getElementById("email").value;
-  const pass = document.getElementById("password").value;
+  const password = document.getElementById("password").value;
 
   try {
-    await auth.signInWithEmailAndPassword(email, pass);
+    await auth.signInWithEmailAndPassword(email, password);
   } catch (err) {
-    if (err.code === 'auth/user-not-found') {
-      await auth.createUserWithEmailAndPassword(email, pass);
+    if (err.code === "auth/user-not-found") {
+      await auth.createUserWithEmailAndPassword(email, password);
     } else {
-      return alert(err.message);
+      alert(err.message);
+      return;
     }
   }
 
@@ -74,12 +84,12 @@ async function handleAuth() {
   toggleModal();
 }
 
+// Setup user doc if new
 async function initUser() {
   const user = auth.currentUser;
   if (!user) return;
   const ref = db.collection("users").doc(user.uid);
   const doc = await ref.get();
-
   if (!doc.exists) {
     await ref.set({
       email: user.email,
