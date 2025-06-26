@@ -2,193 +2,161 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Etsy Pro Templates Generator</title>
   <link rel="stylesheet" href="style.css" />
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+  <script src="https://js.stripe.com/v3/"></script>
 </head>
 <body class="theme-light">
-
-  <header class="site-header">
+  <div id="theme-fade" class="theme-fade"></div>
+  <header>
     <h1>✨ Etsy Pro Templates Generator</h1>
-    <nav class="site-nav">
-      <button id="nav-auth" class="btn btn-auth">Log In</button>
-      <a href="#products" class="nav-link">Products</a>
-      <a href="#testimonials" class="nav-link">Testimonials</a>
-      <a href="#faq" class="nav-link">FAQ</a>
-      <div class="theme-switcher">
-        <select id="theme-select">
-          <option value="light">Light</option>
-          <option value="dark">Dark</option>
-          <option value="forest">Forest</option>
-          <option value="rose">Rose</option>
-        </select>
-        <div class="theme-preview">
-          <div class="preview-bubble" data-theme="light"></div>
-          <div class="preview-bubble" data-theme="dark"></div>
-          <div class="preview-bubble" data-theme="forest"></div>
-          <div class="preview-bubble" data-theme="rose"></div>
-        </div>
-      </div>
+    <nav class="nav-bar">
+      <button id="btn-auth" class="btn-action">Log In</button>
+      <button class="btn-link" onclick="scrollToSection('products')">Products</button>
+      <button class="btn-link" onclick="scrollToSection('testimonials')">Testimonials</button>
+      <button class="btn-link" onclick="scrollToSection('faq')">FAQ</button>
+      <select id="theme-select" class="theme-select"></select>
+      <div class="bubbles" id="theme-preview"></div>
     </nav>
   </header>
 
-  <main>
-    <section id="hero" class="section-hero">
-      <h2>All‑in‑one AI Toolkit for Etsy Sellers</h2>
-      <p>Generate SEO‑optimized listings, tags, mock‑ups and more—in seconds.</p>
-      <button id="use‑ai‑guest" class="btn btn-primary">Try AI Tool (1 free)</button>
-    </section>
+  <section id="hero" class="hero-box">
+    <p class="hero-title">All-in-one AI Toolkit for Etsy Sellers</p>
+    <p class="hero-sub">Generate SEO‑optimized listings, tags, mock‑ups and more—in seconds.</p>
+    <button id="use-ai-guest" class="btn-primary">Try AI Tool (1 free)</button>
+  </section>
 
-    <section id="products" class="section">
-      <h2>Templates & Tools</h2>
-      <div class="grid">
-        <!-- Product 1 -->
-        <div class="product">
-          <img src="images/logo-kit-blue.jpg" alt="Blue Logo Branding Kit" />
-          <h3>Blue Logo Branding Kit</h3>
-          <p class="price">$9.99 • Editable Logo Templates</p>
-          <div class="buttons">
-            <button class="btn btn-primary">Buy Now</button>
-            <a class="btn btn-whatsapp" target="_blank"
-               href="https://wa.me/?text=Hi%20I'm%20interested%20in%20your%20Blue%20Logo%20Branding%20Kit">
-              WhatsApp
-            </a>
-          </div>
-        </div>
-        <!-- Product 2 -->
-        <div class="product">
-          <img src="images/instagram-canva-bundle.jpg" alt="Instagram Canva Bundle" />
-          <h3>Instagram Canva Bundle</h3>
-          <p class="price">$14.99 • 100+ Templates</p>
-          <div class="buttons">
-            <button class="btn btn-primary">Buy Now</button>
-            <a class="btn btn-whatsapp" target="_blank"
-               href="https://wa.me/?text=Hi%20I'm%20interested%20in%20your%20Instagram%20Canva%20Bundle">
-              WhatsApp
-            </a>
-          </div>
-        </div>
-        <!-- Product 3 -->
-        <div class="product">
-          <img src="images/digital-planner-2025.jpg" alt="2025 Digital Planner" />
-          <h3>2025 Digital Planner</h3>
-          <p class="price">$7.99 • Editable Design</p>
-          <div class="buttons">
-            <button class="btn btn-primary">Buy Now</button>
-            <a class="btn btn-whatsapp" target="_blank"
-               href="https://wa.me/?text=Hi%20I'm%20interested%20in%20your%202025%20Digital%20Planner">
-              WhatsApp
-            </a>
-          </div>
-        </div>
-        <!-- Product 4 -->
-        <div class="product">
-          <img src="images/wedding-invitation-template.jpg" alt="Wedding Invitation Template" />
-          <h3>Wedding Invitation Template</h3>
-          <p class="price">$24.99 • Printable Invite</p>
-          <div class="buttons">
-            <button class="btn btn-primary">Buy Now</button>
-            <a class="btn btn-whatsapp" target="_blank"
-               href="https://wa.me/?text=Hi%20I'm%20interested%20in%20your%20Wedding%20Invitation%20Template">
-              WhatsApp
-            </a>
-          </div>
-        </div>
-        <!-- Product 5 -->
-        <div class="product">
-          <img src="images/business-card-template.jpg" alt="Business Card Canva Template" />
-          <h3>Business Card Canva Template</h3>
-          <p class="price">$5.99 • Editable</p>
-          <div class="buttons">
-            <button class="btn btn-primary">Buy Now</button>
-            <a class="btn btn-whatsapp" target="_blank"
-               href="https://wa.me/?text=Hi%20I'm%20interested%20in%20your%20Business%20Card%20Canva%20Template">
-              WhatsApp
-            </a>
-          </div>
-        </div>
-        <!-- Product 6 -->
-        <div class="product">
-          <img src="images/wedding-planner-bundle.jpg" alt="Wedding Planner Canva Bundle" />
-          <h3>Wedding Planner Canva Bundle</h3>
-          <p class="price">$24.99 • Checklist + Guides</p>
-          <div class="buttons">
-            <button class="btn btn-primary">Buy Now</button>
-            <a class="btn btn-whatsapp" target="_blank"
-               href="https://wa.me/?text=Hi%20I'm%20interested%20in%20your%20Wedding%20Planner%20Canva%20Bundle">
-              WhatsApp
-            </a>
-          </div>
-        </div>
-        <!-- Product 7 -->
-        <div class="product">
-          <img src="images/svg-cutting-pack.jpg" alt="SVG Cutting Files Pack" />
-          <h3>SVG Cutting Files Pack</h3>
-          <p class="price">$5.99 • SVG/PNG/DXF</p>
-          <div class="buttons">
-            <button class="btn btn-primary">Buy Now</button>
-            <a class="btn btn-whatsapp" target="_blank"
-               href="https://wa.me/?text=Hi%20I'm%20interested%20in%20your%20SVG%20Cutting%20Files%20Pack">
-              WhatsApp
-            </a>
-          </div>
-        </div>
-        <!-- Product 8 -->
-        <div class="product">
-          <img src="images/lightroom-mobile-presets.jpg" alt="Lightroom Mobile Presets" />
-          <h3>Lightroom Mobile Presets</h3>
-          <p class="price">$12.99 • Photo Filters</p>
-          <div class="buttons">
-            <button class="btn btn-primary">Buy Now</button>
-            <a class="btn btn-whatsapp" target="_blank"
-               href="https://wa.me/?text=Hi%20I'm%20interested%20in%20your%20Lightroom%20Mobile%20Presets">
-              WhatsApp
-            </a>
-          </div>
-        </div>
-        <!-- Product 9 -->
-        <div class="product">
-          <img src="images/pinterest-canva-templates.jpg" alt="Pinterest Canva Templates" />
-          <h3>Pinterest Canva Templates</h3>
-          <p class="price">$14.99 • Pin Designs</p>
-          <div class="buttons">
-            <button class="btn btn-primary">Buy Now</button>
-            <a class="btn btn-whatsapp" target="_blank"
-               href="https://wa.me/?text=Hi%20I'm%20interested%20in%20your%20Pinterest%20Canva%20Templates">
-              WhatsApp
-            </a>
-          </div>
-        </div>
-        <!-- Product 10 -->
-        <div class="product">
-          <img src="images/product-launch-guide.jpg" alt="Product Launch Guide" />
-          <h3>Product Launch Guide</h3>
-          <p class="price">$14.99 • Step‑by‑Step eBook</p>
-          <div class="buttons">
-            <button class="btn btn-primary">Buy Now</button>
-            <a class="btn btn-whatsapp" target="_blank"
-               href="https://wa.me/?text=Hi%20I'm%20interested%20in%20your%20Product%20Launch%20Guide">
-              WhatsApp
-            </a>
-          </div>
+  <section id="products" class="container products-section">
+    <h2>Templates & Tools</h2>
+    <div class="products-grid">
+      <!-- Product list -->
+      <div class="product">
+        <img src="images/logo-kit-blue.jpg" alt="Blue Logo Branding Kit" />
+        <h3>Blue Logo Branding Kit</h3>
+        <p class="price">$9.99 • Editable Logo Templates</p>
+        <div class="product-buttons">
+          <button class="btn-buy" onclick="buyProduct('logo-kit-blue')">Buy Now</button>
+          <button class="btn-whatsapp" onclick="whatsappProduct('Blue Logo Branding Kit')">WhatsApp</button>
         </div>
       </div>
-    </section>
+      <div class="product">
+        <img src="images/instagram-canva-bundle.jpg" alt="Instagram Canva Post Bundle" />
+        <h3>Instagram Canva Post Bundle</h3>
+        <p class="price">$14.99 • 100+ Social Templates</p>
+        <div class="product-buttons">
+          <button class="btn-buy" onclick="buyProduct('instagram-canva-bundle')">Buy Now</button>
+          <button class="btn-whatsapp" onclick="whatsappProduct('Instagram Canva Post Bundle')">WhatsApp</button>
+        </div>
+      </div>
+      <div class="product">
+        <img src="images/digital-planner-2025.jpg" alt="2025 Digital Planner" />
+        <h3>2025 Digital Planner</h3>
+        <p class="price">$7.99 • Editable Design</p>
+        <div class="product-buttons">
+          <button class="btn-buy" onclick="buyProduct('digital-planner-2025')">Buy Now</button>
+          <button class="btn-whatsapp" onclick="whatsappProduct('2025 Digital Planner')">WhatsApp</button>
+        </div>
+      </div>
+      <div class="product">
+        <img src="images/wedding-invitation-template.jpg" alt="Wedding Invitation Template" />
+        <h3>Wedding Invitation Template</h3>
+        <p class="price">$12.99 • Elegant Design</p>
+        <div class="product-buttons">
+          <button class="btn-buy" onclick="buyProduct('wedding-invitation-template')">Buy Now</button>
+          <button class="btn-whatsapp" onclick="whatsappProduct('Wedding Invitation Template')">WhatsApp</button>
+        </div>
+      </div>
+      <div class="product">
+        <img src="images/business-card-template.jpg" alt="Business Card Canva Template" />
+        <h3>Business Card Template</h3>
+        <p class="price">$5.99 • Professional Layout</p>
+        <div class="product-buttons">
+          <button class="btn-buy" onclick="buyProduct('business-card-template')">Buy Now</button>
+          <button class="btn-whatsapp" onclick="whatsappProduct('Business Card Template')">WhatsApp</button>
+        </div>
+      </div>
+      <div class="product">
+        <img src="images/wedding-planner-bundle.jpg" alt="Wedding Planner Canva Bundle" />
+        <h3>Wedding Planner Bundle</h3>
+        <p class="price">$24.99 • Checklist + Guides</p>
+        <div class="product-buttons">
+          <button class="btn-buy" onclick="buyProduct('wedding-planner-bundle')">Buy Now</button>
+          <button class="btn-whatsapp" onclick="whatsappProduct('Wedding Planner Bundle')">WhatsApp</button>
+        </div>
+      </div>
+      <div class="product">
+        <img src="images/svg-cutting-pack.jpg" alt="SVG Cutting Files Pack" />
+        <h3>SVG Cutting Files Pack</h3>
+        <p class="price">$5.99 • SVG/PNG/DXF</p>
+        <div class="product-buttons">
+          <button class="btn-buy" onclick="buyProduct('svg-cutting-pack')">Buy Now</button>
+          <button class="btn-whatsapp" onclick="whatsappProduct('SVG Cutting Files Pack')">WhatsApp</button>
+        </div>
+      </div>
+      <div class="product">
+        <img src="images/lightroom-mobile-presets.jpg" alt="Lightroom Mobile Presets" />
+        <h3>Lightroom Mobile Presets</h3>
+        <p class="price">$12.99 • Photo Filters</p>
+        <div class="product-buttons">
+          <button class="btn-buy" onclick="buyProduct('lightroom-mobile-presets')">Buy Now</button>
+          <button class="btn-whatsapp" onclick="whatsappProduct('Lightroom Mobile Presets')">WhatsApp</button>
+        </div>
+      </div>
+      <div class="product">
+        <img src="images/pinterest-canva-templates.jpg" alt="Pinterest Canva Templates" />
+        <h3>Pinterest Canva Templates</h3>
+        <p class="price">$9.99 • Pinterest Graphics</p>
+        <div class="product-buttons">
+          <button class="btn-buy" onclick="buyProduct('pinterest-canva-templates')">Buy Now</button>
+          <button class="btn-whatsapp" onclick="whatsappProduct('Pinterest Canva Templates')">WhatsApp</button>
+        </div>
+      </div>
+      <div class="product">
+        <img src="images/product-launch-guide.jpg" alt="Product Launch Guide" />
+        <h3>Product Launch Guide</h3>
+        <p class="price">$14.99 • Step-by-Step eBook</p>
+        <div class="product-buttons">
+          <button class="btn-buy" onclick="buyProduct('product-launch-guide')">Buy Now</button>
+          <button class="btn-whatsapp" onclick="whatsappProduct('Product Launch Guide')">WhatsApp</button>
+        </div>
+      </div>
+    </div>
+  </section>
 
-    <section id="testimonials" class="section">
-      <h2>Testimonials</h2>
-      <div class="testimonial">“This AI saved me hours. Game changer!”<span>– Alicia</span></div>
-      <div class="testimonial">“The visuals were on point. 10/10.”<span>– Carlos</span></div>
-    </section>
+  <section id="testimonials" class="container section-box">
+    <h2>Testimonials</h2>
+    <div class="testimonial">“This AI saved me hours. Game changer for my shop!” — Alicia, Etsy Seller</div>
+    <div class="testimonial">“The product visuals were on point. 10/10 would recommend.” — Carlos</div>
+  </section>
 
-    <section id="faq" class="section">
-      <h2>FAQ</h2>
-      <div class="faq-item"><strong>How many AI uses?</strong><p>One free preview. Unlimited with credits.</p></div>
-      <div class="faq-item"><strong>Need design skills?</strong><p>No—edit everything in-browser.</p></div>
-    </section>
-  </main>
+  <section id="faq" class="container section-box">
+    <h2>FAQ</h2>
+    <div class="faq-item"><strong>How many times can I use the AI?</strong><p>One free preview. Unlimited with purchased credits.</p></div>
+    <div class="faq-item"><strong>Do I need design skills?</strong><p>No! Templates are customizable and editable.</p></div>
+  </section>
 
-  <footer>&copy; 2025 Etsy Templates Pro</footer>
+  <section id="contact" class="container section-box">
+    <h2>Contact</h2>
+    <p>📧 <a href="mailto:you@example.com">you@example.com</a></p>
+    <p>📍 Morocco – Worldwide Delivery</p>
+  </section>
+
+  <footer class="footer">© 2025 Etsy Templates Pro</footer>
+
+  <!-- Auth modal -->
+  <div id="auth-modal" class="modal-backdrop">
+    <div class="modal">
+      <button class="close-btn" onclick="toggleAuthModal(false)">✖</button>
+      <h2>Log In or Register</h2>
+      <input id="auth-email" type="email" placeholder="Email"/>
+      <input id="auth-pass" type="password" placeholder="Password"/>
+      <button onclick="handleAuth()" class="btn-action">Continue</button>
+    </div>
+  </div>
 
   <script src="app.js"></script>
 </body>
