@@ -14,7 +14,7 @@ body {
   transition: background 0.3s, color 0.3s, font-family 0.3s;
 }
 
-/* THEME VARIABLES */
+/* THEMES */
 body.theme-light {
   background: #ffffff;
   color: #111;
@@ -23,6 +23,7 @@ body.theme-light {
   --card-bg: rgba(0, 0, 0, 0.04);
   --header-bg: #ffffff;
   --header-text: #111;
+  --nav-link: #111;
 }
 
 body.theme-rose {
@@ -33,6 +34,7 @@ body.theme-rose {
   --card-bg: #ffe3eb;
   --header-bg: #fff0f3;
   --header-text: #800030;
+  --nav-link: #800030;
 }
 
 body.theme-forest {
@@ -43,6 +45,7 @@ body.theme-forest {
   --card-bg: #223529;
   --header-bg: #172a1d;
   --header-text: #e9f5ec;
+  --nav-link: #e9f5ec;
 }
 
 body.theme-dark {
@@ -53,6 +56,7 @@ body.theme-dark {
   --card-bg: #1e1e1e;
   --header-bg: #121212;
   --header-text: #f0f0f0;
+  --nav-link: #f0f0f0;
 }
 
 /* HEADER */
@@ -81,9 +85,10 @@ header {
 }
 nav a {
   margin: 0 0.5rem;
-  text-decoration: none;
   font-weight: 600;
-  color: inherit;
+  color: var(--nav-link);
+  text-decoration: none;
+  transition: color 0.3s ease;
 }
 nav a:hover {
   text-decoration: underline;
