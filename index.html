@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Etsy Pro Templates Generator</title>
   <link rel="stylesheet" href="style.css" />
-  <!-- Firebase & Stripe -->
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
@@ -46,7 +45,6 @@
     <section id="products" class="container products">
       <h2>Templates & Tools</h2>
       <div class="grid">
-        <!-- Example: repeat this block per product -->
         <div class="product-card">
           <img src="images/logo-kit-blue.jpg" alt="Blue Logo Branding Kit" />
           <h3>Blue Logo Branding Kit</h3>
@@ -56,7 +54,87 @@
             <a class="btn btn-whatsapp" href="https://wa.me/?text=I'm%20interested%20in%20Blue%20Logo%20Branding%20Kit" target="_blank">WhatsApp</a>
           </div>
         </div>
-        <!-- Add your other 9 product-cards similarly -->
+        <div class="product-card">
+          <img src="images/instagram-canva-bundle.jpg" alt="Instagram Canva Post Bundle" />
+          <h3>Instagram Canva Post Bundle</h3>
+          <p class="price">$14.99 • 100+ Social Templates</p>
+          <div class="product-buttons">
+            <a class="btn btn-buy" href="#">Buy Now</a>
+            <a class="btn btn-whatsapp" href="https://wa.me/?text=I'm%20interested%20in%20Instagram%20Canva%20Post%20Bundle" target="_blank">WhatsApp</a>
+          </div>
+        </div>
+        <div class="product-card">
+          <img src="images/digital-planner-2025.jpg" alt="2025 Digital Planner" />
+          <h3>2025 Digital Planner</h3>
+          <p class="price">$11.99 • Hyperlinked PDF</p>
+          <div class="product-buttons">
+            <a class="btn btn-buy" href="#">Buy Now</a>
+            <a class="btn btn-whatsapp" href="https://wa.me/?text=I'm%20interested%20in%202025%20Digital%20Planner" target="_blank">WhatsApp</a>
+          </div>
+        </div>
+        <div class="product-card">
+          <img src="images/wedding-invitation-template.jpg" alt="Wedding Invitation Template" />
+          <h3>Wedding Invitation Template</h3>
+          <p class="price">$7.99 • Editable Design</p>
+          <div class="product-buttons">
+            <a class="btn btn-buy" href="#">Buy Now</a>
+            <a class="btn btn-whatsapp" href="https://wa.me/?text=I'm%20interested%20in%20Wedding%20Invitation%20Template" target="_blank">WhatsApp</a>
+          </div>
+        </div>
+        <div class="product-card">
+          <img src="images/business-card-template.jpg" alt="Business Card Canva Template" />
+          <h3>Business Card Canva Template</h3>
+          <p class="price">$6.99 • Customizable Branding</p>
+          <div class="product-buttons">
+            <a class="btn btn-buy" href="#">Buy Now</a>
+            <a class="btn btn-whatsapp" href="https://wa.me/?text=I'm%20interested%20in%20Business%20Card%20Template" target="_blank">WhatsApp</a>
+          </div>
+        </div>
+        <div class="product-card">
+          <img src="images/wedding-planner-bundle.jpg" alt="Wedding Planner Canva Bundle" />
+          <h3>Wedding Planner Canva Bundle</h3>
+          <p class="price">$24.99 • Checklist + Guides</p>
+          <div class="product-buttons">
+            <a class="btn btn-buy" href="#">Buy Now</a>
+            <a class="btn btn-whatsapp" href="https://wa.me/?text=I'm%20interested%20in%20Wedding%20Planner%20Bundle" target="_blank">WhatsApp</a>
+          </div>
+        </div>
+        <div class="product-card">
+          <img src="images/svg-cutting-pack.jpg" alt="SVG Cutting Files Pack" />
+          <h3>SVG Cutting Files Pack</h3>
+          <p class="price">$5.99 • SVG/PNG/DXF</p>
+          <div class="product-buttons">
+            <a class="btn btn-buy" href="#">Buy Now</a>
+            <a class="btn btn-whatsapp" href="https://wa.me/?text=I'm%20interested%20in%20SVG%20Cutting%20Files%20Pack" target="_blank">WhatsApp</a>
+          </div>
+        </div>
+        <div class="product-card">
+          <img src="images/lightroom-mobile-presets.jpg" alt="Lightroom Mobile Presets" />
+          <h3>Lightroom Mobile Presets</h3>
+          <p class="price">$12.99 • Photo Filters</p>
+          <div class="product-buttons">
+            <a class="btn btn-buy" href="#">Buy Now</a>
+            <a class="btn btn-whatsapp" href="https://wa.me/?text=I'm%20interested%20in%20Lightroom%20Mobile%20Presets" target="_blank">WhatsApp</a>
+          </div>
+        </div>
+        <div class="product-card">
+          <img src="images/pinterest-canva-templates.jpg" alt="Pinterest Canva Templates" />
+          <h3>Pinterest Canva Templates</h3>
+          <p class="price">$8.99 • Viral Pin Styles</p>
+          <div class="product-buttons">
+            <a class="btn btn-buy" href="#">Buy Now</a>
+            <a class="btn btn-whatsapp" href="https://wa.me/?text=I'm%20interested%20in%20Pinterest%20Canva%20Templates" target="_blank">WhatsApp</a>
+          </div>
+        </div>
+        <div class="product-card">
+          <img src="images/product-launch-guide.jpg" alt="Product Launch Guide" />
+          <h3>Product Launch Guide</h3>
+          <p class="price">$14.99 • Step-by-Step eBook</p>
+          <div class="product-buttons">
+            <a class="btn btn-buy" href="#">Buy Now</a>
+            <a class="btn btn-whatsapp" href="https://wa.me/?text=I'm%20interested%20in%20Product%20Launch%20Guide" target="_blank">WhatsApp</a>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -80,7 +158,6 @@
 
   <footer>&copy; 2025 Etsy Templates Pro</footer>
 
-  <!-- Login/Register Modal -->
   <div id="auth-modal" class="modal-backdrop" style="display:none;">
     <div class="modal">
       <button class="close-btn" onclick="toggleAuthModal(false)">✖</button>
