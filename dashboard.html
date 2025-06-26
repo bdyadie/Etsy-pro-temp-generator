@@ -4,8 +4,12 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Your Dashboard</title>
-  <link rel="stylesheet" href="style.css" />
+
+  <!-- Fonts & Styles -->
   <link href="https://fonts.googleapis.com/css2?family=Lora&family=Playfair+Display&family=Roboto+Mono&family=DM+Serif+Display&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+
+  <!-- Firebase & Stripe -->
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
@@ -13,16 +17,18 @@
 </head>
 <body class="theme-light">
 
+  <!-- Header -->
   <header>
     <div class="header-inner">
       <h1>Your Dashboard</h1>
       <div class="header-controls">
-        <span id="user-email" style="font-weight:600;"></span>
+        <span id="user-email" style="font-weight: 600;"></span>
         <button onclick="auth.signOut()" class="btn-outline">Logout</button>
       </div>
     </div>
   </header>
 
+  <!-- Main -->
   <main class="container">
     <section>
       <h2>Credits</h2>
@@ -38,10 +44,12 @@
     </section>
   </main>
 
+  <!-- Footer -->
   <footer>
     <p>&copy; 2025 Etsy Pro Templates Generator</p>
   </footer>
 
+  <!-- JS -->
   <script src="dashboard.js"></script>
 </body>
 </html>
