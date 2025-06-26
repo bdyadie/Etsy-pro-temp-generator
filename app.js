@@ -1,19 +1,18 @@
-// Firebase initialization
+// Init Firebase
 firebase.initializeApp({
   apiKey: "AIzaSyAft96BSElFYyLkIVDxaiS2k8us9h1EPPw",
   authDomain: "etsy-templates.firebaseapp.com",
   projectId: "etsy-templates"
 });
-
 const auth = firebase.auth();
 const db = firebase.firestore();
 
-// Add shadow on scroll
+// Scroll shadow
 window.addEventListener('scroll', () => {
   document.querySelector('header').classList.toggle('scrolled', window.scrollY > 10);
 });
 
-// Theme select logic
+// Theme
 const themeSelect = document.getElementById('theme-select');
 themeSelect.addEventListener('change', e => switchTheme(e.target.value));
 document.querySelectorAll('.bubbles span').forEach(el => {
@@ -38,7 +37,7 @@ document.querySelectorAll('#main-nav a').forEach(a => {
   });
 });
 
-// Modal control
+// Auth Modal logic
 const loginBtn = document.getElementById('login-btn');
 const authModal = document.getElementById('auth-modal');
 loginBtn.onclick = () => toggleAuthModal(true);
@@ -46,10 +45,10 @@ loginBtn.onclick = () => toggleAuthModal(true);
 function toggleAuthModal(show) {
   authModal.hidden = !show;
   document.body.style.overflow = show ? 'hidden' : '';
-  console.log("toggleAuthModal(" + show + ")");
+  console.log(`Modal toggled: ${show}`);
 }
 
-// Auth logic
+// Auth handler
 async function handleAuth(event) {
   const email = document.getElementById('auth-email').value;
   const pass = document.getElementById('auth-pass').value;
@@ -86,7 +85,7 @@ document.querySelectorAll('.btn-whatsapp').forEach(btn => {
   });
 });
 
-// Buy buttons
+// Buy Button
 document.querySelectorAll('.btn-buy').forEach(btn => {
   btn.addEventListener('click', () => {
     const user = auth.currentUser;
@@ -98,7 +97,7 @@ document.querySelectorAll('.btn-buy').forEach(btn => {
   });
 });
 
-// Try AI Tool button
+// Try AI Tool Button
 document.getElementById('use-ai-guest').addEventListener('click', () => {
   const user = auth.currentUser;
   if (user) {
