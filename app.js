@@ -7,10 +7,7 @@ firebase.initializeApp({
 const auth = firebase.auth();
 const db = firebase.firestore();
 
-// =========================
-// Theme Handling
-// =========================
-const themeSelect = document.getElementById('theme-select');
+// Theme logic
 const themeFonts = {
   forest: 'Lora, serif',
   rose: 'DM Serif Display, serif',
@@ -20,23 +17,20 @@ const themeFonts = {
 
 function applyTheme(theme) {
   document.body.className = `theme-${theme}`;
-  document.body.style.fontFamily = themeFonts[theme] || 'sans-serif';
+  document.body.style.fontFamily = themeFonts[theme];
   localStorage.setItem('theme', theme);
 }
 
-// Load saved or default theme
 const savedTheme = localStorage.getItem('theme') || 'light';
-themeSelect.value = savedTheme;
 applyTheme(savedTheme);
 
-// Change theme on select
-themeSelect.addEventListener('change', e => {
-  applyTheme(e.target.value);
+document.querySelectorAll('.theme-bubbles span').forEach(bubble => {
+  bubble.addEventListener('click', () => {
+    applyTheme(bubble.dataset.theme);
+  });
 });
 
-// =========================
-// Navigation Smooth Scroll
-// =========================
+// Smooth scroll
 document.querySelectorAll('nav a[href^="#"]').forEach(link => {
   link.addEventListener('click', e => {
     e.preventDefault();
@@ -45,32 +39,32 @@ document.querySelectorAll('nav a[href^="#"]').forEach(link => {
   });
 });
 
-// =========================
-// Modal Logic
-// =========================
-const modal = document.getElementById('auth-modal');
-const loginBtn = document.getElementById('login-btn');
-
+// Modal logic
 function toggleModal() {
-  modal.classList.toggle('hidden');
-  document.body.style.overflow = modal.classList.contains('hidden') ? '' : 'hidden';
+  const modal = document.getElementById("auth-modal");
+  modal.classList.toggle("hidden");
+  document.body.style.overflow = modal.classList.contains("hidden") ? '' : 'hidden';
 }
+document.getElementById("login-btn").addEventListener("click", toggleModal);
+document.getElementById("use-free-ai").addEventListener("click", () => {
+  const user = auth.currentUser;
+  if (user) {
+    alert("🎉 AI Tool activated!");
+  } else {
+    toggleModal();
+  }
+});
 
-// Open on button click only
-loginBtn.addEventListener('click', toggleModal);
-
-// =========================
-// Auth Handling
-// =========================
+// Login/Register logic
 async function handleAuth() {
-  const email = document.getElementById('email').value;
-  const password = document.getElementById('password').value;
+  const email = document.getElementById("email").value;
+  const pass = document.getElementById("password").value;
 
   try {
-    await auth.signInWithEmailAndPassword(email, password);
+    await auth.signInWithEmailAndPassword(email, pass);
   } catch (err) {
     if (err.code === 'auth/user-not-found') {
-      await auth.createUserWithEmailAndPassword(email, password);
+      await auth.createUserWithEmailAndPassword(email, pass);
     } else {
       return alert(err.message);
     }
@@ -94,20 +88,4 @@ async function initUser() {
       purchasedProducts: []
     });
   }
-}
-
-// =========================
-// Try AI Button (from Homepage)
-// =========================
-document.getElementById('use-free-ai')?.addEventListener('click', () => {
-  const user = auth.currentUser;
-  if (user) {
-    runAiTool();
-  } else {
-    toggleModal();
-  }
-});
-
-function runAiTool() {
-  alert("🎉 AI Tool would run here! (Replace with your real logic.)");
 }
