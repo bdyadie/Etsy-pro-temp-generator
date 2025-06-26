@@ -1,4 +1,4 @@
-/* Reset & Base */
+/* RESET + BASE */
 * {
   box-sizing: border-box;
   margin: 0;
@@ -14,36 +14,46 @@ body {
   transition: background 0.3s, color 0.3s, font-family 0.3s;
 }
 
-/* Themes */
+/* THEME LIGHT */
 body.theme-light {
   background: #ffffff;
-  color: #111111;
+  color: #111;
   font-family: 'Playfair Display', serif;
   --accent: #e91e63;
+  --card-bg: rgba(0, 0, 0, 0.04);
 }
+
+/* THEME ROSE */
 body.theme-rose {
   background: #fff0f3;
   color: #880e4f;
   font-family: 'DM Serif Display', serif;
   --accent: #d81b60;
+  --card-bg: #ffe3eb;
 }
+
+/* THEME FOREST (your custom palette) */
 body.theme-forest {
-  background: #2c482e;
+  background: #172a1d;
   color: #e9f5ec;
   font-family: 'Lora', serif;
   --accent: #8bc34a;
-}
-body.theme-dark {
-  background: #121212;
-  color: #f5f5f5;
-  font-family: 'Roboto Mono', monospace;
-  --accent: #90caf9;
+  --card-bg: #223529;
 }
 
-/* Header */
+/* THEME DARK */
+body.theme-dark {
+  background: #121212;
+  color: #f0f0f0;
+  font-family: 'Roboto Mono', monospace;
+  --accent: #90caf9;
+  --card-bg: #1e1e1e;
+}
+
+/* HEADER */
 header {
   padding: 1.5rem 1rem;
-  background: rgba(255,255,255,0.9);
+  background: rgba(255, 255, 255, 0.9);
   border-bottom: 1px solid #ddd;
   position: sticky;
   top: 0;
@@ -72,7 +82,7 @@ nav a:hover {
   text-decoration: underline;
 }
 
-/* Hero */
+/* HERO */
 #hero {
   padding: 4rem 1rem;
   text-align: center;
@@ -90,21 +100,21 @@ nav a:hover {
   margin-bottom: 1.5rem;
 }
 
-/* Container */
+/* CONTAINER */
 .container {
   max-width: 1100px;
   margin: 0 auto;
   padding: 2rem 1rem;
 }
 
-/* Product Grid */
+/* PRODUCT GRID */
 .product-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
   gap: 1.5rem;
 }
 .product-card {
-  background: rgba(0,0,0,0.04);
+  background: var(--card-bg);
   padding: 1rem;
   border-radius: 8px;
   text-align: center;
@@ -125,7 +135,7 @@ nav a:hover {
   margin-top: 1rem;
 }
 
-/* Buttons */
+/* BUTTONS */
 .btn, .btn-outline, .btn-primary {
   padding: 0.6rem 1.2rem;
   border-radius: 6px;
@@ -154,7 +164,7 @@ nav a:hover {
   opacity: 0.9;
 }
 
-/* Theme Bubbles */
+/* THEME BUBBLES */
 .theme-bubbles {
   display: flex;
   align-items: center;
@@ -178,13 +188,13 @@ nav a:hover {
 .theme-bubbles span[data-theme="forest"] { background: #2c482e; }
 .theme-bubbles span[data-theme="dark"]   { background: #1e1e1e; }
 
-/* Testimonials */
+/* TESTIMONIALS */
 .testimonial-grid {
   display: grid;
   gap: 1rem;
 }
 blockquote {
-  background: rgba(0,0,0,0.03);
+  background: var(--card-bg);
   padding: 1rem;
   border-radius: 6px;
   font-style: italic;
@@ -199,7 +209,7 @@ blockquote footer {
 /* FAQ */
 #faq details {
   margin-bottom: 1rem;
-  background: rgba(0,0,0,0.03);
+  background: var(--card-bg);
   padding: 1rem;
   border-radius: 5px;
 }
@@ -208,13 +218,13 @@ blockquote footer {
   cursor: pointer;
 }
 
-/* Contact */
+/* CONTACT */
 #contact a {
   color: inherit;
   font-weight: bold;
 }
 
-/* Modal */
+/* MODAL */
 .modal {
   position: fixed;
   inset: 0;
@@ -252,7 +262,7 @@ blockquote footer {
   cursor: pointer;
 }
 
-/* Footer */
+/* FOOTER */
 footer {
   text-align: center;
   padding: 2rem 1rem;
