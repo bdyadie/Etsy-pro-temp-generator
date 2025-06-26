@@ -2,21 +2,17 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Etsy Pro Templates Generator</title>
-
-  <!-- Fonts & Styles -->
-  <link href="https://fonts.googleapis.com/css2?family=Lora&family=Playfair+Display&family=Roboto+Mono&family=DM+Serif+Display&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
-
-  <!-- Firebase & Stripe -->
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display&family=DM+Serif+Display&family=Roboto+Mono&family=Lora&display=swap" rel="stylesheet" />
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
-  <script src="https://js.stripe.com/v3/"></script>
 </head>
 <body class="theme-light">
 
+  <!-- Header -->
   <header>
     <div class="header-inner">
       <h1>Etsy Pro Templates Generator</h1>
@@ -33,78 +29,190 @@
           <span data-theme="forest"></span>
           <span data-theme="dark"></span>
         </div>
-        <button id="login-btn" class="btn">Login / Register</button>
+        <button id="login-btn" class="btn-primary">Login / Register</button>
       </div>
     </div>
   </header>
 
-  <section id="hero" class="container">
+  <!-- Hero -->
+  <section id="hero">
     <div class="hero-content">
       <h2>Launch Beautifully. Sell Confidently.</h2>
       <p>Empower your Etsy journey with premium templates and one free use of our AI copy generator. Upgrade anytime with flexible credits.</p>
-      <button id="use-free-ai" class="btn-primary">Try AI for Free</button>
+      <button id="use-free-ai" class="btn">Try AI for Free</button>
     </div>
   </section>
 
+  <!-- Products -->
   <section id="products" class="container">
     <h2>Our Best-Selling Products</h2>
     <div class="product-grid">
-      <!-- Repeat for all 10 products -->
-      <div class="product-card"><img src="images/logo-kit-blue.jpg" alt="Blue Logo Branding Kit"><h3>Blue Logo Branding Kit</h3><p>$9.99 · Editable Logo Templates</p><div class="product-actions"><a href="#" class="btn">Buy Now</a><a href="https://wa.me/1234567890" class="btn-outline">WhatsApp</a></div></div>
-      <div class="product-card"><img src="images/instagram-canva-bundle.jpg" alt="Instagram Canva Post Bundle"><h3>Instagram Canva Post Bundle</h3><p>$14.99 · 100+ Social Templates</p><div class="product-actions"><a href="#" class="btn">Buy Now</a><a href="https://wa.me/1234567890" class="btn-outline">WhatsApp</a></div></div>
-      <div class="product-card"><img src="images/digital-planner-2025.jpg" alt="2025 Digital Planner"><h3>2025 Digital Planner</h3><p>$12.99 · Hyperlinked PDF Planner</p><div class="product-actions"><a href="#" class="btn">Buy Now</a><a href="https://wa.me/1234567890" class="btn-outline">WhatsApp</a></div></div>
-      <div class="product-card"><img src="images/wedding-invitation-template.jpg" alt="Wedding Invitation Template"><h3>Wedding Invitation Template</h3><p>$7.99 · Editable Design</p><div class="product-actions"><a href="#" class="btn">Buy Now</a><a href="https://wa.me/1234567890" class="btn-outline">WhatsApp</a></div></div>
-      <div class="product-card"><img src="images/business-card-template.jpg" alt="Business Card Template"><h3>Business Card Template</h3><p>$5.99 · Editable Design</p><div class="product-actions"><a href="#" class="btn">Buy Now</a><a href="https://wa.me/1234567890" class="btn-outline">WhatsApp</a></div></div>
-      <div class="product-card"><img src="images/wedding-planner-bundle.jpg" alt="Wedding Planner Bundle"><h3>Wedding Planner Bundle</h3><p>$24.99 · Checklist + Guides</p><div class="product-actions"><a href="#" class="btn">Buy Now</a><a href="https://wa.me/1234567890" class="btn-outline">WhatsApp</a></div></div>
-      <div class="product-card"><img src="images/svg-cutting-pack.jpg" alt="SVG Cutting Files Pack"><h3>SVG Cutting Files Pack</h3><p>$5.99 · SVG/PNG/DXF</p><div class="product-actions"><a href="#" class="btn">Buy Now</a><a href="https://wa.me/1234567890" class="btn-outline">WhatsApp</a></div></div>
-      <div class="product-card"><img src="images/lightroom-mobile-presets.jpg" alt="Lightroom Mobile Presets"><h3>Lightroom Mobile Presets</h3><p>$12.99 · Photo Filters</p><div class="product-actions"><a href="#" class="btn">Buy Now</a><a href="https://wa.me/1234567890" class="btn-outline">WhatsApp</a></div></div>
-      <div class="product-card"><img src="images/pinterest-canva-templates.jpg" alt="Pinterest Canva Templates"><h3>Pinterest Canva Templates</h3><p>$8.99 · Promo & Pin Designs</p><div class="product-actions"><a href="#" class="btn">Buy Now</a><a href="https://wa.me/1234567890" class="btn-outline">WhatsApp</a></div></div>
-      <div class="product-card"><img src="images/product-launch-guide.jpg" alt="Product Launch Guide"><h3>Product Launch Guide</h3><p>$14.99 · Step‑by‑Step eBook</p><div class="product-actions"><a href="#" class="btn">Buy Now</a><a href="https://wa.me/1234567890" class="btn-outline">WhatsApp</a></div></div>
+
+      <!-- PRODUCT LIST -->
+      <div class="product-card">
+        <img src="images/logo-kit-blue.jpg" alt="Blue Logo Branding Kit">
+        <h3>Blue Logo Branding Kit</h3>
+        <p>$9.99 · Editable Logo Templates</p>
+        <div class="product-actions">
+          <button class="btn buy-now">Buy Now</button>
+          <button class="btn-outline whatsapp">WhatsApp</button>
+        </div>
+      </div>
+
+      <div class="product-card">
+        <img src="images/instagram-canva-bundle.jpg" alt="Instagram Canva Post Bundle">
+        <h3>Instagram Canva Post Bundle</h3>
+        <p>$14.99 · 100+ Social Templates</p>
+        <div class="product-actions">
+          <button class="btn buy-now">Buy Now</button>
+          <button class="btn-outline whatsapp">WhatsApp</button>
+        </div>
+      </div>
+
+      <div class="product-card">
+        <img src="images/digital-planner-2025.jpg" alt="2025 Digital Planner">
+        <h3>2025 Digital Planner</h3>
+        <p>$12.99 · Hyperlinked PDF Planner</p>
+        <div class="product-actions">
+          <button class="btn buy-now">Buy Now</button>
+          <button class="btn-outline whatsapp">WhatsApp</button>
+        </div>
+      </div>
+
+      <div class="product-card">
+        <img src="images/wedding-invitation-template.jpg" alt="Wedding Invitation Template">
+        <h3>Wedding Invitation Template</h3>
+        <p>$7.99 · Editable Design</p>
+        <div class="product-actions">
+          <button class="btn buy-now">Buy Now</button>
+          <button class="btn-outline whatsapp">WhatsApp</button>
+        </div>
+      </div>
+
+      <div class="product-card">
+        <img src="images/business-card-template.jpg" alt="Business Card Template">
+        <h3>Business Card Template</h3>
+        <p>$5.99 · Editable Design</p>
+        <div class="product-actions">
+          <button class="btn buy-now">Buy Now</button>
+          <button class="btn-outline whatsapp">WhatsApp</button>
+        </div>
+      </div>
+
+      <div class="product-card">
+        <img src="images/wedding-planner-bundle.jpg" alt="Wedding Planner Bundle">
+        <h3>Wedding Planner Bundle</h3>
+        <p>$24.99 · Checklist + Guides</p>
+        <div class="product-actions">
+          <button class="btn buy-now">Buy Now</button>
+          <button class="btn-outline whatsapp">WhatsApp</button>
+        </div>
+      </div>
+
+      <div class="product-card">
+        <img src="images/svg-cutting-pack.jpg" alt="SVG Cutting Files Pack">
+        <h3>SVG Cutting Files Pack</h3>
+        <p>$5.99 · SVG/PNG/DXF</p>
+        <div class="product-actions">
+          <button class="btn buy-now">Buy Now</button>
+          <button class="btn-outline whatsapp">WhatsApp</button>
+        </div>
+      </div>
+
+      <div class="product-card">
+        <img src="images/lightroom-mobile-presets.jpg" alt="Lightroom Mobile Presets">
+        <h3>Lightroom Mobile Presets</h3>
+        <p>$12.99 · Photo Filters</p>
+        <div class="product-actions">
+          <button class="btn buy-now">Buy Now</button>
+          <button class="btn-outline whatsapp">WhatsApp</button>
+        </div>
+      </div>
+
+      <div class="product-card">
+        <img src="images/pinterest-canva-templates.jpg" alt="Pinterest Canva Templates">
+        <h3>Pinterest Canva Templates</h3>
+        <p>$8.99 · Promo & Pin Designs</p>
+        <div class="product-actions">
+          <button class="btn buy-now">Buy Now</button>
+          <button class="btn-outline whatsapp">WhatsApp</button>
+        </div>
+      </div>
+
+      <div class="product-card">
+        <img src="images/product-launch-guide.jpg" alt="Product Launch Guide">
+        <h3>Product Launch Guide</h3>
+        <p>$14.99 · Step-by-Step eBook</p>
+        <div class="product-actions">
+          <button class="btn buy-now">Buy Now</button>
+          <button class="btn-outline whatsapp">WhatsApp</button>
+        </div>
+      </div>
+
     </div>
   </section>
 
+  <!-- Testimonials -->
   <section id="testimonials" class="container">
-    <h2>What Sellers Say</h2>
+    <h2>What Our Customers Say</h2>
     <div class="testimonial-grid">
-      <blockquote>“I made 5 sales in 24 hours using their templates!”<footer>– Jenna R.</footer></blockquote>
-      <blockquote>“The AI tool saved me hours writing listings.”<footer>– Daniel K.</footer></blockquote>
-      <blockquote>“Top quality and super easy to use!”<footer>– Melissa A.</footer></blockquote>
-      <blockquote>“I’m a beginner and this made me feel like a pro.”<footer>– Tarek B.</footer></blockquote>
-      <blockquote>“Best digital purchase I’ve made all year.”<footer>– Sofia L.</footer></blockquote>
+      <blockquote>
+        “This tool boosted my Etsy store overnight! In love with the branding kit.”
+        <footer>– Alicia S.</footer>
+      </blockquote>
+      <blockquote>
+        “Clear, elegant templates and the AI copy saved me HOURS.”
+        <footer>– Carlos R.</footer>
+      </blockquote>
+      <blockquote>
+        “I finally feel like I’m selling professionally. Thank you for this amazing tool!”
+        <footer>– Naomi L.</footer>
+      </blockquote>
+      <blockquote>
+        “The Instagram bundle makes my shop look premium on every post.”
+        <footer>– Fatima K.</footer>
+      </blockquote>
+      <blockquote>
+        “Saved me money, time, and gave me confidence to launch more products.”
+        <footer>– Jen M.</footer>
+      </blockquote>
     </div>
   </section>
 
+  <!-- FAQ -->
   <section id="faq" class="container">
     <h2>Frequently Asked Questions</h2>
-    <details><summary>Is the AI tool really free?</summary><p>Yes — you get 1 free AI listing. You can buy more credits anytime.</p></details>
-    <details><summary>Do I need design skills?</summary><p>No — everything is beginner-friendly and editable in Canva.</p></details>
-    <details><summary>Can I reuse the templates?</summary><p>Yes! Download and reuse anytime after purchase.</p></details>
-    <details><summary>Do the files work on mobile?</summary><p>Absolutely. Templates work in Canva mobile app too.</p></details>
-    <details><summary>How do I get support?</summary><p>Email support is available 7 days/week.</p></details>
-    <details><summary>Is payment secure?</summary><p>All payments are handled by Stripe and fully encrypted.</p></details>
-    <details><summary>Can I sell what I make?</summary><p>You can use these templates to build and sell your own listings.</p></details>
+    <details><summary>How many times can I use the AI tool?</summary><p>All users get 1 free use. Unlimited access is available with credits.</p></details>
+    <details><summary>Can I use these templates in Canva?</summary><p>Yes, all templates are fully compatible with free and Pro Canva accounts.</p></details>
+    <details><summary>Do I need graphic design experience?</summary><p>No. Everything is designed to be user-friendly and easy to edit.</p></details>
+    <details><summary>Can I customize everything?</summary><p>Yes, all colors, fonts, images, and text can be customized in your browser.</p></details>
+    <details><summary>How do I receive my files?</summary><p>You get instant access to your downloads after payment.</p></details>
+    <details><summary>Can I use this commercially?</summary><p>Yes, you can use the end-product in your shop, but not resell the templates.</p></details>
+    <details><summary>What payment methods do you accept?</summary><p>We accept all major cards securely via Stripe.</p></details>
   </section>
 
+  <!-- Contact -->
   <section id="contact" class="container">
-    <h2>Contact</h2>
-    <p>📧 <a href="mailto:you@example.com">you@example.com</a></p>
+    <h2>Contact Us</h2>
+    <p>Email: <a href="mailto:you@example.com">you@example.com</a></p>
     <p>📍 Morocco — Worldwide Delivery</p>
   </section>
 
+  <!-- Modal -->
   <div id="auth-modal" class="modal hidden">
     <div class="modal-content">
-      <button onclick="toggleModal()" class="close-btn">✕</button>
-      <h2>Login or Register</h2>
-      <input type="email" id="email" placeholder="Email" required />
-      <input type="password" id="password" placeholder="Password" required />
-      <button onclick="handleAuth()" class="btn-primary">Continue</button>
+      <button class="close-btn" onclick="toggleModal()">×</button>
+      <h2>Log In / Register</h2>
+      <input type="email" id="email" placeholder="Email" />
+      <input type="password" id="password" placeholder="Password" />
+      <button onclick="handleAuth()" class="btn">Continue</button>
     </div>
   </div>
 
-  <footer>
-    <p>&copy; 2025 Etsy Pro Templates Generator</p>
-  </footer>
+  <!-- Footer -->
+  <footer>&copy; 2025 Etsy Pro Templates Generator</footer>
 
+  <!-- Scripts -->
   <script src="app.js"></script>
 </body>
-  </html>
+                             </html>
