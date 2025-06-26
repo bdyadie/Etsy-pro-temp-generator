@@ -1,78 +1,114 @@
-// Firebase & Stripe init
+// ⚙️ INIT FIREBASE + STRIPE
 firebase.initializeApp({
   apiKey: "AIzaSyAft96BSElFYyLkIVDxaiS2k8us9h1EPPw",
   authDomain: "etsy-templates.firebaseapp.com",
-  projectId: "etsy-templates"
+  projectId: "etsy-templates",
+  storageBucket: "etsy-templates.firebasestorage.app",
+  messagingSenderId: "71763904255",
+  appId: "1:71763904255:web:324b5d74e6cbcf2e112eca"
 });
-const auth = firebase.auth();
-const db = firebase.firestore();
-const stripe = Stripe("YOUR_STRIPE_PUBLISHABLE_KEY");
+const auth = firebase.auth(),
+      db = firebase.firestore(),
+      stripe = Stripe("YOUR_STRIPE_PUBLISHABLE_KEY");
 
-// Auth modal toggle
-window.toggleAuthModal = show => document.getElementById('auth-modal').classList[show ? 'remove' : 'add']('hidden');
-
-// Handle login/register
-window.handleAuth = () => {
-  const e = document.getElementById('auth-email').value;
-  const p = document.getElementById('auth-pass').value;
-  auth.signInWithEmailAndPassword(e,p).catch(() =>
-    auth.createUserWithEmailAndPassword(e,p)
-  ).catch(alert);
-};
-
-// Auth button & state
-auth.onAuthStateChanged(user => {
-  const btn = document.getElementById('auth-btn');
-  if (user) {
-    btn.textContent = 'Log Out';
-    btn.onclick = () => auth.signOut();
-    document.getElementById('members-only').classList.remove('hidden');
-  } else {
-    btn.textContent = 'Log In';
-    btn.onclick = () => toggleAuthModal(true);
-    document.getElementById('members-only').classList.add('hidden');
-  }
-});
-
-// Theme switcher logic
-const select = document.getElementById('theme-select');
-const bubbles = document.querySelectorAll('.bubbles span');
-function setTheme(t) {
-  document.body.className = 'theme-' + t;
-  select.value = t;
-}
-select.onchange = () => setTheme(select.value);
-bubbles.forEach(b => {
-  b.onclick = () => setTheme(b.dataset.theme);
-});
-
-// Show toast helper
+// 🔔 SHOW TOAST
 function showToast(msg) {
-  const t = document.getElementById('toast');
-  t.textContent = msg; t.classList.remove('hidden');
-  setTimeout(() => t.classList.add('hidden'), 2400);
+  const t = document.getElementById("toast");
+  t.textContent = msg;
+  t.style.display = "block";
+  setTimeout(() => (t.style.display = "none"), 2500);
 }
 
-// Guest AI demo
-let guestUsed = false;
-document.getElementById('use-ai-guest').onclick = () => {
-  if (guestUsed) return showToast('Login or buy credits');
-  document.getElementById('ai-output').innerText = '[Demo output…]';
-  guestUsed = true;
-};
+// 🔐 TOGGLE AUTH MODAL
+function toggleAuthModal(show) {
+  document.querySelector(".modal").style.display = show ? "flex" : "none";
+}
 
-// Stripe purchase
-document.getElementById('buy-credits').onclick = () => {
-  auth.onAuthStateChanged(user => {
-    if (!user) return showToast('Please log in');
-    fetch('/.netlify/functions/create-checkout', {
-      method: 'POST', headers:{Authorization: user.uid}
-    }).then(r => r.json()).then(d => stripe.redirectToCheckout({sessionId: d.sessionId}));
+// 🧠 AUTH ACTION
+function handleAuth() {
+  const email = document.getElementById("auth-email").value.trim();
+  const pass = document.getElementById("auth-pass").value;
+  auth.signInWithEmailAndPassword(email, pass)
+    .catch(() => auth.createUserWithEmailAndPassword(email, pass))
+    .catch(err => alert(err.message))
+    .finally(() => toggleAuthModal(false));
+}
+
+// 🌐 DOM + EVENT BINDING
+window.addEventListener("DOMContentLoaded", () => {
+  const themeSelect = document.getElementById("theme-select");
+  const bubbles = document.querySelectorAll(".preview-bubble");
+  const applyTheme = t => {
+    document.body.className = "theme-" + t;
+    themeSelect.value = t;
+    bubbles.forEach(b => b.classList.toggle("active", b.dataset.theme === t));
+    localStorage.setItem("theme", t);
+  };
+
+  themeSelect.addEventListener("change", () => applyTheme(themeSelect.value));
+  bubbles.forEach(b => b.addEventListener("click", () => applyTheme(b.dataset.theme)));
+  applyTheme(localStorage.getItem("theme") || "light");
+
+  document.getElementById("auth-btn").addEventListener("click", () => {
+    auth.currentUser ? auth.signOut() : toggleAuthModal(true);
   });
-};
 
-// Reset password
-window.resetPassword = () => {
-  const e = prompt('Enter email:');
-  auth.sendPasswordResetEmail(e).then(() => showToast('Sent reset link')).catch(alert);
-};
+  document.getElementById("use-ai-guest").addEventListener("click", () => {
+    if (window.aiDemoUsed)
+      return showToast("Please log in or buy credits!");
+    document.getElementById("ai-output").innerText = "[Demo AI output here]";
+    window.aiDemoUsed = true;
+  });
+
+  document.getElementById("generate-ai").addEventListener("click", async () => {
+    if (!auth.currentUser) return showToast("Log in first");
+    if (window.userCredits < 1) return showToast("Buy credits first");
+    const prompt = document.getElementById("user-input").value.trim();
+    if (!prompt) return showToast("Enter your idea first");
+    try {
+      const res = await fetch("/.netlify/functions/generate-ai", {
+        method: "POST",
+        headers: { Authorization: auth.currentUser.uid },
+        body: JSON.stringify({ prompt })
+      });
+      const { result } = await res.json();
+      document.getElementById("ai-output").innerText = result;
+      window.userCredits--;
+      await db.collection("users").doc(auth.currentUser.uid).set({ credits: window.userCredits }, { merge: true });
+      document.getElementById("credits-left").innerText = `Credits: ${window.userCredits}`;
+    } catch (e) {
+      console.error(e);
+      showToast("Error generating AI");
+    }
+  });
+
+  document.getElementById("buy-credits").addEventListener("click", async () => {
+    if (!auth.currentUser) return showToast("Log in first");
+    const resp = await fetch("/.netlify/functions/create-checkout", {
+      method: "POST",
+      headers: { Authorization: auth.currentUser.uid }
+    });
+    const { sessionId } = await resp.json();
+    stripe.redirectToCheckout({ sessionId });
+  });
+
+  auth.onAuthStateChanged(async user => {
+    const authBtn = document.getElementById("auth-btn");
+    if (user) {
+      authBtn.innerHTML = `<svg viewBox="0 0 24 24"><path d="M6 6l12 6-12 6z"/></svg> Log Out`;
+      document.getElementById("members-only").classList.remove("hidden");
+
+      const doc = await db.collection("users").doc(user.uid).get();
+      window.userCredits = doc.exists ? doc.data().credits : 0;
+      document.getElementById("credits-left").innerText = `Credits: ${window.userCredits}`;
+    } else {
+      authBtn.innerHTML = `<svg viewBox="0 0 24 24"><path d="M14 7l-5 5 5 5"/></svg> Log In`;
+      document.getElementById("members-only").classList.add("hidden");
+      window.userCredits = 0;
+    }
+  });
+});
+
+// 🌟 GLOBAL FLAGS
+window.aiDemoUsed = false;
+window.userCredits = 0;
