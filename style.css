@@ -1,4 +1,4 @@
-/* Reset + Base */
+/* Reset & Base */
 * {
   box-sizing: border-box;
   margin: 0;
@@ -14,26 +14,30 @@ body {
   transition: background 0.3s, color 0.3s, font-family 0.3s;
 }
 
-/* Theme Styles */
+/* Themes */
 body.theme-light {
   background: #ffffff;
-  color: #222;
+  color: #111111;
   font-family: 'Playfair Display', serif;
+  --accent: #e91e63;
 }
 body.theme-rose {
-  background: #fff4f4;
-  color: #5a0022;
+  background: #fff0f3;
+  color: #880e4f;
   font-family: 'DM Serif Display', serif;
+  --accent: #d81b60;
 }
 body.theme-forest {
-  background: #f2f9f5;
-  color: #103f2e;
+  background: #2c482e;
+  color: #e9f5ec;
   font-family: 'Lora', serif;
+  --accent: #8bc34a;
 }
 body.theme-dark {
-  background: #111;
-  color: #f0f0f0;
+  background: #121212;
+  color: #f5f5f5;
   font-family: 'Roboto Mono', monospace;
+  --accent: #90caf9;
 }
 
 /* Header */
@@ -132,7 +136,7 @@ nav a:hover {
   transition: all 0.2s;
 }
 .btn {
-  background: #007BFF;
+  background: var(--accent);
   color: white;
   border: none;
 }
@@ -142,7 +146,7 @@ nav a:hover {
   border: 2px solid currentColor;
 }
 .btn-primary {
-  background: #e91e63;
+  background: var(--accent);
   color: white;
   border: none;
 }
@@ -162,15 +166,17 @@ nav a:hover {
   border-radius: 50%;
   border: 2px solid #444;
   cursor: pointer;
-  transition: transform 0.2s;
+  transition: all 0.2s ease;
+  box-shadow: 0 0 0 2px #fff inset;
 }
 .theme-bubbles span:hover {
-  transform: scale(1.15);
+  transform: scale(1.1);
+  box-shadow: 0 0 0 2px #ccc inset;
 }
-.theme-bubbles span[data-theme="light"]  { background: #fff; }
-.theme-bubbles span[data-theme="rose"]   { background: #ffc0cb; }
-.theme-bubbles span[data-theme="forest"] { background: #2e6444; }
-.theme-bubbles span[data-theme="dark"]   { background: #111; }
+.theme-bubbles span[data-theme="light"]  { background: #ffffff; }
+.theme-bubbles span[data-theme="rose"]   { background: #ffdce2; }
+.theme-bubbles span[data-theme="forest"] { background: #2c482e; }
+.theme-bubbles span[data-theme="dark"]   { background: #1e1e1e; }
 
 /* Testimonials */
 .testimonial-grid {
