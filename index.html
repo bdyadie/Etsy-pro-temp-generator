@@ -2,171 +2,151 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Etsy Pro Templates Generator</title>
+  <link href="https://fonts.googleapis.com/css2?family=Lora&family=Playfair+Display&family=Roboto+Mono&family=DM+Serif+Display&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
-  <script src="https://js.stripe.com/v3/"></script>
 </head>
-
 <body class="theme-light">
+
+  <!-- Header -->
   <header>
     <div class="header-inner">
-      <h1>✨ Etsy Pro Templates Generator</h1>
-      <div class="controls">
-        <button id="login-btn" class="btn-primary">Log In</button>
-        <nav id="main-nav">
+      <h1>Etsy Pro Templates Generator</h1>
+      <div class="header-controls">
+        <nav>
           <a href="#products">Products</a>
           <a href="#testimonials">Testimonials</a>
           <a href="#faq">FAQ</a>
           <a href="#contact">Contact</a>
         </nav>
-        <div class="theme-switcher">
-          <select id="theme-select">
-            <option value="light">Light</option>
-            <option value="rose">🌸 Rose</option>
-            <option value="forest">🌲 Forest</option>
-            <option value="dark">🌙 Dark</option>
-          </select>
-          <div class="bubbles">
-            <span data-theme="light"></span>
-            <span data-theme="rose"></span>
-            <span data-theme="forest"></span>
-            <span data-theme="dark"></span>
-          </div>
-        </div>
+        <button id="login-btn" class="btn">Login / Register</button>
+        <select id="theme-select">
+          <option value="light">🌞 Light</option>
+          <option value="rose">🌸 Rose</option>
+          <option value="forest">🌲 Forest</option>
+          <option value="dark">🌙 Dark</option>
+        </select>
       </div>
     </div>
   </header>
 
-  <main>
-    <!-- Hero Section -->
-    <section id="hero">
-      <div class="hero-box">
-        <h2>Launch. Grow. Thrive.</h2>
-        <p>Empower your Etsy shop with AI tools and stunning digital templates. From mockups to marketing, everything you need — just one click away.</p>
-        <button id="use-ai-guest" class="btn-primary">Try AI Tool (1 Free)</button>
-      </div>
-    </section>
+  <!-- Hero -->
+  <section id="hero">
+    <div class="hero-content">
+      <h2>Launch Beautifully. Sell Confidently.</h2>
+      <p>Empower your Etsy journey with premium templates and one free use of our AI copy generator. Upgrade anytime with flexible credits.</p>
+      <button id="use-free-ai" class="btn-primary">Try AI for Free</button>
+    </div>
+  </section>
 
-    <!-- Products -->
-    <section id="products" class="container">
-      <h2>Digital Templates & Tools</h2>
-      <div class="grid">
-        <!-- Repeat for each product -->
-        <div class="product">
-          <img src="images/logo-kit-blue.jpg" alt="Blue Logo Branding Kit">
-          <h3>Blue Logo Branding Kit</h3>
-          <p><strong>$9.99</strong> · Editable Logo Templates</p>
-          <div class="btn-group">
-            <button class="btn-buy">Buy Now</button>
-            <button class="btn-whatsapp">WhatsApp</button>
-          </div>
-        </div>
-        <div class="product">
-          <img src="images/instagram-canva-bundle.jpg" alt="Instagram Canva Post Bundle">
-          <h3>Instagram Canva Bundle</h3>
-          <p><strong>$14.99</strong> · 100+ Social Templates</p>
-          <div class="btn-group"><button class="btn-buy">Buy Now</button><button class="btn-whatsapp">WhatsApp</button></div>
-        </div>
-        <div class="product">
-          <img src="images/digital-planner-2025.jpg" alt="2025 Digital Planner">
-          <h3>2025 Digital Planner</h3>
-          <p><strong>$12.99</strong> · Hyperlinked PDF</p>
-          <div class="btn-group"><button class="btn-buy">Buy Now</button><button class="btn-whatsapp">WhatsApp</button></div>
-        </div>
-        <div class="product">
-          <img src="images/wedding-invitation-template.jpg" alt="Wedding Invitation Template">
-          <h3>Wedding Invite Template</h3>
-          <p><strong>$7.99</strong> · Editable Canva Design</p>
-          <div class="btn-group"><button class="btn-buy">Buy Now</button><button class="btn-whatsapp">WhatsApp</button></div>
-        </div>
-        <div class="product">
-          <img src="images/business-card-template.jpg" alt="Business Card Template">
-          <h3>Business Card Template</h3>
-          <p><strong>$5.99</strong> · Modern & Minimalist</p>
-          <div class="btn-group"><button class="btn-buy">Buy Now</button><button class="btn-whatsapp">WhatsApp</button></div>
-        </div>
-        <div class="product">
-          <img src="images/wedding-planner-bundle.jpg" alt="Wedding Planner Bundle">
-          <h3>Wedding Planner Bundle</h3>
-          <p><strong>$24.99</strong> · Printable PDF Guides</p>
-          <div class="btn-group"><button class="btn-buy">Buy Now</button><button class="btn-whatsapp">WhatsApp</button></div>
-        </div>
-        <div class="product">
-          <img src="images/svg-cutting-pack.jpg" alt="SVG Cutting Files Pack">
-          <h3>SVG Cutting Files Pack</h3>
-          <p><strong>$5.99</strong> · Includes PNG & DXF</p>
-          <div class="btn-group"><button class="btn-buy">Buy Now</button><button class="btn-whatsapp">WhatsApp</button></div>
-        </div>
-        <div class="product">
-          <img src="images/lightroom-mobile-presets.jpg" alt="Lightroom Presets">
-          <h3>Lightroom Mobile Presets</h3>
-          <p><strong>$12.99</strong> · 15 Pro Filters</p>
-          <div class="btn-group"><button class="btn-buy">Buy Now</button><button class="btn-whatsapp">WhatsApp</button></div>
-        </div>
-        <div class="product">
-          <img src="images/pinterest-canva-templates.jpg" alt="Pinterest Canva Templates">
-          <h3>Pinterest Canva Templates</h3>
-          <p><strong>$8.99</strong> · SEO Optimized</p>
-          <div class="btn-group"><button class="btn-buy">Buy Now</button><button class="btn-whatsapp">WhatsApp</button></div>
-        </div>
-        <div class="product">
-          <img src="images/product-launch-guide.jpg" alt="Product Launch Guide">
-          <h3>Product Launch Guide</h3>
-          <p><strong>$14.99</strong> · Step-by-step eBook</p>
-          <div class="btn-group"><button class="btn-buy">Buy Now</button><button class="btn-whatsapp">WhatsApp</button></div>
+  <!-- Products -->
+  <section id="products" class="container">
+    <h2>Our Best-Selling Products</h2>
+    <div class="product-grid">
+      <div class="product-card">
+        <img src="images/logo-kit-blue.jpg" alt="Blue Logo Branding Kit">
+        <h3>Blue Logo Branding Kit</h3>
+        <p>$9.99 · Editable Logos</p>
+        <div class="product-actions">
+          <a href="#register" class="btn">Buy Now</a>
+          <a href="https://wa.me/1234567890" class="btn-outline">WhatsApp</a>
         </div>
       </div>
-    </section>
+      <div class="product-card">
+        <img src="images/pink-banner.jpg" alt="Pink Banner Set">
+        <h3>Pink Banner Set</h3>
+        <p>$12.99 · Shop Banners</p>
+        <div class="product-actions">
+          <a href="#register" class="btn">Buy Now</a>
+          <a href="https://wa.me/1234567890" class="btn-outline">WhatsApp</a>
+        </div>
+      </div>
+      <div class="product-card">
+        <img src="images/etsy-pack.jpg" alt="Etsy Starter Pack">
+        <h3>Etsy Starter Pack</h3>
+        <p>$19.99 · All-in-One Kit</p>
+        <div class="product-actions">
+          <a href="#register" class="btn">Buy Now</a>
+          <a href="https://wa.me/1234567890" class="btn-outline">WhatsApp</a>
+        </div>
+      </div>
+    </div>
+  </section>
 
-    <!-- Testimonials -->
-    <section id="testimonials" class="container">
-      <h2>What Sellers Say</h2>
-      <div class="testimonial">“I made 5 sales in 24 hours using their templates!” <span>– Jenna R.</span></div>
-      <div class="testimonial">“The AI tool saved me hours writing listings.” <span>– Daniel K.</span></div>
-      <div class="testimonial">“Top quality and super easy to use!” <span>– Melissa A.</span></div>
-      <div class="testimonial">“I’m a beginner and this made me feel like a pro.” <span>– Tarek B.</span></div>
-      <div class="testimonial">“Best digital purchase I’ve made all year.” <span>– Sofia L.</span></div>
-    </section>
+  <!-- Testimonials -->
+  <section id="testimonials" class="container">
+    <h2>What Sellers Are Saying</h2>
+    <div class="testimonial-grid">
+      <blockquote>“I used their pink template and got my first sale in 24h!”<footer>– Alex G.</footer></blockquote>
+      <blockquote>“The branding kit made my shop look super polished.”<footer>– Dana M.</footer></blockquote>
+      <blockquote>“Incredible value for the price. The AI tool is 🔥.”<footer>– Jesse R.</footer></blockquote>
+      <blockquote>“Love the support and quick delivery. Totally recommended.”<footer>– Samira N.</footer></blockquote>
+      <blockquote>“These templates saved me hours of design work.”<footer>– Kyle B.</footer></blockquote>
+    </div>
+  </section>
 
-    <!-- FAQ -->
-    <section id="faq" class="container">
-      <h2>FAQ</h2>
-      <div class="faq-item"><strong>Is the AI tool free?</strong><p>Yes, one free use after registration. More uses require credits.</p></div>
-      <div class="faq-item"><strong>Do I need Canva Pro?</strong><p>No. All templates work with free Canva accounts.</p></div>
-      <div class="faq-item"><strong>Do I keep the templates forever?</strong><p>Yes! Download and reuse them as often as you want.</p></div>
-      <div class="faq-item"><strong>Can I use on mobile?</strong><p>Everything works on your phone too.</p></div>
-      <div class="faq-item"><strong>Can I edit the files?</strong><p>Yes, all files are editable after download.</p></div>
-      <div class="faq-item"><strong>Can I use these for clients?</strong><p>Yes! Commercial use is allowed.</p></div>
-      <div class="faq-item"><strong>Can I get a refund?</strong><p>Due to the digital nature, purchases are non-refundable.</p></div>
-    </section>
+  <!-- FAQ -->
+  <section id="faq" class="container">
+    <h2>Frequently Asked Questions</h2>
+    <details><summary>Is the AI tool really free?</summary><p>Yes! You get 1 free use when you register. After that, you can purchase credit packs.</p></details>
+    <details><summary>What do I get when I buy a product?</summary><p>You’ll receive an instant download ZIP file with your editable templates and a usage guide.</p></details>
+    <details><summary>Can I customize templates in Canva?</summary><p>Yes! All templates are Canva-compatible and fully editable online.</p></details>
+    <details><summary>How do I contact support?</summary><p>You can reach us via email or WhatsApp from the Contact section below.</p></details>
+    <details><summary>Can I use the AI tool without registering?</summary><p>No, registration is required for even the free use to track your access securely.</p></details>
+    <details><summary>Do credits expire?</summary><p>Nope. Credits never expire and can be used anytime.</p></details>
+    <details><summary>Is payment secure?</summary><p>All payments are securely processed via Stripe.</p></details>
+  </section>
 
-    <!-- Contact -->
-    <section id="contact" class="container">
-      <h2>Contact</h2>
-      <p>📧 <a href="mailto:you@example.com">you@example.com</a></p>
-      <p>📍 Morocco — Worldwide Delivery</p>
-    </section>
-  </main>
+  <!-- Contact -->
+  <section id="contact" class="container">
+    <h2>Contact Us</h2>
+    <p>Email: <a href="mailto:contact@etsygenerator.com">contact@etsygenerator.com</a></p>
+    <p>WhatsApp: <a href="https://wa.me/1234567890">Chat with us</a></p>
+    <p>We’re based in Morocco 🇲🇦 and deliver globally.</p>
+  </section>
 
-  <!-- Login/Register Modal -->
-  <div id="auth-modal" class="modal" hidden>
+  <!-- Auth Modal -->
+  <div id="auth-modal" class="modal hidden">
     <div class="modal-content">
-      <button class="close-btn" onclick="toggleAuthModal(false)">✖</button>
-      <h2>Log In / Register</h2>
-      <input id="auth-email" type="email" placeholder="Email" required />
-      <input id="auth-pass" type="password" placeholder="Password" required />
-      <button onclick="handleAuth(event)" class="btn-primary">Continue</button>
+      <button onclick="toggleModal()" class="close-btn">✕</button>
+      <h2>Login or Register</h2>
+      <input type="email" id="email" placeholder="Email" required />
+      <input type="password" id="password" placeholder="Password" required />
+      <button onclick="handleAuth()" class="btn-primary">Continue</button>
     </div>
   </div>
 
-  <footer>&copy; 2025 Etsy Pro Templates Generator</footer>
+  <footer>
+    <p>&copy; 2025 Etsy Pro Templates Generator. All rights reserved.</p>
+  </footer>
 
   <script src="app.js"></script>
-  <script src="ai-logic.js"></script>
+  <script>
+    const themeFonts = {
+      forest: 'Lora, serif',
+      rose: 'DM Serif Display, serif',
+      dark: 'Roboto Mono, monospace',
+      light: 'Playfair Display, serif'
+    };
+
+    function applyTheme(theme) {
+      document.body.className = `theme-${theme}`;
+      document.body.style.fontFamily = themeFonts[theme] || 'sans-serif';
+    }
+
+    document.getElementById('theme-select').addEventListener('change', e => {
+      applyTheme(e.target.value);
+    });
+
+    // Init default
+    applyTheme('light');
+
+    function toggleModal() {
+      document.getElementById('auth-modal').classList.toggle('hidden');
+    }
+
+    document.getElementById('login-btn').addEventListener('click', toggleModal);
+  </script>
 </body>
-                                                                                                     </html>
+        </html>
