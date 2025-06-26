@@ -1,23 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Dashboard – Etsy Templates Pro</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css" />
+
+  <!-- Firebase -->
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+
+  <!-- Stripe -->
   <script src="https://js.stripe.com/v3/"></script>
 </head>
 <body class="theme-light">
-  <header><h1>Dashboard</h1><div id="nav-user"></div></header>
-  <main>
-    <h2>Welcome, <span id="user-email"></span></h2>
+  <header>
+    <h1>Dashboard</h1>
+    <div id="nav-user"></div>
+  </header>
+
+  <main class="container">
+    <h2>Welcome, <span id="user-email">...</span></h2>
     <p>Credits: <span id="dashboard-credits">0</span></p>
     <button id="dash-buy-credits" class="btn-primary">Buy More Credits</button>
-    <section id="downloads"><p>Loading purchases...</p></section>
+
+    <section id="downloads">
+      <p>Loading purchases...</p>
+    </section>
   </main>
+
   <script src="dashboard.js"></script>
 </body>
 </html>
