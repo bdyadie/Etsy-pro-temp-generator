@@ -1,4 +1,4 @@
-// ✅ Firebase App Config — Replace with your real values!
+// 🔐 Replace with your Firebase config
 firebase.initializeApp({
   apiKey: "YOUR_API_KEY",
   authDomain: "etsy-templates.firebaseapp.com",
@@ -8,11 +8,10 @@ firebase.initializeApp({
   appId: "YOUR_APP_ID"
 });
 
-// ✅ Firebase Modules
 const auth = firebase.auth();
 const db = firebase.firestore();
 
-// ✅ Theme Font Mapping
+// 🎨 Theme fonts
 const themeFonts = {
   light: "Playfair Display, serif",
   rose: "DM Serif Display, serif",
@@ -20,18 +19,18 @@ const themeFonts = {
   dark: "Roboto Mono, monospace"
 };
 
-// ✅ Theme Apply Function
+// 🎨 Apply theme
 function applyTheme(theme) {
   document.body.className = `theme-${theme}`;
   document.body.style.fontFamily = themeFonts[theme];
   localStorage.setItem("theme", theme);
 }
 
-// ✅ Load Saved Theme on Page Load
+// 🔁 Load saved theme
 const savedTheme = localStorage.getItem("theme") || "light";
 applyTheme(savedTheme);
 
-// ✅ Theme Bubbles: Click to Switch
+// 🎯 Theme switcher (bubbles)
 document.querySelectorAll(".theme-bubbles span").forEach(bubble => {
   bubble.addEventListener("click", () => {
     const theme = bubble.dataset.theme;
@@ -39,7 +38,7 @@ document.querySelectorAll(".theme-bubbles span").forEach(bubble => {
   });
 });
 
-// ✅ Smooth Scroll for Nav Links
+// 🧭 Smooth scroll
 document.querySelectorAll('nav a[href^="#"]').forEach(link => {
   link.addEventListener("click", e => {
     e.preventDefault();
@@ -50,7 +49,7 @@ document.querySelectorAll('nav a[href^="#"]').forEach(link => {
   });
 });
 
-// ✅ Modal Toggle Logic
+// 🔐 Modal toggle
 function toggleModal() {
   const modal = document.getElementById("auth-modal");
   modal.classList.toggle("hidden");
@@ -58,18 +57,18 @@ function toggleModal() {
 }
 document.getElementById("login-btn").addEventListener("click", toggleModal);
 
-// ✅ Try AI for Free Button
+// 🤖 Try AI Tool
 document.getElementById("use-free-ai").addEventListener("click", () => {
   const user = auth.currentUser;
   if (user) {
     alert("🎉 AI Tool activated for 1 free use!");
-    // Add AI activation logic here
+    // Optional: deduct 1 credit or flag in Firestore
   } else {
     toggleModal();
   }
 });
 
-// ✅ Handle Auth (Login/Register)
+// 🔑 Login/Register logic
 async function handleAuth() {
   const email = document.getElementById("email").value;
   const password = document.getElementById("password").value;
@@ -89,7 +88,7 @@ async function handleAuth() {
   toggleModal();
 }
 
-// ✅ Create Firestore User Doc if Missing
+// 🧾 Create Firestore user doc if new
 async function initUser() {
   const user = auth.currentUser;
   if (!user) return;
@@ -104,3 +103,22 @@ async function initUser() {
     });
   }
 }
+
+// 📦 Buy Now buttons
+document.querySelectorAll(".buy-now").forEach(btn => {
+  btn.addEventListener("click", () => {
+    const user = auth.currentUser;
+    if (!user) {
+      toggleModal();
+    } else {
+      alert("✅ Proceed to checkout (not yet implemented).");
+    }
+  });
+});
+
+// 💬 WhatsApp buttons
+document.querySelectorAll(".whatsapp").forEach(btn => {
+  btn.addEventListener("click", () => {
+    window.open("https://wa.me/YOUR_WHATSAPP_NUMBER", "_blank");
+  });
+});
