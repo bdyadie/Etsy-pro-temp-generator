@@ -9,22 +9,22 @@ const auth = firebase.auth();
 const db = firebase.firestore();
 const stripe = Stripe("YOUR_STRIPE_PUBLISHABLE_KEY");
 
-// Wait for user login
+// Auth listener
 auth.onAuthStateChanged(async user => {
   if (!user) return location.href = "index.html";
 
   // Show user email
   document.getElementById("user-email").textContent = user.email;
 
-  // Fetch user data
-  const userRef = db.collection("users").doc(user.uid);
-  const doc = await userRef.get();
+  // Load user data
+  const ref = db.collection("users").doc(user.uid);
+  const doc = await ref.get();
   const data = doc.exists ? doc.data() : { credits: 0, purchasedProducts: [] };
 
   // Show credits
   document.getElementById("dashboard-credits").textContent = data.credits ?? 0;
 
-  // Show purchased downloads
+  // Show downloads
   const downloadsDiv = document.getElementById("downloads");
   if (data.purchasedProducts && data.purchasedProducts.length > 0) {
     downloadsDiv.innerHTML = data.purchasedProducts.map(p => `
