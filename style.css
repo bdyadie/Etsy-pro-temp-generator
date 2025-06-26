@@ -13,28 +13,31 @@ html {
   scroll-behavior: smooth;
 }
 
-/* === THEME STYLES === */
+/* === THEMES === */
 body.theme-light {
   background: #ffffff;
   color: #222;
 }
 body.theme-rose {
-  background: #fff0f5;
-  color: #800040;
+  background: #fff0f4;
+  color: #b0004f;
 }
 body.theme-forest {
-  background: #0d1e14;
-  color: #bce2c4;
+  background: #e9f5ee;
+  color: #0d402f;
 }
 body.theme-dark {
-  background: #121212;
-  color: #f5f5f5;
+  background: #f8f8f5; /* soft cream */
+  color: #1e1e1e;
 }
-body.theme-dark .section-card,
-body.theme-dark .product-card,
-body.theme-dark .hero-card {
-  background: #f4f4f4;
-  color: #111;
+
+/* Theme card and button base styling */
+body.theme-light .product-card,
+body.theme-rose .product-card,
+body.theme-forest .product-card,
+body.theme-dark .product-card {
+  background: #ffffff;
+  color: inherit;
 }
 
 /* === HEADER === */
@@ -75,9 +78,9 @@ header {
   border: 1px solid #ccc;
 }
 .preview-bubble[data-theme="light"] { background: #fff; }
-.preview-bubble[data-theme="rose"] { background: #ffe4e9; }
-.preview-bubble[data-theme="forest"] { background: #0b1e14; }
-.preview-bubble[data-theme="dark"] { background: #333; }
+.preview-bubble[data-theme="rose"] { background: #ffd3e2; }
+.preview-bubble[data-theme="forest"] { background: #d0f0e0; }
+.preview-bubble[data-theme="dark"] { background: #f8f8f5; }
 
 /* === BUTTONS === */
 .btn, .btn-primary, .btn-buy, .btn-whatsapp {
@@ -108,7 +111,7 @@ header {
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2) inset;
 }
 
-/* === HERO SECTION === */
+/* === HERO === */
 .hero-card {
   background: #f5f5f5;
   padding: 2rem;
@@ -118,7 +121,7 @@ header {
   text-align: center;
 }
 
-/* === PRODUCTS SECTION === */
+/* === PRODUCTS === */
 .products-grid {
   display: grid;
   gap: 2rem;
@@ -145,7 +148,7 @@ header {
   flex-wrap: wrap;
 }
 
-/* === SECTIONS & CARDS === */
+/* === SECTIONS === */
 .section-card {
   background: #f7f7f7;
   margin: 2rem auto;
