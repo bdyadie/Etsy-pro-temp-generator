@@ -1,63 +1,87 @@
-// --- Firebase + Stripe Init ---
+// === Firebase Config ===
 firebase.initializeApp({
-  apiKey:"AIzaSyAft96BSElFYyLkIVDxaiS2k8us9h1EPPw",
-  authDomain:"etsy-templates.firebaseapp.com",
-  projectId:"etsy-templates"
+  apiKey: "AIzaSyAft96BSElFYyLkIVDxaiS2k8us9h1EPPw",
+  authDomain: "etsy-templates.firebaseapp.com",
+  projectId: "etsy-templates"
 });
-const auth = firebase.auth(), db = firebase.firestore(), stripe = Stripe("YOUR_STRIPE_PUBLISHABLE_KEY");
+const auth = firebase.auth();
+const db = firebase.firestore();
+const stripe = Stripe("YOUR_STRIPE_PUBLISHABLE_KEY");
 
-// --- Theme Switching ---
-const themeSelect = document.getElementById("theme-select"),
-      bubbles = document.querySelectorAll(".bubbles span");
-function applyTheme(theme) {
-  document.body.className = `theme-${theme}`;
-  localStorage.setItem("theme", theme);
-  themeSelect.value = theme;
-}
-themeSelect.onchange = () => applyTheme(themeSelect.value);
-bubbles.forEach(b => b.onclick = () => applyTheme(b.dataset.theme));
-window.onload = () => {
-  const saved = localStorage.getItem("theme") || "light";
-  applyTheme(saved);
-};
-
-// --- Auth Modal Handling ---
-const authModal = document.getElementById("auth-modal");
-function toggleAuthModal(show) {
-  authModal.style.display = show ? "flex" : "none";
-}
-document.getElementById("btn-auth").onclick = () => toggleAuthModal(true);
-
-// --- Authentication ---
-async function handleAuth() {
-  const email = document.getElementById("auth-email").value,
-        pass = document.getElementById("auth-pass").value;
-  try {
-    await auth.signInWithEmailAndPassword(email, pass);
-    toggleAuthModal(false);
-  } catch(e) {
-    if (e.code === "auth/user-not-found") {
-      try { await auth.createUserWithEmailAndPassword(email, pass); toggleAuthModal(false); }
-      catch(err) { alert(err.message) }
-    } else alert(e.message);
-  }
-}
-
-// --- Guest Demo / AI Tool ---
-let guestUsed = false;
-document.getElementById("use-ai-guest").onclick = () => {
-  if (guestUsed) alert("Please log in or buy credits.");
-  else { alert("Demo AI output (replace with real)"); guestUsed = true; }
-};
-
-// --- Auth State Handling ---
+// === Auth State ===
 auth.onAuthStateChanged(user => {
-  const btnAuth = document.getElementById("btn-auth");
+  const authBtn = document.getElementById('btn-auth');
   if (user) {
-    btnAuth.textContent = "Log Out";
-    btnAuth.onclick = () => auth.signOut();
+    authBtn.innerText = 'Logout';
+    authBtn.onclick = () => auth.signOut();
   } else {
-    btnAuth.textContent = "Log In";
-    btnAuth.onclick = () => toggleAuthModal(true);
+    authBtn.innerText = 'Log In';
+    authBtn.onclick = () => toggleAuthModal(true);
   }
+});
+
+// === Login / Register Modal ===
+function toggleAuthModal(show) {
+  document.getElementById('auth-modal').style.display = show ? 'flex' : 'none';
+}
+function handleAuth() {
+  const email = document.getElementById('auth-email').value;
+  const pass = document.getElementById('auth-pass').value;
+  auth.signInWithEmailAndPassword(email, pass)
+    .catch(() => {
+      auth.createUserWithEmailAndPassword(email, pass)
+        .catch(err => alert(err.message));
+    });
+}
+
+// === Theme Switching ===
+const themeSelect = document.getElementById('theme-select');
+const themeBubbles = document.querySelectorAll('.preview-bubble');
+themeSelect.onchange = () => setTheme(themeSelect.value);
+themeBubbles.forEach(bubble => {
+  bubble.onclick = () => {
+    const theme = bubble.getAttribute('data-theme');
+    setTheme(theme);
+    themeSelect.value = theme;
+  };
+});
+function setTheme(theme) {
+  document.body.className = `theme-${theme}`;
+  localStorage.setItem('theme', theme);
+}
+window.addEventListener("DOMContentLoaded", () => {
+  const stored = localStorage.getItem('theme') || 'light';
+  setTheme(stored);
+  themeSelect.value = stored;
+});
+
+// === AI Guest Preview ===
+let guestUsed = false;
+document.getElementById('use-ai-guest')?.addEventListener('click', () => {
+  if (guestUsed) {
+    alert("Please log in or buy credits.");
+  } else {
+    document.getElementById('toast').textContent = "[Demo AI output]";
+    guestUsed = true;
+  }
+});
+
+// === Fade-in Scroll Animation ===
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+    }
+  });
+});
+document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+// === Smooth Anchor Scroll (Nav Links) ===
+document.querySelectorAll('a[href^="#"]').forEach(link => {
+  link.onclick = function(e) {
+    e.preventDefault();
+    document.querySelector(this.getAttribute('href')).scrollIntoView({
+      behavior: "smooth"
+    });
+  };
 });
