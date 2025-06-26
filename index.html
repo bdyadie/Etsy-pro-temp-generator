@@ -3,17 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="color-scheme" content="light dark" />
-  <meta name="description" content="Etsy Pro Templates Generator: All-in-one AI toolkit for Etsy sellers." />
-  <meta property="og:title" content="Etsy Pro Templates Generator" />
-  <meta property="og:description" content="AI-powered Etsy toolkit for listings, mockups, and templates." />
-  <meta property="og:image" content="https://yourdomain.com/social-preview.jpg" />
-  <meta name="twitter:card" content="summary_large_image" />
-
   <title>Etsy Pro Templates Generator</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
-  <link rel="icon" href="favicon.ico" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
@@ -33,8 +25,8 @@
           <a href="#contact">Contact</a>
         </nav>
         <div class="theme-switcher">
-          <select id="theme-select" aria-label="Select Theme">
-            <option value="light">🌞 Light</option>
+          <select id="theme-select">
+            <option value="light">Light</option>
             <option value="rose">🌸 Rose</option>
             <option value="forest">🌲 Forest</option>
             <option value="dark">🌙 Dark</option>
@@ -51,21 +43,24 @@
   </header>
 
   <main>
+    <!-- Hero -->
     <section id="hero">
       <div class="hero-box">
-        <h2>All‑in‑one AI Toolkit for Etsy Sellers</h2>
-        <p>Generate SEO‑optimized listings, tags, mock‑ups & more—instantly.</p>
-        <button id="use-ai-guest" class="btn-primary">Try AI Tool (1 Free)</button>
+        <h2>Launch. Grow. Thrive.</h2>
+        <p>Empower your Etsy shop with AI tools and stunning digital templates. From mockups to marketing, everything you need — just one click away.</p>
+        <button id="use-ai-guest" class="btn-primary">Try AI Tool (1 Free)</button>
       </div>
     </section>
 
-    <!-- ✅ Products -->
+    <!-- Products -->
     <section id="products" class="container">
       <h2>Digital Templates & Tools</h2>
       <div class="grid">
 
+        <!-- Repeated for each of the 10 products -->
+        <!-- Use same structure -->
         <div class="product">
-          <img src="images/logo-kit-blue.jpg" alt="Blue Logo Branding Kit" loading="lazy">
+          <img src="images/logo-kit-blue.jpg" alt="Blue Logo Branding Kit">
           <h3>Blue Logo Branding Kit</h3>
           <p><strong>$9.99</strong> · Editable Logo Templates</p>
           <div class="btn-group">
@@ -75,7 +70,7 @@
         </div>
 
         <div class="product">
-          <img src="images/instagram-canva-bundle.jpg" alt="Instagram Canva Post Bundle" loading="lazy">
+          <img src="images/instagram-canva-bundle.jpg" alt="Instagram Canva Post Bundle">
           <h3>Instagram Canva Post Bundle</h3>
           <p><strong>$14.99</strong> · 100+ Social Templates</p>
           <div class="btn-group">
@@ -85,7 +80,7 @@
         </div>
 
         <div class="product">
-          <img src="images/digital-planner-2025.jpg" alt="2025 Digital Planner" loading="lazy">
+          <img src="images/digital-planner-2025.jpg" alt="2025 Digital Planner">
           <h3>2025 Digital Planner</h3>
           <p><strong>$12.99</strong> · Hyperlinked PDF Planner</p>
           <div class="btn-group">
@@ -95,7 +90,7 @@
         </div>
 
         <div class="product">
-          <img src="images/wedding-invitation-template.jpg" alt="Wedding Invitation Template" loading="lazy">
+          <img src="images/wedding-invitation-template.jpg" alt="Wedding Invitation Template">
           <h3>Wedding Invitation Template</h3>
           <p><strong>$7.99</strong> · Editable Design</p>
           <div class="btn-group">
@@ -105,7 +100,7 @@
         </div>
 
         <div class="product">
-          <img src="images/business-card-template.jpg" alt="Business Card Template" loading="lazy">
+          <img src="images/business-card-template.jpg" alt="Business Card Template">
           <h3>Business Card Template</h3>
           <p><strong>$5.99</strong> · Editable Design</p>
           <div class="btn-group">
@@ -115,7 +110,7 @@
         </div>
 
         <div class="product">
-          <img src="images/wedding-planner-bundle.jpg" alt="Wedding Planner Bundle" loading="lazy">
+          <img src="images/wedding-planner-bundle.jpg" alt="Wedding Planner Bundle">
           <h3>Wedding Planner Bundle</h3>
           <p><strong>$24.99</strong> · Checklist + Guides</p>
           <div class="btn-group">
@@ -125,7 +120,7 @@
         </div>
 
         <div class="product">
-          <img src="images/svg-cutting-pack.jpg" alt="SVG Cutting Files Pack" loading="lazy">
+          <img src="images/svg-cutting-pack.jpg" alt="SVG Cutting Files Pack">
           <h3>SVG Cutting Files Pack</h3>
           <p><strong>$5.99</strong> · SVG/PNG/DXF</p>
           <div class="btn-group">
@@ -135,7 +130,7 @@
         </div>
 
         <div class="product">
-          <img src="images/lightroom-mobile-presets.jpg" alt="Lightroom Mobile Presets" loading="lazy">
+          <img src="images/lightroom-mobile-presets.jpg" alt="Lightroom Mobile Presets">
           <h3>Lightroom Mobile Presets</h3>
           <p><strong>$12.99</strong> · Photo Filters</p>
           <div class="btn-group">
@@ -145,7 +140,7 @@
         </div>
 
         <div class="product">
-          <img src="images/pinterest-canva-templates.jpg" alt="Pinterest Canva Templates" loading="lazy">
+          <img src="images/pinterest-canva-templates.jpg" alt="Pinterest Canva Templates">
           <h3>Pinterest Canva Templates</h3>
           <p><strong>$8.99</strong> · Promo & Pin Designs</p>
           <div class="btn-group">
@@ -155,9 +150,9 @@
         </div>
 
         <div class="product">
-          <img src="images/product-launch-guide.jpg" alt="Product Launch Guide" loading="lazy">
+          <img src="images/product-launch-guide.jpg" alt="Product Launch Guide">
           <h3>Product Launch Guide</h3>
-          <p><strong>$14.99</strong> · Step‑by‑Step eBook</p>
+          <p><strong>$14.99</strong> · Step-by-Step eBook</p>
           <div class="btn-group">
             <button class="btn-buy">Buy Now</button>
             <button class="btn-whatsapp">WhatsApp</button>
@@ -167,38 +162,50 @@
       </div>
     </section>
 
+    <!-- Testimonials -->
     <section id="testimonials" class="container">
       <h2>What Sellers Say</h2>
-      <div class="testimonial">“This AI saved me HOURS — total game‑changer!” <span>– Alicia</span></div>
-      <div class="testimonial">“The visuals are on point. 10/10 would recommend.” <span>– Carlos</span></div>
+      <div class="testimonial">“I launched my shop with these templates and made 5 sales in 24 hours!” <span>– Jenna R.</span></div>
+      <div class="testimonial">“The AI tool helps me write listings 10x faster. Total lifesaver.” <span>– Daniel K.</span></div>
+      <div class="testimonial">“I love the variety — everything from logos to planners is top quality.” <span>– Melissa A.</span></div>
+      <div class="testimonial">“Super user-friendly even for non-designers like me.” <span>– Tarek B.</span></div>
+      <div class="testimonial">“Highly recommend! These tools made me feel like a pro seller.” <span>– Sofia L.</span></div>
     </section>
 
+    <!-- FAQ -->
     <section id="faq" class="container">
-      <h2>FAQ</h2>
-      <div class="faq-item"><strong>How many times can I use the AI?</strong><p>1 free preview; unlimited use with credits.</p></div>
-      <div class="faq-item"><strong>Do I need design skills?</strong><p>Nope — all templates editable in your browser.</p></div>
+      <h2>Frequently Asked Questions</h2>
+      <div class="faq-item"><strong>Is the AI tool really free?</strong><p>Yes! You get one free use when you register. After that, you can buy credits.</p></div>
+      <div class="faq-item"><strong>Do I need Canva Pro to use these templates?</strong><p>No — all templates work with a free Canva account.</p></div>
+      <div class="faq-item"><strong>Can I use the templates on mobile?</strong><p>Yes, you can edit and download directly on your phone.</p></div>
+      <div class="faq-item"><strong>Do I keep the templates forever?</strong><p>Absolutely! You can access them anytime in your dashboard.</p></div>
+      <div class="faq-item"><strong>How quickly do I get access?</strong><p>Instantly after purchase or registration.</p></div>
+      <div class="faq-item"><strong>Can I use these for client work?</strong><p>Yes! You can use them for client and commercial work.</p></div>
+      <div class="faq-item"><strong>Can I get a refund?</strong><p>Digital purchases are non-refundable, but we're happy to help if there's an issue.</p></div>
     </section>
 
+    <!-- Contact -->
     <section id="contact" class="container">
       <h2>Contact</h2>
       <p>📧 <a href="mailto:you@example.com">you@example.com</a></p>
       <p>📍 Morocco — Worldwide Delivery</p>
     </section>
-
-    <!-- 🔐 Auth Modal -->
-    <div id="auth-modal" class="modal" hidden aria-modal="true" role="dialog">
-      <div class="modal-content">
-        <button class="close-btn" onclick="toggleAuthModal(false)">✖</button>
-        <h2>Log In / Register</h2>
-        <input id="auth-email" type="email" placeholder="Email" aria-label="Email" required />
-        <input id="auth-pass" type="password" placeholder="Password" aria-label="Password" required />
-        <button onclick="handleAuth(event)" class="btn-primary">Continue</button>
-      </div>
-    </div>
   </main>
 
+  <!-- Modal -->
+  <div id="auth-modal" class="modal" hidden>
+    <div class="modal-content">
+      <button class="close-btn" onclick="toggleAuthModal(false)">✖</button>
+      <h2>Log In / Register</h2>
+      <input id="auth-email" type="email" placeholder="Email" required />
+      <input id="auth-pass" type="password" placeholder="Password" required />
+      <button onclick="handleAuth(event)" class="btn-primary">Continue</button>
+    </div>
+  </div>
+
   <footer>&copy; 2025 Etsy Pro Templates Generator</footer>
+
   <script src="app.js"></script>
   <script src="ai-logic.js"></script>
 </body>
-          </html>
+              </html>
