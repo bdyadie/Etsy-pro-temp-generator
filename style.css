@@ -1,59 +1,57 @@
-* { margin:0; padding:0; box-sizing:border-box; }
-body { font-family: Arial, sans-serif; transition: background 0.3s, color 0.3s; }
-a, button { border:none; background:none; font:inherit; cursor:pointer; }
+/* Reset + base */
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:Arial,sans-serif; line-height:1.5; background:#fff; color:#222; transition:background .3s, color .3s; }
+a { text-decoration:none; }
 
-/* Theme definitions */
-body.theme-light { --bg:#fff; --fg:#222; }
-body.theme-dark { --bg:#121212; --fg:#eee; }
-body.theme-forest { --bg:#2f4f2f; --fg:#e1f5e1; }
-body.theme-rose { --bg:#ffe4e9; --fg:#800030; }
-body { background:var(--bg); color:var(--fg); }
+/* Buttons */
+.btn, .btn-primary, .btn-buy, .btn-whatsapp { cursor:pointer; display:inline-block; padding:.5rem 1rem; border:none; border-radius:4px; font-weight:600; transition:opacity .2s; }
+.btn:hover, .btn-primary:hover, .btn-buy:hover, .btn-whatsapp:hover { opacity:.9; }
+.btn-primary { background:#d81b60; color:#fff; }
+.btn-buy { background:#007bff; color:#fff; }
+.btn-whatsapp { background:#25D366; color:#fff; }
 
-/* Header/Nav */
-.site-header { display:flex; justify-content:space-between; align-items:center; padding:1rem; }
-.site-nav { display:flex; align-items:center; gap:1rem; }
-.btn-auth { padding:0.5rem 1rem; background:#007bff; color:#fff; border-radius:4px; }
-.nav-btn { padding:0.4rem 0.8rem; border-radius:4px; background:transparent; color:var(--fg); }
+/* Layout */
+header { display:flex; justify-content:space-between; align-items:center; padding:1rem; border-bottom:1px solid #eee; }
+.logo { font-size:1.25rem; font-weight:700; }
+nav { display:flex; align-items:center; gap:1rem; }
+.nav-link { background:none; border:none; padding:0.4rem; font-size:1rem; }
+#theme-bubbles { display:flex; gap:0.5rem; }
+.bubble { width:18px; height:18px; border-radius:50%; border:2px solid #aaa; cursor:pointer; transition:transform .2s; }
+.bubble:hover { transform:scale(1.1); }
+.bubble[data-theme="light"] { background:#fff; }
+.bubble[data-theme="dark"] { background:#333; }
+.bubble[data-theme="forest"] { background:#013220; }
+.bubble[data-theme="rose"] { background:#ffb3c6; }
 
-/* Theme switcher */
-.theme-switcher { display:flex; align-items:center; gap:0.5rem; }
-.theme-select { padding:0.4rem 0.8rem; border-radius:4px; border:1px solid rgba(0,0,0,0.2); }
-.bubbles { display:flex; gap:0.5rem; }
-.bubbles span { width:20px; height:20px; border-radius:50%; border:2px solid rgba(0,0,0,0.5); transition:transform 0.3s, box-shadow 0.3s; }
-.bubbles span:hover { transform:scale(1.2); box-shadow:0 0 6px rgba(0,0,0,0.3); }
-.bubbles span[data-theme="light"] { background:#fff; }
-.bubbles span[data-theme="dark"] { background:#555; }
-.bubbles span[data-theme="forest"] { background:#004d00; }
-.bubbles span[data-theme="rose"] { background:#ff99ad; }
-
-/* Hero */
-.hero-box { max-width:600px; margin:2rem auto; padding:2rem; background:rgba(0,0,0,0.05); border-radius:8px; text-align:center; }
-.hero-box h2 { font-size:1.6rem; margin-bottom:0.5rem; }
-.hero-box p { margin-bottom:1rem; }
-.btn-primary { padding:0.6rem 1.2rem; background:#e91e63; color:#fff; border-radius:4px; }
-
-/* Product grid */
-.container { max-width:960px; margin:2rem auto; padding:0 1rem; }
-.products-grid { display:grid; grid-gap:1rem; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); }
-.product { background:rgba(0,0,0,0.05); border-radius:6px; padding:1rem; text-align:center; }
+/* Cards & grid */
+.card { margin:1.5rem; padding:1rem; border-radius:8px; background:#f9f9f9; box-shadow:0 2px 8px rgba(0,0,0,.05); }
+.hero-card { text-align:center; }
+.grid-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(220px,1fr)); gap:1rem; }
 .product img { width:100%; border-radius:4px; }
-.product h3 { margin:0.5rem 0; }
-.product .price { color:#d81b60; margin-bottom:0.5rem; }
-.product-buttons { display:flex; justify-content:center; gap:0.5rem; }
-.btn-buy { padding:0.5rem 1rem; background:#28a745; color:#fff; border-radius:4px; }
-.btn-whatsapp { padding:0.5rem 1rem; background:#25D366; color:#fff; border-radius:4px; }
+.product h3 { margin:.5rem 0; }
+.product .price { color:#d81b60; margin-bottom:.5rem; }
 
-/* Section boxes */
-.section-box { background:rgba(0,0,0,0.05); border-radius:8px; padding:1.5rem; margin-bottom:2rem; }
-.section-box h2 { margin-bottom:1rem; }
+/* Quotes & faq */
+blockquote { margin:1rem 0; padding-left:1rem; border-left:4px solid #d81b60; font-style:italic; }
+.cite { display:block; margin-top:.5rem; font-style:normal; font-weight:600; text-align:right; }
+.faq-item { margin:1rem 0; }
+.faq-item strong { display:block; margin-bottom:.3rem; }
 
-/* Testimonials, FAQ */
-.testimonial, .faq-item { margin-bottom:1rem; }
-.faq-item strong { display:block; margin-bottom:0.5rem; }
+/* Modal */
+.modal-backdrop { position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,.4); display:flex; align-items:center; justify-content:center; }
+.modal { background:#fff; padding:1.5rem; border-radius:8px; width:90%; max-width:400px; position:relative; }
+.close-btn { position:absolute; top:.5rem; right:.5rem; background:none; border:none; font-size:1.2rem; }
 
-/* Footer */
-.footer { text-align:center; padding:1rem; border-top:1px solid rgba(0,0,0,0.2); }
-.hidden { display:none; }
-.modal-backdrop { position:fixed; inset:0; background:rgba(0,0,0,0.6); display:flex; justify-content:center; align-items:center; }
-.modal { background:#fff; padding:2rem; border-radius:6px; position:relative; width:90%; max-width:400px; }
-.close-btn { position:absolute; top:10px; right:10px; background:none; font-size:1.2rem; }
+/* Themes */
+body.theme-light { background:#fff; color:#222; }
+body.theme-dark { background:#121212; color:#ddd; }
+body.theme-forest { background:#013220; color:#e0f2e9; }
+body.theme-rose { background:#ffeef1; color:#800030; }
+
+/* Theme-specific cards & borders */
+body.theme-dark .card { background:#1e1e1e; box-shadow:none; }
+body.theme-dark .product { border:1px solid rgba(255,255,255,0.1); }
+body.theme-forest .card { background:#024230; box-shadow:none; }
+body.theme-forest .product { border:1px solid rgba(255,255,255,0.2); }
+body.theme-rose .card { background:#ffe4e8; box-shadow:none; }
+body.theme-rose .product { border:1px solid rgba(128,0,48,0.2); }
