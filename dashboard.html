@@ -2,10 +2,10 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Your Dashboard</title>
   <link rel="stylesheet" href="style.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Lora&family=Playfair+Display&family=Roboto+Mono&family=DM+Serif+Display&display=swap" rel="stylesheet" />
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
@@ -13,22 +13,24 @@
 </head>
 <body class="theme-light">
 
-  <header class="header">
-    <h1 class="site-title">Your Dashboard</h1>
-    <div class="nav-bar">
-      <span id="user-email" class="nav-link small"></span>
-      <button class="btn small" onclick="auth.signOut()">Logout</button>
+  <header>
+    <div class="header-inner">
+      <h1>Your Dashboard</h1>
+      <div class="header-controls">
+        <span id="user-email" style="font-weight:600;"></span>
+        <button onclick="auth.signOut()" class="btn-outline">Logout</button>
+      </div>
     </div>
   </header>
 
-  <main>
-    <section class="section-box">
+  <main class="container">
+    <section>
       <h2>Credits</h2>
       <p>You have <strong id="dashboard-credits">0</strong> credits available.</p>
-      <button id="dash-buy-credits" class="btn-buy">Buy More Credits</button>
+      <button id="dash-buy-credits" class="btn">Buy More Credits</button>
     </section>
 
-    <section class="section-box">
+    <section>
       <h2>Your Downloads</h2>
       <div id="downloads">
         <p>Loading...</p>
@@ -36,7 +38,10 @@
     </section>
   </main>
 
-  <footer class="footer">&copy; 2025 Etsy Templates Pro</footer>
+  <footer>
+    <p>&copy; 2025 Etsy Pro Templates Generator</p>
+  </footer>
+
   <script src="dashboard.js"></script>
 </body>
 </html>
