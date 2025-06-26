@@ -8,7 +8,7 @@ firebase.initializeApp({
 const auth = firebase.auth();
 const db = firebase.firestore();
 
-// Theme font mappings
+// Map theme → font
 const themeFonts = {
   light: "Playfair Display, serif",
   rose: "DM Serif Display, serif",
@@ -16,18 +16,18 @@ const themeFonts = {
   dark: "Roboto Mono, monospace"
 };
 
-// Apply theme function
+// Apply theme from selection
 function applyTheme(theme) {
   document.body.className = `theme-${theme}`;
   document.body.style.fontFamily = themeFonts[theme];
   localStorage.setItem("theme", theme);
 }
 
-// Load saved theme
+// Load saved theme on page load
 const savedTheme = localStorage.getItem("theme") || "light";
 applyTheme(savedTheme);
 
-// Theme bubble click handlers
+// Theme switch bubbles
 document.querySelectorAll(".theme-bubbles span").forEach(bubble => {
   bubble.addEventListener("click", () => {
     applyTheme(bubble.dataset.theme);
@@ -53,18 +53,18 @@ function toggleModal() {
 }
 document.getElementById("login-btn").addEventListener("click", toggleModal);
 
-// AI button click
+// AI Tool - Free use or prompt login
 document.getElementById("use-free-ai").addEventListener("click", () => {
   const user = auth.currentUser;
   if (user) {
-    alert("🎉 AI Tool activated!");
-    // Trigger your AI logic here if needed
+    alert("🎉 AI Tool activated for 1 free use!");
+    // You could add logic to decrement credits or record usage here
   } else {
     toggleModal();
   }
 });
 
-// Handle Login/Register
+// Handle login/register logic
 async function handleAuth() {
   const email = document.getElementById("email").value;
   const password = document.getElementById("password").value;
@@ -80,11 +80,11 @@ async function handleAuth() {
     }
   }
 
-  await initUser();
+  await initUser(); // sets up Firestore if new user
   toggleModal();
 }
 
-// Setup user doc if new
+// Create Firestore user doc if needed
 async function initUser() {
   const user = auth.currentUser;
   if (!user) return;
