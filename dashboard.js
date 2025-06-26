@@ -1,13 +1,14 @@
+// Firebase Init
 firebase.initializeApp({
-  apiKey: "AIzaSyAft96BSElFYyLkIVDxaiS2k8us9h1EPPw",
+  apiKey: "YOUR_API_KEY",
   authDomain: "etsy-templates.firebaseapp.com",
   projectId: "etsy-templates"
 });
-
 const auth = firebase.auth();
 const db = firebase.firestore();
-const stripe = Stripe("YOUR_STRIPE_PUBLISHABLE_KEY"); // Replace this
+const stripe = Stripe("YOUR_STRIPE_PUBLISHABLE_KEY");
 
+// Auth check
 auth.onAuthStateChanged(async user => {
   if (!user) return location.href = "index.html";
 
@@ -17,34 +18,30 @@ auth.onAuthStateChanged(async user => {
   const doc = await userRef.get();
   const data = doc.exists ? doc.data() : { credits: 0, purchasedProducts: [] };
 
-  document.getElementById("dashboard-credits").textContent = data.credits || 0;
+  document.getElementById("dashboard-credits").textContent = data.credits;
 
+  // Show downloads
   const downloads = document.getElementById("downloads");
-  const products = data.purchasedProducts || [];
-
-  if (products.length > 0) {
-    downloads.innerHTML = products.map(p =>
-      `<div><a href="downloads/${p}.zip" class="btn-link" download>${p}</a></div>`
-    ).join("");
+  if (data.purchasedProducts && data.purchasedProducts.length > 0) {
+    downloads.innerHTML = data.purchasedProducts.map(product => `
+      <div><a href="downloads/${product}.zip" class="btn-outline" download>${product}</a></div>
+    `).join("");
   } else {
-    downloads.innerHTML = "<p>No purchases yet.</p>";
+    downloads.innerHTML = "<p>No downloads yet.</p>";
   }
 
-  document.getElementById("dash-buy-credits").onclick = async () => {
-    try {
-      const res = await fetch("/.netlify/functions/create-checkout", {
-        method: "POST",
-        headers: { Authorization: user.uid }
-      });
-      const { sessionId } = await res.json();
-      if (sessionId) {
-        stripe.redirectToCheckout({ sessionId });
-      } else {
-        alert("Unable to initiate checkout.");
-      }
-    } catch (err) {
-      console.error("Checkout error:", err);
-      alert("Something went wrong with checkout.");
+  // Buy Credits
+  document.getElementById("dash-buy-credits").addEventListener('click', async () => {
+    const res = await fetch("/.netlify/functions/create-checkout", {
+      method: "POST",
+      headers: { Authorization: user.uid }
+    });
+
+    const { sessionId } = await res.json();
+    if (sessionId) {
+      stripe.redirectToCheckout({ sessionId });
+    } else {
+      alert("Checkout failed. Please try again.");
     }
-  };
+  });
 });
