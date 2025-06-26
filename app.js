@@ -1,3 +1,4 @@
+// Initialize Firebase
 firebase.initializeApp({
   apiKey: "AIzaSyAft96BSElFYyLkIVDxaiS2k8us9h1EPPw",
   authDomain: "etsy-templates.firebaseapp.com",
@@ -7,12 +8,12 @@ firebase.initializeApp({
 const auth = firebase.auth();
 const db = firebase.firestore();
 
-// Header shadow
+// Shadow on scroll
 window.addEventListener('scroll', () => {
   document.querySelector('header').classList.toggle('scrolled', window.scrollY > 10);
 });
 
-// Theme switching
+// Theme Switching
 const themeSelect = document.getElementById('theme-select');
 themeSelect.addEventListener('change', e => switchTheme(e.target.value));
 document.querySelectorAll('.bubbles span').forEach(el => {
@@ -37,7 +38,7 @@ document.querySelectorAll('#main-nav a').forEach(a => {
   });
 });
 
-// Modal
+// Auth Modal
 const loginBtn = document.getElementById('login-btn');
 const authModal = document.getElementById('auth-modal');
 loginBtn.onclick = () => toggleAuthModal(true);
@@ -47,6 +48,7 @@ function toggleAuthModal(show) {
   document.body.style.overflow = show ? 'hidden' : '';
 }
 
+// Login/Register Handler
 async function handleAuth(event) {
   const email = document.getElementById('auth-email').value;
   const pass = document.getElementById('auth-pass').value;
@@ -76,18 +78,31 @@ async function handleAuth(event) {
   btn.disabled = false;
 }
 
+// WhatsApp Redirect
 document.querySelectorAll('.btn-whatsapp').forEach(btn => {
   btn.addEventListener('click', () => {
     window.open('https://wa.me/YOURWHATSAPPNUMBER', '_blank');
   });
 });
 
+// Buy Button — Show modal or trigger AI
 document.querySelectorAll('.btn-buy').forEach(btn => {
   btn.addEventListener('click', () => {
-    tryAiTool();
+    const user = auth.currentUser;
+    if (user) {
+      tryAiTool(); // Run AI tool logic
+    } else {
+      toggleAuthModal(true); // Ask to log in
+    }
   });
 });
 
+// Try AI Tool Button — Respect user choice
 document.getElementById('use-ai-guest').addEventListener('click', () => {
-  tryAiTool();
+  const user = auth.currentUser;
+  if (user) {
+    tryAiTool();
+  } else {
+    toggleAuthModal(true);
+  }
 });
