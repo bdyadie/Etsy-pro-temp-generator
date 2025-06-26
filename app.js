@@ -8,19 +8,17 @@ const auth = firebase.auth();
 const db = firebase.firestore();
 const stripe = Stripe("YOUR_STRIPE_PUBLISHABLE_KEY");
 
-// === Auth State ===
-auth.onAuthStateChanged(user => {
-  const authBtn = document.getElementById('btn-auth');
+// === Auth Modal Logic ===
+const btnAuth = document.getElementById('btn-auth');
+btnAuth.addEventListener('click', () => {
+  const user = auth.currentUser;
   if (user) {
-    authBtn.innerText = 'Logout';
-    authBtn.onclick = () => auth.signOut();
+    auth.signOut();
   } else {
-    authBtn.innerText = 'Log In';
-    authBtn.onclick = () => toggleAuthModal(true);
+    toggleAuthModal(true);
   }
 });
 
-// === Login / Register Modal ===
 function toggleAuthModal(show) {
   document.getElementById('auth-modal').style.display = show ? 'flex' : 'none';
 }
@@ -28,60 +26,62 @@ function handleAuth() {
   const email = document.getElementById('auth-email').value;
   const pass = document.getElementById('auth-pass').value;
   auth.signInWithEmailAndPassword(email, pass)
-    .catch(() => {
-      auth.createUserWithEmailAndPassword(email, pass)
-        .catch(err => alert(err.message));
-    });
+    .catch(() => auth.createUserWithEmailAndPassword(email, pass)
+      .catch(err => alert(err.message)));
 }
 
-// === Theme Switching ===
-const themeSelect = document.getElementById('theme-select');
-const themeBubbles = document.querySelectorAll('.preview-bubble');
-themeSelect.onchange = () => setTheme(themeSelect.value);
-themeBubbles.forEach(bubble => {
-  bubble.onclick = () => {
-    const theme = bubble.getAttribute('data-theme');
-    setTheme(theme);
-    themeSelect.value = theme;
-  };
-});
-function setTheme(theme) {
-  document.body.className = `theme-${theme}`;
-  localStorage.setItem('theme', theme);
-}
-window.addEventListener("DOMContentLoaded", () => {
-  const stored = localStorage.getItem('theme') || 'light';
-  setTheme(stored);
-  themeSelect.value = stored;
-});
-
-// === AI Guest Preview ===
-let guestUsed = false;
-document.getElementById('use-ai-guest')?.addEventListener('click', () => {
-  if (guestUsed) {
-    alert("Please log in or buy credits.");
+// === Auth State Changes ===
+auth.onAuthStateChanged(user => {
+  if (user) {
+    btnAuth.textContent = "Logout";
   } else {
-    document.getElementById('toast').textContent = "[Demo AI output]";
-    guestUsed = true;
+    btnAuth.textContent = "Login";
+    document.getElementById('members-only')?.classList.add("hidden");
   }
 });
 
-// === Fade-in Scroll Animation ===
-const observer = new IntersectionObserver(entries => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      entry.target.classList.add('visible');
-    }
+// === Theme Switching ===
+const themeSelect = document.getElementById('theme-select');
+const bubbles = document.querySelectorAll('.bubbles span');
+
+function setTheme(theme) {
+  document.body.className = `theme-${theme}`;
+  localStorage.setItem("theme", theme);
+  themeSelect.value = theme;
+}
+
+themeSelect.addEventListener('change', () => {
+  setTheme(themeSelect.value);
+});
+
+bubbles.forEach(bubble => {
+  bubble.addEventListener('click', () => {
+    const theme = bubble.getAttribute("data-theme");
+    setTheme(theme);
   });
 });
-document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
 
-// === Smooth Anchor Scroll (Nav Links) ===
+document.addEventListener("DOMContentLoaded", () => {
+  const saved = localStorage.getItem("theme") || "light";
+  setTheme(saved);
+});
+
+// === Guest Preview (1 time) ===
+let guestUsed = false;
+document.getElementById('use-ai-guest')?.addEventListener('click', () => {
+  if (!guestUsed) {
+    document.getElementById('ai-output').innerText = "[Demo AI output]";
+    guestUsed = true;
+  } else {
+    alert("Please log in or buy credits.");
+  }
+});
+
+// === Section Anchor Scroll ===
 document.querySelectorAll('a[href^="#"]').forEach(link => {
-  link.onclick = function(e) {
+  link.addEventListener('click', e => {
     e.preventDefault();
-    document.querySelector(this.getAttribute('href')).scrollIntoView({
-      behavior: "smooth"
-    });
-  };
+    const target = document.querySelector(link.getAttribute('href'));
+    if (target) target.scrollIntoView({ behavior: "smooth" });
+  });
 });
