@@ -1,14 +1,18 @@
-// Initialize Firebase
+// ✅ Firebase App Config — Replace with your real values!
 firebase.initializeApp({
   apiKey: "YOUR_API_KEY",
   authDomain: "etsy-templates.firebaseapp.com",
-  projectId: "etsy-templates"
+  projectId: "etsy-templates",
+  storageBucket: "etsy-templates.appspot.com",
+  messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+  appId: "YOUR_APP_ID"
 });
 
+// ✅ Firebase Modules
 const auth = firebase.auth();
 const db = firebase.firestore();
 
-// Map theme → font
+// ✅ Theme Font Mapping
 const themeFonts = {
   light: "Playfair Display, serif",
   rose: "DM Serif Display, serif",
@@ -16,25 +20,26 @@ const themeFonts = {
   dark: "Roboto Mono, monospace"
 };
 
-// Apply theme from selection
+// ✅ Theme Apply Function
 function applyTheme(theme) {
   document.body.className = `theme-${theme}`;
   document.body.style.fontFamily = themeFonts[theme];
   localStorage.setItem("theme", theme);
 }
 
-// Load saved theme on page load
+// ✅ Load Saved Theme on Page Load
 const savedTheme = localStorage.getItem("theme") || "light";
 applyTheme(savedTheme);
 
-// Theme switch bubbles
+// ✅ Theme Bubbles: Click to Switch
 document.querySelectorAll(".theme-bubbles span").forEach(bubble => {
   bubble.addEventListener("click", () => {
-    applyTheme(bubble.dataset.theme);
+    const theme = bubble.dataset.theme;
+    applyTheme(theme);
   });
 });
 
-// Smooth scroll for nav links
+// ✅ Smooth Scroll for Nav Links
 document.querySelectorAll('nav a[href^="#"]').forEach(link => {
   link.addEventListener("click", e => {
     e.preventDefault();
@@ -45,7 +50,7 @@ document.querySelectorAll('nav a[href^="#"]').forEach(link => {
   });
 });
 
-// Modal open/close
+// ✅ Modal Toggle Logic
 function toggleModal() {
   const modal = document.getElementById("auth-modal");
   modal.classList.toggle("hidden");
@@ -53,18 +58,18 @@ function toggleModal() {
 }
 document.getElementById("login-btn").addEventListener("click", toggleModal);
 
-// AI Tool - Free use or prompt login
+// ✅ Try AI for Free Button
 document.getElementById("use-free-ai").addEventListener("click", () => {
   const user = auth.currentUser;
   if (user) {
     alert("🎉 AI Tool activated for 1 free use!");
-    // You could add logic to decrement credits or record usage here
+    // Add AI activation logic here
   } else {
     toggleModal();
   }
 });
 
-// Handle login/register logic
+// ✅ Handle Auth (Login/Register)
 async function handleAuth() {
   const email = document.getElementById("email").value;
   const password = document.getElementById("password").value;
@@ -80,11 +85,11 @@ async function handleAuth() {
     }
   }
 
-  await initUser(); // sets up Firestore if new user
+  await initUser();
   toggleModal();
 }
 
-// Create Firestore user doc if needed
+// ✅ Create Firestore User Doc if Missing
 async function initUser() {
   const user = auth.currentUser;
   if (!user) return;
