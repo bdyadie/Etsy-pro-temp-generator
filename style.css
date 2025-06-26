@@ -1,57 +1,78 @@
-/* Reset + base */
-*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
-body { font-family:Arial,sans-serif; line-height:1.5; background:#fff; color:#222; transition:background .3s, color .3s; }
-a { text-decoration:none; }
+/* RESET + BASE */
+* { margin:0; padding:0; box-sizing:border-box }
+body, input, button { font-family:Arial,sans-serif; }
+a { text-decoration:none; color:inherit }
+button { cursor:pointer }
 
-/* Buttons */
-.btn, .btn-primary, .btn-buy, .btn-whatsapp { cursor:pointer; display:inline-block; padding:.5rem 1rem; border:none; border-radius:4px; font-weight:600; transition:opacity .2s; }
-.btn:hover, .btn-primary:hover, .btn-buy:hover, .btn-whatsapp:hover { opacity:.9; }
-.btn-primary { background:#d81b60; color:#fff; }
-.btn-buy { background:#007bff; color:#fff; }
-.btn-whatsapp { background:#25D366; color:#fff; }
+/* THEMES */
+body.theme-light { --bg:#fff; --fg:#222; --btn-bg:#e91e63; --btn-fg:#fff; }
+body.theme-rose { --bg:#ffe4e9; --fg:#800030; --btn-bg:#c2185b; --btn-fg:#fff; }
+body.theme-forest { --bg:#e6f6ef; --fg:#013220; --btn-bg:#2e7d32; --btn-fg:#fff; }
+body.theme-dark { --bg:#121212; --fg:#f5f5f5; --btn-bg:#2979ff; --btn-fg:#fff; }
+body { background:var(--bg); color:var(--fg); transition:background .3s, color .3s }
 
-/* Layout */
-header { display:flex; justify-content:space-between; align-items:center; padding:1rem; border-bottom:1px solid #eee; }
-.logo { font-size:1.25rem; font-weight:700; }
-nav { display:flex; align-items:center; gap:1rem; }
-.nav-link { background:none; border:none; padding:0.4rem; font-size:1rem; }
-#theme-bubbles { display:flex; gap:0.5rem; }
-.bubble { width:18px; height:18px; border-radius:50%; border:2px solid #aaa; cursor:pointer; transition:transform .2s; }
-.bubble:hover { transform:scale(1.1); }
-.bubble[data-theme="light"] { background:#fff; }
-.bubble[data-theme="dark"] { background:#333; }
-.bubble[data-theme="forest"] { background:#013220; }
-.bubble[data-theme="rose"] { background:#ffb3c6; }
+.header {
+  display:flex; justify-content:space-between; align-items:center;
+  padding:1rem 2rem; background:var(--bg); position:sticky; top:0; z-index:10;
+  border-bottom:1px solid rgba(0,0,0,0.1);
+}
+.header h1 { font-size:1.5rem; }
+.nav-bar {
+  display:flex; align-items:center; gap:1rem;
+}
 
-/* Cards & grid */
-.card { margin:1.5rem; padding:1rem; border-radius:8px; background:#f9f9f9; box-shadow:0 2px 8px rgba(0,0,0,.05); }
-.hero-card { text-align:center; }
-.grid-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(220px,1fr)); gap:1rem; }
-.product img { width:100%; border-radius:4px; }
-.product h3 { margin:.5rem 0; }
-.product .price { color:#d81b60; margin-bottom:.5rem; }
+.nav-link { padding:.5rem; transition:background .2s; }
+.nav-link:hover { background:rgba(0,0,0,0.05); border-radius:4px; }
 
-/* Quotes & faq */
-blockquote { margin:1rem 0; padding-left:1rem; border-left:4px solid #d81b60; font-style:italic; }
-.cite { display:block; margin-top:.5rem; font-style:normal; font-weight:600; text-align:right; }
-.faq-item { margin:1rem 0; }
-.faq-item strong { display:block; margin-bottom:.3rem; }
+.btn { padding:.6rem 1rem; border:none; border-radius:4px; background:rgba(0,0,0,0.1); color:var(--fg); transition:background .2s }
+.btn-primary { background:var(--btn-bg); color:var(--btn-fg) }
+.btn-buy { background:var(--btn-bg); color:var(--btn-fg) }
+.btn-whatsapp { background:#25d366; color:#fff }
 
-/* Modal */
-.modal-backdrop { position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,.4); display:flex; align-items:center; justify-content:center; }
-.modal { background:#fff; padding:1.5rem; border-radius:8px; width:90%; max-width:400px; position:relative; }
-.close-btn { position:absolute; top:.5rem; right:.5rem; background:none; border:none; font-size:1.2rem; }
+.hero-card, .section-card { background:rgba(255,255,255,0.8); padding:2rem; margin:2rem; border-radius:8px; box-shadow:0 2px 8px rgba(0,0,0,0.1) }
+.hero-card { text-align:center }
 
-/* Themes */
-body.theme-light { background:#fff; color:#222; }
-body.theme-dark { background:#121212; color:#ddd; }
-body.theme-forest { background:#013220; color:#e0f2e9; }
-body.theme-rose { background:#ffeef1; color:#800030; }
+.products .grid {
+  display:grid; gap:1.5rem;
+  grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+  margin:2rem;
+}
+.product-card {
+  background:rgba(255,255,255,0.8); padding:1rem; border-radius:8px;
+  box-shadow:0 2px 8px rgba(0,0,0,0.1); display:flex; flex-direction:column; align-items:center;
+  transition:transform .2s;
+}
+.product-card:hover { transform:translateY(-4px) }
 
-/* Theme-specific cards & borders */
-body.theme-dark .card { background:#1e1e1e; box-shadow:none; }
-body.theme-dark .product { border:1px solid rgba(255,255,255,0.1); }
-body.theme-forest .card { background:#024230; box-shadow:none; }
-body.theme-forest .product { border:1px solid rgba(255,255,255,0.2); }
-body.theme-rose .card { background:#ffe4e8; box-shadow:none; }
-body.theme-rose .product { border:1px solid rgba(128,0,48,0.2); }
+.product-card img { width:100%; height:auto; border-radius:4px; margin-bottom:1rem }
+
+.product-buttons { display:flex; gap:.5rem; margin-top:auto; }
+.product-buttons .btn { flex:1 }
+
+.testimonial, .faq-item { margin:1rem 0; }
+
+.modal-backdrop {
+  position:fixed; top:0; left:0; right:0; bottom:0;
+  background:rgba(0,0,0,0.5); display:flex; align-items:center; justify-content:center;
+}
+.modal {
+  background:var(--bg); padding:2rem; border-radius:8px; width:90%; max-width:400px; position:relative;
+}
+.close-btn {
+  position:absolute; top:8px; right:8px; border:none; background:none; font-size:1.2rem; color:var(--fg)
+}
+
+/* Theme bubbles */
+.theme-switcher { display:flex; align-items:center; gap:.3rem }
+.theme-select { padding:.4rem; }
+.bubbles { display:flex; gap:.3rem; }
+.bubbles span {
+  width:16px; height:16px; border-radius:50%; display:inline-block; cursor:pointer;
+  border:2px solid rgba(0,0,0,0.2);
+  transition:transform .2s;
+}
+.bubbles span:hover { transform:scale(1.2) }
+.bubbles span[data-theme="light"] { background:#fff }
+.bubbles span[data-theme="rose"] { background:#ffb3c6 }
+.bubbles span[data-theme="forest"] { background:#4a7d4a }
+.bubbles span[data-theme="dark"] { background:#333 }
