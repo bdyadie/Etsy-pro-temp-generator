@@ -1,4 +1,4 @@
-// Initialize Firebase
+// Firebase + Stripe setup
 firebase.initializeApp({
   apiKey: "AIzaSyAft96BSElFYyLkIVDxaiS2k8us9h1EPPw",
   authDomain: "etsy-templates.firebaseapp.com",
@@ -8,58 +8,55 @@ const auth = firebase.auth();
 const db = firebase.firestore();
 const stripe = Stripe("YOUR_STRIPE_PUBLISHABLE_KEY");
 
-// Theme logic
-const select = document.getElementById('theme-select');
-const bubbles = document.querySelectorAll('.bubbles span');
-function applyTheme(t) {
+// Theme bubbles handling
+document.querySelectorAll('.bubble').forEach(b => {
+  b.addEventListener('click', () => {
+    const t = b.getAttribute('data-theme');
+    document.body.className = `theme-${t}`;
+    localStorage.setItem('theme', t);
+  });
+});
+// Restore theme on load
+window.addEventListener('DOMContentLoaded', () => {
+  const t = localStorage.getItem('theme') || 'light';
   document.body.className = `theme-${t}`;
-  select.value = t;
-  bubbles.forEach(b => b.classList.toggle('active', b.dataset.theme===t));
-  localStorage.setItem('theme', t);
-}
-select.onchange = () => applyTheme(select.value);
-bubbles.forEach(b=>b.onclick =()=>applyTheme(b.dataset.theme));
-applyTheme(localStorage.getItem('theme') || 'light');
-
-// Smooth Nav scrolling
-document.querySelectorAll('.nav-btn').forEach(btn=> {
-  btn.onclick = () => {
-    document.getElementById(btn.dataset.target)
-      .scrollIntoView({ behavior: 'smooth' });
-  };
 });
 
-// Modal
-const authModal = document.getElementById('auth-modal');
-document.getElementById('btn-auth').onclick = () => authModal.classList.toggle('hidden');
-authModal.querySelector('.close-btn').onclick = () => authModal.classList.add('hidden');
-window.toggleAuthModal = show => authModal.classList.toggle('hidden', !show);
+// Navigation scrolling
+document.querySelectorAll('.nav-link').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.getElementById(btn.dataset.target)?.scrollIntoView({ behavior:'smooth' });
+  });
+});
 
-// Auth handler
-window.handleAuth = () => {
+// Modal show/hide
+function toggleAuthModal(show) {
+  document.getElementById('auth-modal').hidden = !show;
+}
+document.getElementById('btn-auth').addEventListener('click', () => {
+  toggleAuthModal(true);
+});
+
+// Auth handling placeholder
+async function handleAuth() {
   const email = document.getElementById('auth-email').value;
   const pass = document.getElementById('auth-pass').value;
-  auth.signInWithEmailAndPassword(email, pass)
-    .catch(() => auth.createUserWithEmailAndPassword(email, pass))
-    .then(() => authModal.classList.add('hidden'))
-    .catch(err => alert(err.message));
-};
+  try {
+    await auth.signInWithEmailAndPassword(email, pass);
+  } catch {
+    await auth.createUserWithEmailAndPassword(email, pass);
+  }
+  toggleAuthModal(false);
+  document.getElementById('btn-auth').innerText = "Logout";
+}
 
-// Demo AI
-let used = false;
-document.getElementById('use-ai-guest').onclick = () => {
-  if (used) return alert('Please log in or buy credits');
-  alert('🎉 Demo AI output here');
-  used = true;
-};
+// AI guest button placeholder
+document.getElementById('use-ai-guest').addEventListener('click', () => {
+  alert("AI Tool activated (demo)");
+});
 
-// Buy & WhatsApp
-document.querySelectorAll('.product').forEach((prod, idx) => {
-  const buy = prod.querySelector('.btn-buy');
-  const wa = prod.querySelector('.btn-whatsapp');
-  buy.onclick = () => alert('Stripe purchase flow coming soon');
-  wa.onclick = () => {
-    const title = prod.querySelector('h3').innerText;
-    window.open(`https://wa.me/?text=I'm%20interested%20in%20${encodeURIComponent(title)}`, '_blank');
-  };
+// Logout
+auth.onAuthStateChanged(u => {
+  document.getElementById('btn-auth').innerText = u ? "Logout" : "Log In";
+  document.getElementById('btn-auth').onclick = () => u ? auth.signOut() : toggleAuthModal(true);
 });
